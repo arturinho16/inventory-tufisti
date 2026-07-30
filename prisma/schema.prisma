@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum CategoriaProducto {
+  TELEFONO
+  CRISTAL_TEMPLADO
+  OTRO
+}
+
+enum TipoFormaPantalla {
+  PLANA
+  CURVA
+  DOS_PUNTO_CINCO_D
+  TRES_D
+  FLEXIBLE
+  PLEGABLE
+  OTRO
+}
+
+model Linea {
+  id String @id @default(cuid())
+  clave String @unique
+  nombre String
+  productos Producto[]
+  especificacionesPantalla EspecificacionPantalla[]
+  creadoEn DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+  @@index([nombre])
+}
+
+model TipoProducto {
+  id String @id @default(cuid())
+  clave String @unique
+  nombre String
+  categoria CategoriaProducto @default(OTRO)
+  productos Producto[]
+  creadoEn DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+  @@index([nombre])
+  @@index([categoria])
+}
+
+model Marca {
+  id String @id @default(cuid())
+  clave String @unique
+  nombre String
+  productos Producto[]
+  especificacionesPantalla EspecificacionPantalla[]
+  creadoEn DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+  @@index([nombre])
+}
+
+model Producto {
+  id String @id @default(cuid())
+  clave String @unique
+  descripcion String
+  imagenUrl String?
+  imagenNombre String?
+  imagenMimeType String?
+  imagenTamano Int?
+  existencia Int @default(0)
+  modelo String
+  color String?
+  claveMLFull String?
+  codigoUniversal String?
+  tipoProductoId String
+  lineaId String
+  marcaId String
+  linea Linea @relation(fields: [lineaId], references: [id])
+  marca Marca @relation(fields: [marcaId], references: [id])
+  tipoProducto TipoProducto @relation(fields: [tipoProductoId], references: [id])
+  especificacionPantalla EspecificacionPantalla?
+  creadoEn DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+  @@index([descripcion])
+  @@index([modelo])
+  @@index([lineaId, marcaId])
+  @@index([tipoProductoId, existencia])
+  @@index([codigoUniversal])
+  @@index([claveMLFull])
+}
+
+model EspecificacionPantalla {
+  id String @id @default(cuid())
+  productoId String @unique
+  producto Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
+  clave String
+  modelo String
+  lineaId String
+  linea Linea @relation(fields: [lineaId], references: [id])
+  marcaId String
+  marca Marca @relation(fields: [marcaId], references: [id])
+  tecnologia String
+  tipoFormaPantalla TipoFormaPantalla
+  tipoFormaOtro String?
+  diagonalMm Decimal @db.Decimal(8, 3)
+  diagonalPulgadas Decimal @db.Decimal(6, 3)
+  anchoDisplayMm Decimal @db.Decimal(8, 3)
+  altoDisplayMm Decimal @db.Decimal(8, 3)
+  aspectRatio String
+  resolucionAnchoPx Int
+  resolucionAltoPx Int
+  densidadPpi Int
+  profundidadColor String
+  areaDisplayPorcentaje Decimal @db.Decimal(5, 2)
+  cristalFrontal String?
+  refrescoHz Int?
+  creadoEn DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+  @@index([modelo])
+  @@index([lineaId, marcaId])
+  @@index([anchoDisplayMm, altoDisplayMm])
+  @@index([tipoFormaPantalla])
+}
+
+model FormaPantallaPersonalizada {
+  id String @id @default(cuid())
+  nombre String @unique
+  creadoEn DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+  @@index([nombre])
+}

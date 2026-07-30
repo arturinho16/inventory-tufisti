@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+:root {
+  --surface: #fef7ff;
+  --surface-dim: #ded7e4;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f8f1fe;
+  --surface-container: #f3ebf8;
+  --surface-container-high: #ede5f3;
+  --surface-container-highest: #e7e0ed;
+  --on-surface: #1d1a23;
+  --on-surface-variant: #494454;
+  --outline: #7b7486;
+  --outline-variant: #cbc3d7;
+  --primary: #6b38d4;
+  --primary-container: #8455ef;
+  --secondary: #a43073;
+  --secondary-container: #fc79bd;
+  --error: #ba1a1a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--surface);
+  /* Base anterior: 16 px. Se aumenta 2 px en todo el sistema. */
+  font-size: 18px;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--on-surface);
+  background:
+    radial-gradient(circle at 86% 18%, rgb(132 85 239 / 18%), transparent 27rem),
+    radial-gradient(circle at 70% 82%, rgb(252 121 189 / 16%), transparent 30rem),
+    linear-gradient(145deg, var(--surface), var(--surface-container-low));
+  font-family: "Hanken Grotesk", Arial, sans-serif;
+}
+
+.font-mono { font-family: "JetBrains Mono", monospace; }
+.onda-global { position: fixed; z-index: 9999; width: 18px; height: 18px; pointer-events: none; border-radius: 9999px; background: rgb(255 255 255 / 55%); transform: translate(-50%, -50%) scale(0); animation: onda-liquida 600ms ease-out forwards; }
+@keyframes onda-liquida { to { opacity: 0; transform: translate(-50%, -50%) scale(4); } }
+
+button,
+a,
+input,
+select,
+textarea {
+  font: inherit;
+  transition-duration: 300ms;
+}
+
+input,
+select,
+textarea {
+  font-size: 1rem;
+}
+
+button:active,
+a:active {
+  transform: scale(0.95);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
