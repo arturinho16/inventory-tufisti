@@ -312,7 +312,7 @@ La navegación debe ser consistente entre las seis vistas y totalmente en españ
 Ruta: `/automatizacion/importar-url`.
 
 La pantalla usa el sistema Liquid Glass + Neo-Soft del resto de la aplicación y
-se divide en tres pestañas responsivas:
+se divide en cuatro pestañas responsivas:
 
 - `Complementar por URL`: formulario de una a cinco filas. Cada fila exige Clave,
   marca, modelo, diagonal y URL. El avance y el resultado se muestran por producto.
@@ -326,6 +326,13 @@ En Seguimiento, los pendientes permiten pegar o corregir una URL y revalidar el
 registro. La tabla se actualiza periódicamente y dispone también de actualización
 manual. Los filtros nunca deben eliminarse al ampliar esta pantalla. Ningún estado
 se comunica únicamente mediante color.
+
+Toda fila vinculada con una FTF persistida muestra la confirmación textual
+`FTF descargada`, una acción circular `+` para abrir un visor accesible y una
+acción `Editar`. El visor presenta proveedor, URL y todas las secciones plegables;
+Display inicia abierto. El editor permite agregar o corregir los campos de
+Display, muestra los faltantes restantes después de guardar y no vuelve a
+consultar al proveedor.
 
 La plantilla oficial es `public/plantillas/ftf_nuevo_producto.xlsx`. Todos sus
 campos son obligatorios; Línea, Marca, Tipo de producto, almacén, cuenta asociada y
@@ -344,18 +351,19 @@ rechaza, muestra una acción separada `Aprobar bajo mi responsabilidad`. La acci
 manual conserva las diferencias y queda auditada; nunca se ejecuta con el mismo
 botón de validación automática.
 
-La cuarta pestaña `Pasar a Paralelo` presenta las FTF guardadas como un asistente
+La cuarta pestaña `Pasar a Paralelo` presenta únicamente las FTF descargadas,
+completas y con identidad válida como un asistente
 de siete comprobaciones: localizar por Clave, validar modelo, extraer diagonal,
 aplicar tolerancia, revisar campos, guardar sin pérdida y publicar en Paralelo.
 Cada tarjeta muestra identidad, proveedor, diagonales y los principales datos de
-Display. Distingue textualmente entre Lista, Revisión y Ya está en Paralelo. Los
-faltantes se enumeran y bloquean la transferencia; actualizar un registro técnico
-existente exige una acción explícita diferente.
+Display. Distingue textualmente entre Lista y Ya está en Paralelo. Actualizar un
+registro técnico existente exige una acción explícita diferente.
 
 `Pasar a Paralelo` nunca ejecuta scraping. Las fichas completas muestran la acción
 `Validar FTF guardada y pasar a Paralelo`; ésta compara identidad y diagonal usando
-PostgreSQL y guarda el registro técnico. Las incompletas muestran que deben volver
-a Seguimiento y no ofrecen una acción que vuelva a consultar al proveedor.
+PostgreSQL y guarda el registro técnico. Las incompletas o con identidad inválida
+no aparecen en esta pestaña: permanecen en Seguimiento, donde se muestran sus
+faltantes o diferencias y pueden corregirse sin repetir el scraping.
 
 En Seguimiento, todas las filas —incluidas las completadas— muestran el enlace
 preferido editable y las acciones `Guardar enlace`, `Borrar enlace` y `Validar y
@@ -366,3 +374,5 @@ La columna `Estado técnico` es independiente del estado de proceso y muestra un
 de cuatro resultados: `Sin FTF`, `FTF incompleta`, `Lista para pasar a Paralelo`
 o `Ya está en Paralelo`. Cuando la ficha está incompleta enumera los campos que
 faltan, de modo que `Completada` en la cola nunca se confunda con lista técnica.
+Los intentos fallidos antiguos de una Clave que posteriormente quedó completada se
+muestran como `Histórico resuelto` y no incrementan el contador de pendientes.

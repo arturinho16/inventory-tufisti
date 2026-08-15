@@ -268,3 +268,25 @@ la relación por Clave, identidad de modelo y diagonal. Una FTF incompleta no se
 convierte en un registro comparable: queda en revisión hasta obtener los campos
 obligatorios. Las dimensiones derivadas de diagonal y proporción son cálculos
 deterministas; el porcentaje de área nunca se estima cuando la fuente no lo aporta.
+
+### Estado técnico y edición manual de FTF — 15 de agosto de 2026
+
+La existencia de `FichaTecnicaFull` confirma que la ficha fue descargada y
+persistida, pero no confirma por sí sola que esté completa ni que su identidad sea
+válida. El estado técnico se calcula con tres comprobaciones independientes:
+
+1. Existe una FTF persistida para el producto.
+2. La sección `Display` contiene todos los campos obligatorios para
+   `EspecificacionPantalla`.
+3. Marca, modelo, tokens críticos de variante y diagonal corresponden al producto
+   esperado. Para la diagonal se usa primero el valor normalizado de `Display` y
+   sólo como respaldo el metadato `diagonalFuente`.
+
+Una edición manual puede agregar o corregir campos de `Display` en la FTF
+persistida. Conserva proveedor y URL originales, vuelve a calcular faltantes y
+crea un `ImportacionFtfIntento` con acción `EDICION_MANUAL_FTF`. Completar campos
+no aprueba una identidad diferente ni cambia silenciosamente el modelo fuente.
+
+Los intentos fallidos anteriores a una importación completada de la misma Clave
+se conservan para auditoría como históricos resueltos. No se eliminan ni se
+contabilizan como pendientes activos.

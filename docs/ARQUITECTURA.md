@@ -161,6 +161,14 @@ acción de transferencia no depende de la red. `transferirFtfAParalelo` normaliz
 la FTF persistida, vuelve a validar la relación Producto–FTF y ejecuta el upsert
 sólo cuando todos los campos obligatorios están presentes.
 
+`obtenerFtfSeguimiento` carga secciones y campos bajo demanda para el visor; las
+consultas de listado no transportan el JSON completo de todas las FTF.
+`guardarCamposDisplayFtf` modifica exclusivamente la sección `Display`, conserva
+la procedencia, recalcula faltantes y registra la edición en
+`ImportacionFtfIntento`. La consulta de `listarTransferenciasFtf` excluye en el
+servidor fichas incompletas o con identidad inválida, de modo que la interfaz de
+`Pasar a Paralelo` no dependa de ocultarlas sólo en el navegador.
+
 La aplicación productiva se publica mediante Docker Compose. Después de cambios
 de esquema o interfaz que deban quedar visibles en el servidor, se ejecutan las
 migraciones y se reconstruye el contenedor de aplicación; posteriormente se
