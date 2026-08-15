@@ -2,6 +2,7 @@ node_modules/
 .next/
 out/
 .env
+.env.docker
 .env.local
 .env.*.local
 *.log
@@ -10,5 +11,12 @@ out/
 public/imagenes/productos/*
 !public/imagenes/productos/.gitkeep
 wiki
+referencias
+automatizacion
+
 
 .codegraph/
+.datos/
+storage/html/*.html
+__pycache__/
+*.pyc

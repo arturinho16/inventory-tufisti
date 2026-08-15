@@ -23,62 +23,89 @@ enum TipoFormaPantalla {
   OTRO
 }
 
+enum FrecuenciaRespaldo {
+  DIARIO
+  SEMANAL
+}
+
+enum EstadoEjecucionRespaldo {
+  EN_PROCESO
+  COMPLETADO
+  ERROR
+}
+
+enum Marketplace {
+  MERCADO_LIBRE
+  AMAZON
+  WALMART
+  TIENDANUBE
+  CLAROSHOP
+}
+
 model Linea {
-  id String @id @default(cuid())
-  clave String @unique
-  nombre String
-  productos Producto[]
+  id                       String                   @id @default(cuid())
+  clave                    String                   @unique
+  nombre                   String
+  productos                Producto[]
   especificacionesPantalla EspecificacionPantalla[]
-  creadoEn DateTime @default(now())
-  actualizadoEn DateTime @updatedAt
+  creadoEn                 DateTime                 @default(now())
+  actualizadoEn            DateTime                 @updatedAt
+
   @@index([nombre])
 }
 
 model TipoProducto {
-  id String @id @default(cuid())
-  clave String @unique
-  nombre String
-  categoria CategoriaProducto @default(OTRO)
-  productos Producto[]
-  creadoEn DateTime @default(now())
-  actualizadoEn DateTime @updatedAt
+  id            String            @id @default(cuid())
+  clave         String            @unique
+  nombre        String
+  categoria     CategoriaProducto @default(OTRO)
+  productos     Producto[]
+  creadoEn      DateTime          @default(now())
+  actualizadoEn DateTime          @updatedAt
+
   @@index([nombre])
   @@index([categoria])
 }
 
 model Marca {
-  id String @id @default(cuid())
-  clave String @unique
-  nombre String
-  productos Producto[]
+  id                       String                   @id @default(cuid())
+  clave                    String                   @unique
+  nombre                   String
+  productos                Producto[]
   especificacionesPantalla EspecificacionPantalla[]
-  creadoEn DateTime @default(now())
-  actualizadoEn DateTime @updatedAt
+  creadoEn                 DateTime                 @default(now())
+  actualizadoEn            DateTime                 @updatedAt
+
   @@index([nombre])
 }
 
 model Producto {
-  id String @id @default(cuid())
-  clave String @unique
-  descripcion String
-  imagenUrl String?
-  imagenNombre String?
-  imagenMimeType String?
-  imagenTamano Int?
-  existencia Int @default(0)
-  modelo String
-  color String?
-  claveMLFull String?
-  codigoUniversal String?
-  tipoProductoId String
-  lineaId String
-  marcaId String
-  linea Linea @relation(fields: [lineaId], references: [id])
-  marca Marca @relation(fields: [marcaId], references: [id])
-  tipoProducto TipoProducto @relation(fields: [tipoProductoId], references: [id])
+  id                     String                  @id @default(cuid())
+  clave                  String                  @unique
+  descripcion            String
+  imagenUrl              String?
+  imagenNombre           String?
+  imagenMimeType         String?
+  imagenTamano           Int?
+  existencia             Int                     @default(0)
+  modelo                 String
+  color                  String?
+  claveMLFull            String?
+  codigoUniversal        String?
+  tipoProductoId         String
+  lineaId                String
+  marcaId                String
+  linea                  Linea                   @relation(fields: [lineaId], references: [id])
+  marca                  Marca                   @relation(fields: [marcaId], references: [id])
+  tipoProducto           TipoProducto            @relation(fields: [tipoProductoId], references: [id])
   especificacionPantalla EspecificacionPantalla?
-  creadoEn DateTime @default(now())
-  actualizadoEn DateTime @updatedAt
+  fichaTecnicaB          FichaTecnicaB?
+  fichaTecnicaC          FichaTecnicaC?
+  fichaTecnicaFull       FichaTecnicaFull?
+  ubicaciones            Ubicacion[]
+  creadoEn               DateTime                @default(now())
+  actualizadoEn          DateTime                @updatedAt
+
   @@index([descripcion])
   @@index([modelo])
   @@index([lineaId, marcaId])
@@ -87,33 +114,245 @@ model Producto {
   @@index([claveMLFull])
 }
 
+model FichaTecnicaFull {
+  id                    String   @id @default(cuid())
+  productoId            String   @unique
+  producto              Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
+  urlFuente             String
+  proveedor             String
+  marcaFuente           String
+  modeloFuente          String
+  diagonalFuente        Decimal? @db.Decimal(6, 3)
+  diferenciaDiagonal    Decimal? @db.Decimal(6, 3)
+  validacion             String
+  secciones              Json
+  cantidadSecciones      Int
+  extraidoEn             DateTime @default(now())
+  creadoEn               DateTime @default(now())
+  actualizadoEn          DateTime @updatedAt
+
+  @@index([proveedor])
+  @@index([marcaFuente, modeloFuente])
+}
+
+enum EstadoImportacionFtf {
+  VALIDANDO
+  VALIDADA
+  BUSCANDO
+  NO_ENCONTRADA
+  REVISION
+  IMPORTANDO
+  COMPLETADA
+  ERROR
+}
+
+model ImportacionFtfLote {
+  id            String                  @id
+  nombreArchivo String
+  total         Int
+  estado        EstadoImportacionFtf    @default(VALIDANDO)
+  registros     ImportacionFtfRegistro[]
+  creadoEn      DateTime                @default(now())
+  actualizadoEn DateTime                @updatedAt
+
+  @@index([estado, creadoEn])
+}
+
+model ImportacionFtfRegistro {
+  id                 String               @id @default(cuid())
+  loteId             String
+  lote               ImportacionFtfLote   @relation(fields: [loteId], references: [id], onDelete: Cascade)
+  fila               Int
+  clave              String
+  marca              String
+  modelo             String
+  diagonalEsperada   Decimal              @db.Decimal(6, 3)
+  estado             EstadoImportacionFtf @default(VALIDANDO)
+  mensaje            String?
+  urlFuente          String?
+  marcaEncontrada    String?
+  modeloEncontrado   String?
+  diagonalEncontrada Decimal?             @db.Decimal(6, 3)
+  datosProducto      Json
+  intentos           Int                  @default(0)
+  disponibleEn       DateTime             @default(now())
+  bloqueadoEn        DateTime?
+  intentosDetalle    ImportacionFtfIntento[]
+  procesadoEn        DateTime?
+  creadoEn           DateTime             @default(now())
+  actualizadoEn      DateTime             @updatedAt
+
+  @@unique([loteId, fila])
+  @@index([estado, marca, diagonalEsperada])
+  @@index([clave])
+  @@index([estado, disponibleEn])
+}
+
+model ImportacionFtfIntento {
+  id                 String                 @id @default(cuid())
+  registroId         String
+  registro           ImportacionFtfRegistro @relation(fields: [registroId], references: [id], onDelete: Cascade)
+  accion             String
+  proveedor          String?
+  url                String?
+  estado             EstadoImportacionFtf
+  mensaje            String
+  marcaEncontrada    String?
+  modeloEncontrado   String?
+  diagonalEncontrada Decimal?               @db.Decimal(6, 3)
+  metadatos           Json?
+  creadoEn            DateTime               @default(now())
+
+  @@index([registroId, creadoEn])
+  @@index([estado, creadoEn])
+}
+
+model FichaTecnicaC {
+  id                 String   @id @default(cuid())
+  productoId         String   @unique
+  producto           Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
+  geometriaPrevista  String?
+  anchoExteriorMm    Decimal? @db.Decimal(8, 3)
+  altoExteriorMm     Decimal? @db.Decimal(8, 3)
+  grosorMm           Decimal? @db.Decimal(8, 3)
+  radiosEsquina      String?
+  aberturas          String?
+  marcoBorde         String?
+  curvatura          String?
+  adhesivo           String?
+  huellaComprobada   String?
+  fuente             String?
+  creadoEn           DateTime @default(now())
+  actualizadoEn      DateTime @updatedAt
+
+  @@index([anchoExteriorMm, altoExteriorMm])
+}
+
+model FichaTecnicaB {
+  id                     String   @id @default(cuid())
+  productoId             String   @unique
+  producto               Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
+  anchoCuerpoMm           Decimal? @db.Decimal(8, 3)
+  altoCuerpoMm            Decimal? @db.Decimal(8, 3)
+  grosorCuerpoMm          Decimal? @db.Decimal(8, 3)
+  anchoDisplayMm          Decimal? @db.Decimal(8, 3)
+  altoDisplayMm           Decimal? @db.Decimal(8, 3)
+  diagonalDisplayMm       Decimal? @db.Decimal(8, 3)
+  aspectRatio             String?
+  areaDisplayPorcentaje   Decimal? @db.Decimal(5, 2)
+  biselLateralMm          Decimal? @db.Decimal(8, 3)
+  biselVerticalTotalMm    Decimal? @db.Decimal(8, 3)
+  curvatura               String?
+  pesoGramos              Decimal? @db.Decimal(8, 3)
+  volumenCm3              Decimal? @db.Decimal(10, 3)
+  materiales              String?
+  colores                 String?
+  certificaciones         String?
+  tipoHuella              String?
+  huellaBajoPantalla      Boolean?
+  sensores                String[] @default([])
+  advertencias            String[] @default([])
+  fuenteDf                String?
+  fuenteSes               String?
+  modeloOpenAI            String?
+  analizadoEn             DateTime?
+  creadoEn                DateTime @default(now())
+  actualizadoEn           DateTime @updatedAt
+
+  @@index([anchoCuerpoMm, altoCuerpoMm])
+  @@index([anchoDisplayMm, altoDisplayMm])
+  @@index([huellaBajoPantalla])
+}
+
+model Ubicacion {
+  id             String      @id @default(cuid())
+  almacen        String
+  cuentaAsociada String
+  marketplace    Marketplace
+  imagenUrl      String?
+  imagenNombre   String?
+  imagenMimeType String?
+  imagenTamano   Int?
+  productos      Producto[]
+  creadoEn       DateTime    @default(now())
+  actualizadoEn  DateTime    @updatedAt
+
+  @@unique([almacen, cuentaAsociada, marketplace])
+  @@index([marketplace, almacen])
+  @@index([cuentaAsociada])
+}
+
+model ProductoMercadoLibre {
+  id                         String             @id @default(cuid())
+  cuentaId                   String
+  cuenta                     CuentaMercadoLibre @relation(fields: [cuentaId], references: [id], onDelete: Cascade)
+  publicacionId              String
+  variacionId                String             @default("")
+  userProductId              String?
+  inventoryId                String?
+  codigoVendedor             String?
+  titulo                     String
+  estado                     String
+  condicion                  String?
+  logistica                  String
+  existencia                 Int                @default(0)
+  vendidos                   Int                @default(0)
+  existenciaFullTotal        Int?
+  existenciaFullDisponible   Int?
+  existenciaFullNoDisponible Int?
+  detalleFullNoDisponible    Json?
+  stockFullConsultadoEn      DateTime?
+  gtin                       String?
+  marca                      String?
+  modelo                     String?
+  imagenOrigenUrl            String?
+  imagenUrl                  String?
+  imagenNombre               String?
+  imagenMimeType             String?
+  imagenTamano               Int?
+  errorImagen                String?
+  enlacePublicacion          String?
+  actualizadoMercadoLibreEn  DateTime?
+  sincronizadoEn             DateTime           @default(now())
+  creadoEn                   DateTime           @default(now())
+  actualizadoEn              DateTime           @updatedAt
+
+  @@unique([cuentaId, publicacionId, variacionId])
+  @@index([cuentaId, estado, logistica])
+  @@index([codigoVendedor])
+  @@index([marca])
+  @@index([titulo])
+}
+
 model EspecificacionPantalla {
-  id String @id @default(cuid())
-  productoId String @unique
-  producto Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
-  clave String
-  modelo String
-  lineaId String
-  linea Linea @relation(fields: [lineaId], references: [id])
-  marcaId String
-  marca Marca @relation(fields: [marcaId], references: [id])
-  tecnologia String
-  tipoFormaPantalla TipoFormaPantalla
-  tipoFormaOtro String?
-  diagonalMm Decimal @db.Decimal(8, 3)
-  diagonalPulgadas Decimal @db.Decimal(6, 3)
-  anchoDisplayMm Decimal @db.Decimal(8, 3)
-  altoDisplayMm Decimal @db.Decimal(8, 3)
-  aspectRatio String
-  resolucionAnchoPx Int
-  resolucionAltoPx Int
-  densidadPpi Int
-  profundidadColor String
-  areaDisplayPorcentaje Decimal @db.Decimal(5, 2)
-  cristalFrontal String?
-  refrescoHz Int?
-  creadoEn DateTime @default(now())
-  actualizadoEn DateTime @updatedAt
+  id                    String            @id @default(cuid())
+  productoId            String            @unique
+  producto              Producto          @relation(fields: [productoId], references: [id], onDelete: Cascade)
+  clave                 String
+  modelo                String
+  lineaId               String
+  linea                 Linea             @relation(fields: [lineaId], references: [id])
+  marcaId               String
+  marca                 Marca             @relation(fields: [marcaId], references: [id])
+  tecnologia            String
+  tipoFormaPantalla     TipoFormaPantalla
+  tipoFormaOtro         String?
+  diagonalMm            Decimal           @db.Decimal(8, 3)
+  diagonalPulgadas      Decimal           @db.Decimal(6, 3)
+  anchoDisplayMm        Decimal           @db.Decimal(8, 3)
+  altoDisplayMm         Decimal           @db.Decimal(8, 3)
+  aspectRatio           String
+  resolucionAnchoPx     Int
+  resolucionAltoPx      Int
+  densidadPpi           Int
+  profundidadColor      String
+  areaDisplayPorcentaje Decimal           @db.Decimal(5, 2)
+  cristalFrontal        String?
+  refrescoHz            Int?
+  fuenteImagen          String?
+  creadoEn              DateTime          @default(now())
+  actualizadoEn         DateTime          @updatedAt
+
   @@index([modelo])
   @@index([lineaId, marcaId])
   @@index([anchoDisplayMm, altoDisplayMm])
@@ -121,9 +360,145 @@ model EspecificacionPantalla {
 }
 
 model FormaPantallaPersonalizada {
-  id String @id @default(cuid())
-  nombre String @unique
-  creadoEn DateTime @default(now())
+  id            String   @id @default(cuid())
+  nombre        String   @unique
+  creadoEn      DateTime @default(now())
   actualizadoEn DateTime @updatedAt
+
   @@index([nombre])
+}
+
+model ProgramacionRespaldo {
+  id                String              @id @default(cuid())
+  nombre            String
+  activa            Boolean             @default(true)
+  frecuencia        FrecuenciaRespaldo
+  diaSemana         Int?
+  hora              Int
+  minuto            Int                 @default(0)
+  zonaHoraria       String              @default("America/Mexico_City")
+  marcas            String[]            @default([])
+  lineas            String[]            @default([])
+  fichas            String              @default("todos")
+  incluirImagenes   Boolean             @default(true)
+  retencionCantidad Int                 @default(7)
+  ultimaEjecucion   DateTime?
+  ejecuciones       EjecucionRespaldo[]
+  creadoEn          DateTime            @default(now())
+  actualizadoEn     DateTime            @updatedAt
+
+  @@index([activa])
+}
+
+model EjecucionRespaldo {
+  id             String                  @id @default(cuid())
+  programacionId String
+  programacion   ProgramacionRespaldo    @relation(fields: [programacionId], references: [id], onDelete: Cascade)
+  clavePeriodo   String
+  estado         EstadoEjecucionRespaldo @default(EN_PROCESO)
+  archivoNombre  String?
+  archivoRuta    String?
+  tamanoBytes    Int?
+  cantidades     Json?
+  error          String?
+  iniciadaEn     DateTime                @default(now())
+  finalizadaEn   DateTime?
+
+  @@unique([programacionId, clavePeriodo])
+  @@index([estado, iniciadaEn])
+  @@index([programacionId, iniciadaEn])
+}
+
+model CuentaMercadoLibre {
+  id                    String                 @id @default(cuid())
+  usuarioMercadoLibreId String                 @unique
+  apodo                 String?
+  sitioId               String?
+  accessTokenCifrado    String
+  refreshTokenCifrado   String
+  tokenExpiraEn         DateTime
+  alcance               String?
+  versionToken          Int                    @default(1)
+  ultimoError           String?
+  conectadoEn           DateTime               @default(now())
+  actualizadoEn         DateTime               @updatedAt
+  productos             ProductoMercadoLibre[]
+  notificaciones        NotificacionMercadoLibre[]
+  ventas                VentaMercadoLibre[]
+
+  @@index([tokenExpiraEn])
+}
+
+enum EstadoNotificacionMercadoLibre {
+  PENDIENTE
+  PROCESADA
+  IGNORADA
+  ERROR
+}
+
+model NotificacionMercadoLibre {
+  id             String                            @id @default(cuid())
+  identificador  String                            @unique
+  cuentaId       String?
+  cuenta         CuentaMercadoLibre?               @relation(fields: [cuentaId], references: [id], onDelete: Cascade)
+  tema           String
+  recurso        String
+  aplicacionId   String
+  usuarioId      String
+  intentos       Int                               @default(1)
+  estado         EstadoNotificacionMercadoLibre    @default(PENDIENTE)
+  payload        Json
+  error          String?
+  enviadaEn      DateTime?
+  recibidaEn     DateTime?
+  procesadaEn    DateTime?
+  creadoEn       DateTime                          @default(now())
+  actualizadoEn  DateTime                          @updatedAt
+
+  @@index([estado, creadoEn])
+  @@index([cuentaId, tema, creadoEn])
+}
+
+model VentaMercadoLibre {
+  id             String             @id @default(cuid())
+  cuentaId       String
+  cuenta         CuentaMercadoLibre @relation(fields: [cuentaId], references: [id], onDelete: Cascade)
+  ordenId        String
+  estado         String
+  fechaCreacion  DateTime
+  fechaCierre    DateTime?
+  importeTotal   Decimal            @db.Decimal(14, 2)
+  moneda         String
+  partidas       PartidaVentaMercadoLibre[]
+  sincronizadaEn DateTime           @default(now())
+  creadoEn       DateTime           @default(now())
+  actualizadoEn  DateTime           @updatedAt
+
+  @@unique([cuentaId, ordenId])
+  @@index([cuentaId, fechaCreacion, estado])
+}
+
+model PartidaVentaMercadoLibre {
+  id            String             @id @default(cuid())
+  ventaId       String
+  venta         VentaMercadoLibre  @relation(fields: [ventaId], references: [id], onDelete: Cascade)
+  publicacionId String
+  variacionId   String             @default("")
+  titulo        String
+  cantidad      Int
+  precioUnitario Decimal           @db.Decimal(14, 2)
+
+  @@unique([ventaId, publicacionId, variacionId])
+  @@index([publicacionId, variacionId])
+}
+
+model IntentoOAuthMercadoLibre {
+  id                 String    @id @default(cuid())
+  estadoHash         String    @unique
+  verificadorCifrado String
+  expiraEn           DateTime
+  usadoEn            DateTime?
+  creadoEn           DateTime  @default(now())
+
+  @@index([expiraEn])
 }

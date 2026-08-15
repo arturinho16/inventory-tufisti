@@ -72,6 +72,7 @@ export type EspecificacionPantallaMinAggregateOutputType = {
   areaDisplayPorcentaje: runtime.Decimal | null
   cristalFrontal: string | null
   refrescoHz: number | null
+  fuenteImagen: string | null
   creadoEn: Date | null
   actualizadoEn: Date | null
 }
@@ -98,6 +99,7 @@ export type EspecificacionPantallaMaxAggregateOutputType = {
   areaDisplayPorcentaje: runtime.Decimal | null
   cristalFrontal: string | null
   refrescoHz: number | null
+  fuenteImagen: string | null
   creadoEn: Date | null
   actualizadoEn: Date | null
 }
@@ -124,6 +126,7 @@ export type EspecificacionPantallaCountAggregateOutputType = {
   areaDisplayPorcentaje: number
   cristalFrontal: number
   refrescoHz: number
+  fuenteImagen: number
   creadoEn: number
   actualizadoEn: number
   _all: number
@@ -176,6 +179,7 @@ export type EspecificacionPantallaMinAggregateInputType = {
   areaDisplayPorcentaje?: true
   cristalFrontal?: true
   refrescoHz?: true
+  fuenteImagen?: true
   creadoEn?: true
   actualizadoEn?: true
 }
@@ -202,6 +206,7 @@ export type EspecificacionPantallaMaxAggregateInputType = {
   areaDisplayPorcentaje?: true
   cristalFrontal?: true
   refrescoHz?: true
+  fuenteImagen?: true
   creadoEn?: true
   actualizadoEn?: true
 }
@@ -228,6 +233,7 @@ export type EspecificacionPantallaCountAggregateInputType = {
   areaDisplayPorcentaje?: true
   cristalFrontal?: true
   refrescoHz?: true
+  fuenteImagen?: true
   creadoEn?: true
   actualizadoEn?: true
   _all?: true
@@ -341,6 +347,7 @@ export type EspecificacionPantallaGroupByOutputType = {
   areaDisplayPorcentaje: runtime.Decimal
   cristalFrontal: string | null
   refrescoHz: number | null
+  fuenteImagen: string | null
   creadoEn: Date
   actualizadoEn: Date
   _count: EspecificacionPantallaCountAggregateOutputType | null
@@ -390,6 +397,7 @@ export type EspecificacionPantallaWhereInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFilter<"EspecificacionPantalla"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.StringNullableFilter<"EspecificacionPantalla"> | string | null
   refrescoHz?: Prisma.IntNullableFilter<"EspecificacionPantalla"> | number | null
+  fuenteImagen?: Prisma.StringNullableFilter<"EspecificacionPantalla"> | string | null
   creadoEn?: Prisma.DateTimeFilter<"EspecificacionPantalla"> | Date | string
   actualizadoEn?: Prisma.DateTimeFilter<"EspecificacionPantalla"> | Date | string
   producto?: Prisma.XOR<Prisma.ProductoScalarRelationFilter, Prisma.ProductoWhereInput>
@@ -419,6 +427,7 @@ export type EspecificacionPantallaOrderByWithRelationInput = {
   areaDisplayPorcentaje?: Prisma.SortOrder
   cristalFrontal?: Prisma.SortOrderInput | Prisma.SortOrder
   refrescoHz?: Prisma.SortOrderInput | Prisma.SortOrder
+  fuenteImagen?: Prisma.SortOrderInput | Prisma.SortOrder
   creadoEn?: Prisma.SortOrder
   actualizadoEn?: Prisma.SortOrder
   producto?: Prisma.ProductoOrderByWithRelationInput
@@ -451,6 +460,7 @@ export type EspecificacionPantallaWhereUniqueInput = Prisma.AtLeast<{
   areaDisplayPorcentaje?: Prisma.DecimalFilter<"EspecificacionPantalla"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.StringNullableFilter<"EspecificacionPantalla"> | string | null
   refrescoHz?: Prisma.IntNullableFilter<"EspecificacionPantalla"> | number | null
+  fuenteImagen?: Prisma.StringNullableFilter<"EspecificacionPantalla"> | string | null
   creadoEn?: Prisma.DateTimeFilter<"EspecificacionPantalla"> | Date | string
   actualizadoEn?: Prisma.DateTimeFilter<"EspecificacionPantalla"> | Date | string
   producto?: Prisma.XOR<Prisma.ProductoScalarRelationFilter, Prisma.ProductoWhereInput>
@@ -480,6 +490,7 @@ export type EspecificacionPantallaOrderByWithAggregationInput = {
   areaDisplayPorcentaje?: Prisma.SortOrder
   cristalFrontal?: Prisma.SortOrderInput | Prisma.SortOrder
   refrescoHz?: Prisma.SortOrderInput | Prisma.SortOrder
+  fuenteImagen?: Prisma.SortOrderInput | Prisma.SortOrder
   creadoEn?: Prisma.SortOrder
   actualizadoEn?: Prisma.SortOrder
   _count?: Prisma.EspecificacionPantallaCountOrderByAggregateInput
@@ -514,6 +525,7 @@ export type EspecificacionPantallaScalarWhereWithAggregatesInput = {
   areaDisplayPorcentaje?: Prisma.DecimalWithAggregatesFilter<"EspecificacionPantalla"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.StringNullableWithAggregatesFilter<"EspecificacionPantalla"> | string | null
   refrescoHz?: Prisma.IntNullableWithAggregatesFilter<"EspecificacionPantalla"> | number | null
+  fuenteImagen?: Prisma.StringNullableWithAggregatesFilter<"EspecificacionPantalla"> | string | null
   creadoEn?: Prisma.DateTimeWithAggregatesFilter<"EspecificacionPantalla"> | Date | string
   actualizadoEn?: Prisma.DateTimeWithAggregatesFilter<"EspecificacionPantalla"> | Date | string
 }
@@ -537,6 +549,7 @@ export type EspecificacionPantallaCreateInput = {
   areaDisplayPorcentaje: runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: string | null
   refrescoHz?: number | null
+  fuenteImagen?: string | null
   creadoEn?: Date | string
   actualizadoEn?: Date | string
   producto: Prisma.ProductoCreateNestedOneWithoutEspecificacionPantallaInput
@@ -566,6 +579,7 @@ export type EspecificacionPantallaUncheckedCreateInput = {
   areaDisplayPorcentaje: runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: string | null
   refrescoHz?: number | null
+  fuenteImagen?: string | null
   creadoEn?: Date | string
   actualizadoEn?: Date | string
 }
@@ -589,6 +603,7 @@ export type EspecificacionPantallaUpdateInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refrescoHz?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fuenteImagen?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   producto?: Prisma.ProductoUpdateOneRequiredWithoutEspecificacionPantallaNestedInput
@@ -618,6 +633,7 @@ export type EspecificacionPantallaUncheckedUpdateInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refrescoHz?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fuenteImagen?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -644,6 +660,7 @@ export type EspecificacionPantallaCreateManyInput = {
   areaDisplayPorcentaje: runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: string | null
   refrescoHz?: number | null
+  fuenteImagen?: string | null
   creadoEn?: Date | string
   actualizadoEn?: Date | string
 }
@@ -667,6 +684,7 @@ export type EspecificacionPantallaUpdateManyMutationInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refrescoHz?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fuenteImagen?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -693,6 +711,7 @@ export type EspecificacionPantallaUncheckedUpdateManyInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refrescoHz?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fuenteImagen?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -734,6 +753,7 @@ export type EspecificacionPantallaCountOrderByAggregateInput = {
   areaDisplayPorcentaje?: Prisma.SortOrder
   cristalFrontal?: Prisma.SortOrder
   refrescoHz?: Prisma.SortOrder
+  fuenteImagen?: Prisma.SortOrder
   creadoEn?: Prisma.SortOrder
   actualizadoEn?: Prisma.SortOrder
 }
@@ -772,6 +792,7 @@ export type EspecificacionPantallaMaxOrderByAggregateInput = {
   areaDisplayPorcentaje?: Prisma.SortOrder
   cristalFrontal?: Prisma.SortOrder
   refrescoHz?: Prisma.SortOrder
+  fuenteImagen?: Prisma.SortOrder
   creadoEn?: Prisma.SortOrder
   actualizadoEn?: Prisma.SortOrder
 }
@@ -798,6 +819,7 @@ export type EspecificacionPantallaMinOrderByAggregateInput = {
   areaDisplayPorcentaje?: Prisma.SortOrder
   cristalFrontal?: Prisma.SortOrder
   refrescoHz?: Prisma.SortOrder
+  fuenteImagen?: Prisma.SortOrder
   creadoEn?: Prisma.SortOrder
   actualizadoEn?: Prisma.SortOrder
 }
@@ -934,14 +956,6 @@ export type EnumTipoFormaPantallaFieldUpdateOperationsInput = {
   set?: $Enums.TipoFormaPantalla
 }
 
-export type DecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
-}
-
 export type EspecificacionPantallaCreateWithoutLineaInput = {
   id?: string
   clave: string
@@ -961,6 +975,7 @@ export type EspecificacionPantallaCreateWithoutLineaInput = {
   areaDisplayPorcentaje: runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: string | null
   refrescoHz?: number | null
+  fuenteImagen?: string | null
   creadoEn?: Date | string
   actualizadoEn?: Date | string
   producto: Prisma.ProductoCreateNestedOneWithoutEspecificacionPantallaInput
@@ -988,6 +1003,7 @@ export type EspecificacionPantallaUncheckedCreateWithoutLineaInput = {
   areaDisplayPorcentaje: runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: string | null
   refrescoHz?: number | null
+  fuenteImagen?: string | null
   creadoEn?: Date | string
   actualizadoEn?: Date | string
 }
@@ -1043,6 +1059,7 @@ export type EspecificacionPantallaScalarWhereInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFilter<"EspecificacionPantalla"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.StringNullableFilter<"EspecificacionPantalla"> | string | null
   refrescoHz?: Prisma.IntNullableFilter<"EspecificacionPantalla"> | number | null
+  fuenteImagen?: Prisma.StringNullableFilter<"EspecificacionPantalla"> | string | null
   creadoEn?: Prisma.DateTimeFilter<"EspecificacionPantalla"> | Date | string
   actualizadoEn?: Prisma.DateTimeFilter<"EspecificacionPantalla"> | Date | string
 }
@@ -1066,6 +1083,7 @@ export type EspecificacionPantallaCreateWithoutMarcaInput = {
   areaDisplayPorcentaje: runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: string | null
   refrescoHz?: number | null
+  fuenteImagen?: string | null
   creadoEn?: Date | string
   actualizadoEn?: Date | string
   producto: Prisma.ProductoCreateNestedOneWithoutEspecificacionPantallaInput
@@ -1093,6 +1111,7 @@ export type EspecificacionPantallaUncheckedCreateWithoutMarcaInput = {
   areaDisplayPorcentaje: runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: string | null
   refrescoHz?: number | null
+  fuenteImagen?: string | null
   creadoEn?: Date | string
   actualizadoEn?: Date | string
 }
@@ -1142,6 +1161,7 @@ export type EspecificacionPantallaCreateWithoutProductoInput = {
   areaDisplayPorcentaje: runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: string | null
   refrescoHz?: number | null
+  fuenteImagen?: string | null
   creadoEn?: Date | string
   actualizadoEn?: Date | string
   linea: Prisma.LineaCreateNestedOneWithoutEspecificacionesPantallaInput
@@ -1169,6 +1189,7 @@ export type EspecificacionPantallaUncheckedCreateWithoutProductoInput = {
   areaDisplayPorcentaje: runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: string | null
   refrescoHz?: number | null
+  fuenteImagen?: string | null
   creadoEn?: Date | string
   actualizadoEn?: Date | string
 }
@@ -1208,6 +1229,7 @@ export type EspecificacionPantallaUpdateWithoutProductoInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refrescoHz?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fuenteImagen?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   linea?: Prisma.LineaUpdateOneRequiredWithoutEspecificacionesPantallaNestedInput
@@ -1235,6 +1257,7 @@ export type EspecificacionPantallaUncheckedUpdateWithoutProductoInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refrescoHz?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fuenteImagen?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1260,6 +1283,7 @@ export type EspecificacionPantallaCreateManyLineaInput = {
   areaDisplayPorcentaje: runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: string | null
   refrescoHz?: number | null
+  fuenteImagen?: string | null
   creadoEn?: Date | string
   actualizadoEn?: Date | string
 }
@@ -1283,6 +1307,7 @@ export type EspecificacionPantallaUpdateWithoutLineaInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refrescoHz?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fuenteImagen?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   producto?: Prisma.ProductoUpdateOneRequiredWithoutEspecificacionPantallaNestedInput
@@ -1310,6 +1335,7 @@ export type EspecificacionPantallaUncheckedUpdateWithoutLineaInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refrescoHz?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fuenteImagen?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1335,6 +1361,7 @@ export type EspecificacionPantallaUncheckedUpdateManyWithoutLineaInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refrescoHz?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fuenteImagen?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1360,6 +1387,7 @@ export type EspecificacionPantallaCreateManyMarcaInput = {
   areaDisplayPorcentaje: runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: string | null
   refrescoHz?: number | null
+  fuenteImagen?: string | null
   creadoEn?: Date | string
   actualizadoEn?: Date | string
 }
@@ -1383,6 +1411,7 @@ export type EspecificacionPantallaUpdateWithoutMarcaInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refrescoHz?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fuenteImagen?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   producto?: Prisma.ProductoUpdateOneRequiredWithoutEspecificacionPantallaNestedInput
@@ -1410,6 +1439,7 @@ export type EspecificacionPantallaUncheckedUpdateWithoutMarcaInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refrescoHz?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fuenteImagen?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1435,6 +1465,7 @@ export type EspecificacionPantallaUncheckedUpdateManyWithoutMarcaInput = {
   areaDisplayPorcentaje?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cristalFrontal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refrescoHz?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fuenteImagen?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1463,6 +1494,7 @@ export type EspecificacionPantallaSelect<ExtArgs extends runtime.Types.Extension
   areaDisplayPorcentaje?: boolean
   cristalFrontal?: boolean
   refrescoHz?: boolean
+  fuenteImagen?: boolean
   creadoEn?: boolean
   actualizadoEn?: boolean
   producto?: boolean | Prisma.ProductoDefaultArgs<ExtArgs>
@@ -1492,6 +1524,7 @@ export type EspecificacionPantallaSelectCreateManyAndReturn<ExtArgs extends runt
   areaDisplayPorcentaje?: boolean
   cristalFrontal?: boolean
   refrescoHz?: boolean
+  fuenteImagen?: boolean
   creadoEn?: boolean
   actualizadoEn?: boolean
   producto?: boolean | Prisma.ProductoDefaultArgs<ExtArgs>
@@ -1521,6 +1554,7 @@ export type EspecificacionPantallaSelectUpdateManyAndReturn<ExtArgs extends runt
   areaDisplayPorcentaje?: boolean
   cristalFrontal?: boolean
   refrescoHz?: boolean
+  fuenteImagen?: boolean
   creadoEn?: boolean
   actualizadoEn?: boolean
   producto?: boolean | Prisma.ProductoDefaultArgs<ExtArgs>
@@ -1550,11 +1584,12 @@ export type EspecificacionPantallaSelectScalar = {
   areaDisplayPorcentaje?: boolean
   cristalFrontal?: boolean
   refrescoHz?: boolean
+  fuenteImagen?: boolean
   creadoEn?: boolean
   actualizadoEn?: boolean
 }
 
-export type EspecificacionPantallaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "productoId" | "clave" | "modelo" | "lineaId" | "marcaId" | "tecnologia" | "tipoFormaPantalla" | "tipoFormaOtro" | "diagonalMm" | "diagonalPulgadas" | "anchoDisplayMm" | "altoDisplayMm" | "aspectRatio" | "resolucionAnchoPx" | "resolucionAltoPx" | "densidadPpi" | "profundidadColor" | "areaDisplayPorcentaje" | "cristalFrontal" | "refrescoHz" | "creadoEn" | "actualizadoEn", ExtArgs["result"]["especificacionPantalla"]>
+export type EspecificacionPantallaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "productoId" | "clave" | "modelo" | "lineaId" | "marcaId" | "tecnologia" | "tipoFormaPantalla" | "tipoFormaOtro" | "diagonalMm" | "diagonalPulgadas" | "anchoDisplayMm" | "altoDisplayMm" | "aspectRatio" | "resolucionAnchoPx" | "resolucionAltoPx" | "densidadPpi" | "profundidadColor" | "areaDisplayPorcentaje" | "cristalFrontal" | "refrescoHz" | "fuenteImagen" | "creadoEn" | "actualizadoEn", ExtArgs["result"]["especificacionPantalla"]>
 export type EspecificacionPantallaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   producto?: boolean | Prisma.ProductoDefaultArgs<ExtArgs>
   linea?: boolean | Prisma.LineaDefaultArgs<ExtArgs>
@@ -1600,6 +1635,7 @@ export type $EspecificacionPantallaPayload<ExtArgs extends runtime.Types.Extensi
     areaDisplayPorcentaje: runtime.Decimal
     cristalFrontal: string | null
     refrescoHz: number | null
+    fuenteImagen: string | null
     creadoEn: Date
     actualizadoEn: Date
   }, ExtArgs["result"]["especificacionPantalla"]>
@@ -2049,6 +2085,7 @@ export interface EspecificacionPantallaFieldRefs {
   readonly areaDisplayPorcentaje: Prisma.FieldRef<"EspecificacionPantalla", 'Decimal'>
   readonly cristalFrontal: Prisma.FieldRef<"EspecificacionPantalla", 'String'>
   readonly refrescoHz: Prisma.FieldRef<"EspecificacionPantalla", 'Int'>
+  readonly fuenteImagen: Prisma.FieldRef<"EspecificacionPantalla", 'String'>
   readonly creadoEn: Prisma.FieldRef<"EspecificacionPantalla", 'DateTime'>
   readonly actualizadoEn: Prisma.FieldRef<"EspecificacionPantalla", 'DateTime'>
 }

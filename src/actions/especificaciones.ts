@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { TipoFormaPantalla } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { requiereRegistroTecnico } from "@/lib/productos/requiere-registro-tecnico";
 
 const esquema = z.object({
   productoId: z.string().min(1), tecnologia: z.string().trim().min(1),
@@ -31,7 +32,7 @@ export async function guardarEspecificacion(datos: DatosEspecificacion, id?: str
   const validos = esquema.parse(datos);
   const producto = await prisma.producto.findUnique({ where: { id: validos.productoId }, select: { clave: true, modelo: true, lineaId: true, marcaId: true, linea: { select: { nombre: true } } } });
   if (!producto) throw new Error("El producto seleccionado ya no existe.");
-  if (producto.linea.nombre.toLocaleLowerCase("es-MX") !== "cristal templado para celular") throw new Error("Solo los productos de la línea Cristal templado para celular admiten este registro técnico.");
+  if (!requiereRegistroTecnico(producto.linea.nombre)) throw new Error("Solo los productos de la línea Cristal templado para celular admiten este registro técnico.");
   const data = { ...validos, tipoFormaOtro: validos.tipoFormaOtro.trim() || null, cristalFrontal: validos.cristalFrontal.trim() || null, clave: producto.clave, modelo: producto.modelo, lineaId: producto.lineaId, marcaId: producto.marcaId };
   const existente = id ? null : await prisma.especificacionPantalla.findUnique({ where: { productoId: validos.productoId }, select: { id: true } });
   const guardada = id ? await prisma.especificacionPantalla.update({ where: { id }, data, select: { id: true } }) : existente ? await prisma.especificacionPantalla.update({ where: { id: existente.id }, data, select: { id: true } }) : await prisma.especificacionPantalla.create({ data, select: { id: true } });

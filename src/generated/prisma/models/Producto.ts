@@ -320,6 +320,10 @@ export type ProductoWhereInput = {
   marca?: Prisma.XOR<Prisma.MarcaScalarRelationFilter, Prisma.MarcaWhereInput>
   tipoProducto?: Prisma.XOR<Prisma.TipoProductoScalarRelationFilter, Prisma.TipoProductoWhereInput>
   especificacionPantalla?: Prisma.XOR<Prisma.EspecificacionPantallaNullableScalarRelationFilter, Prisma.EspecificacionPantallaWhereInput> | null
+  fichaTecnicaB?: Prisma.XOR<Prisma.FichaTecnicaBNullableScalarRelationFilter, Prisma.FichaTecnicaBWhereInput> | null
+  fichaTecnicaC?: Prisma.XOR<Prisma.FichaTecnicaCNullableScalarRelationFilter, Prisma.FichaTecnicaCWhereInput> | null
+  fichaTecnicaFull?: Prisma.XOR<Prisma.FichaTecnicaFullNullableScalarRelationFilter, Prisma.FichaTecnicaFullWhereInput> | null
+  ubicaciones?: Prisma.UbicacionListRelationFilter
 }
 
 export type ProductoOrderByWithRelationInput = {
@@ -344,6 +348,10 @@ export type ProductoOrderByWithRelationInput = {
   marca?: Prisma.MarcaOrderByWithRelationInput
   tipoProducto?: Prisma.TipoProductoOrderByWithRelationInput
   especificacionPantalla?: Prisma.EspecificacionPantallaOrderByWithRelationInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBOrderByWithRelationInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCOrderByWithRelationInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullOrderByWithRelationInput
+  ubicaciones?: Prisma.UbicacionOrderByRelationAggregateInput
 }
 
 export type ProductoWhereUniqueInput = Prisma.AtLeast<{
@@ -371,6 +379,10 @@ export type ProductoWhereUniqueInput = Prisma.AtLeast<{
   marca?: Prisma.XOR<Prisma.MarcaScalarRelationFilter, Prisma.MarcaWhereInput>
   tipoProducto?: Prisma.XOR<Prisma.TipoProductoScalarRelationFilter, Prisma.TipoProductoWhereInput>
   especificacionPantalla?: Prisma.XOR<Prisma.EspecificacionPantallaNullableScalarRelationFilter, Prisma.EspecificacionPantallaWhereInput> | null
+  fichaTecnicaB?: Prisma.XOR<Prisma.FichaTecnicaBNullableScalarRelationFilter, Prisma.FichaTecnicaBWhereInput> | null
+  fichaTecnicaC?: Prisma.XOR<Prisma.FichaTecnicaCNullableScalarRelationFilter, Prisma.FichaTecnicaCWhereInput> | null
+  fichaTecnicaFull?: Prisma.XOR<Prisma.FichaTecnicaFullNullableScalarRelationFilter, Prisma.FichaTecnicaFullWhereInput> | null
+  ubicaciones?: Prisma.UbicacionListRelationFilter
 }, "id" | "clave">
 
 export type ProductoOrderByWithAggregationInput = {
@@ -440,6 +452,10 @@ export type ProductoCreateInput = {
   marca: Prisma.MarcaCreateNestedOneWithoutProductosInput
   tipoProducto: Prisma.TipoProductoCreateNestedOneWithoutProductosInput
   especificacionPantalla?: Prisma.EspecificacionPantallaCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
 export type ProductoUncheckedCreateInput = {
@@ -461,6 +477,10 @@ export type ProductoUncheckedCreateInput = {
   creadoEn?: Date | string
   actualizadoEn?: Date | string
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
 export type ProductoUpdateInput = {
@@ -482,6 +502,10 @@ export type ProductoUpdateInput = {
   marca?: Prisma.MarcaUpdateOneRequiredWithoutProductosNestedInput
   tipoProducto?: Prisma.TipoProductoUpdateOneRequiredWithoutProductosNestedInput
   especificacionPantalla?: Prisma.EspecificacionPantallaUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
 export type ProductoUncheckedUpdateInput = {
@@ -503,6 +527,10 @@ export type ProductoUncheckedUpdateInput = {
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
 export type ProductoCreateManyInput = {
@@ -793,6 +821,86 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type ProductoCreateNestedOneWithoutFichaTecnicaFullInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaFullInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaFullInput>
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutFichaTecnicaFullInput
+  connect?: Prisma.ProductoWhereUniqueInput
+}
+
+export type ProductoUpdateOneRequiredWithoutFichaTecnicaFullNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaFullInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaFullInput>
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutFichaTecnicaFullInput
+  upsert?: Prisma.ProductoUpsertWithoutFichaTecnicaFullInput
+  connect?: Prisma.ProductoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProductoUpdateToOneWithWhereWithoutFichaTecnicaFullInput, Prisma.ProductoUpdateWithoutFichaTecnicaFullInput>, Prisma.ProductoUncheckedUpdateWithoutFichaTecnicaFullInput>
+}
+
+export type ProductoCreateNestedOneWithoutFichaTecnicaCInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaCInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaCInput>
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutFichaTecnicaCInput
+  connect?: Prisma.ProductoWhereUniqueInput
+}
+
+export type ProductoUpdateOneRequiredWithoutFichaTecnicaCNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaCInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaCInput>
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutFichaTecnicaCInput
+  upsert?: Prisma.ProductoUpsertWithoutFichaTecnicaCInput
+  connect?: Prisma.ProductoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProductoUpdateToOneWithWhereWithoutFichaTecnicaCInput, Prisma.ProductoUpdateWithoutFichaTecnicaCInput>, Prisma.ProductoUncheckedUpdateWithoutFichaTecnicaCInput>
+}
+
+export type ProductoCreateNestedOneWithoutFichaTecnicaBInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaBInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaBInput>
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutFichaTecnicaBInput
+  connect?: Prisma.ProductoWhereUniqueInput
+}
+
+export type ProductoUpdateOneRequiredWithoutFichaTecnicaBNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaBInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaBInput>
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutFichaTecnicaBInput
+  upsert?: Prisma.ProductoUpsertWithoutFichaTecnicaBInput
+  connect?: Prisma.ProductoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProductoUpdateToOneWithWhereWithoutFichaTecnicaBInput, Prisma.ProductoUpdateWithoutFichaTecnicaBInput>, Prisma.ProductoUncheckedUpdateWithoutFichaTecnicaBInput>
+}
+
+export type ProductoCreateNestedManyWithoutUbicacionesInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutUbicacionesInput, Prisma.ProductoUncheckedCreateWithoutUbicacionesInput> | Prisma.ProductoCreateWithoutUbicacionesInput[] | Prisma.ProductoUncheckedCreateWithoutUbicacionesInput[]
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutUbicacionesInput | Prisma.ProductoCreateOrConnectWithoutUbicacionesInput[]
+  connect?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+}
+
+export type ProductoUncheckedCreateNestedManyWithoutUbicacionesInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutUbicacionesInput, Prisma.ProductoUncheckedCreateWithoutUbicacionesInput> | Prisma.ProductoCreateWithoutUbicacionesInput[] | Prisma.ProductoUncheckedCreateWithoutUbicacionesInput[]
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutUbicacionesInput | Prisma.ProductoCreateOrConnectWithoutUbicacionesInput[]
+  connect?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+}
+
+export type ProductoUpdateManyWithoutUbicacionesNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutUbicacionesInput, Prisma.ProductoUncheckedCreateWithoutUbicacionesInput> | Prisma.ProductoCreateWithoutUbicacionesInput[] | Prisma.ProductoUncheckedCreateWithoutUbicacionesInput[]
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutUbicacionesInput | Prisma.ProductoCreateOrConnectWithoutUbicacionesInput[]
+  upsert?: Prisma.ProductoUpsertWithWhereUniqueWithoutUbicacionesInput | Prisma.ProductoUpsertWithWhereUniqueWithoutUbicacionesInput[]
+  set?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  disconnect?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  delete?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  connect?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  update?: Prisma.ProductoUpdateWithWhereUniqueWithoutUbicacionesInput | Prisma.ProductoUpdateWithWhereUniqueWithoutUbicacionesInput[]
+  updateMany?: Prisma.ProductoUpdateManyWithWhereWithoutUbicacionesInput | Prisma.ProductoUpdateManyWithWhereWithoutUbicacionesInput[]
+  deleteMany?: Prisma.ProductoScalarWhereInput | Prisma.ProductoScalarWhereInput[]
+}
+
+export type ProductoUncheckedUpdateManyWithoutUbicacionesNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutUbicacionesInput, Prisma.ProductoUncheckedCreateWithoutUbicacionesInput> | Prisma.ProductoCreateWithoutUbicacionesInput[] | Prisma.ProductoUncheckedCreateWithoutUbicacionesInput[]
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutUbicacionesInput | Prisma.ProductoCreateOrConnectWithoutUbicacionesInput[]
+  upsert?: Prisma.ProductoUpsertWithWhereUniqueWithoutUbicacionesInput | Prisma.ProductoUpsertWithWhereUniqueWithoutUbicacionesInput[]
+  set?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  disconnect?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  delete?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  connect?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  update?: Prisma.ProductoUpdateWithWhereUniqueWithoutUbicacionesInput | Prisma.ProductoUpdateWithWhereUniqueWithoutUbicacionesInput[]
+  updateMany?: Prisma.ProductoUpdateManyWithWhereWithoutUbicacionesInput | Prisma.ProductoUpdateManyWithWhereWithoutUbicacionesInput[]
+  deleteMany?: Prisma.ProductoScalarWhereInput | Prisma.ProductoScalarWhereInput[]
+}
+
 export type ProductoCreateNestedOneWithoutEspecificacionPantallaInput = {
   create?: Prisma.XOR<Prisma.ProductoCreateWithoutEspecificacionPantallaInput, Prisma.ProductoUncheckedCreateWithoutEspecificacionPantallaInput>
   connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutEspecificacionPantallaInput
@@ -825,6 +933,10 @@ export type ProductoCreateWithoutLineaInput = {
   marca: Prisma.MarcaCreateNestedOneWithoutProductosInput
   tipoProducto: Prisma.TipoProductoCreateNestedOneWithoutProductosInput
   especificacionPantalla?: Prisma.EspecificacionPantallaCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
 export type ProductoUncheckedCreateWithoutLineaInput = {
@@ -845,6 +957,10 @@ export type ProductoUncheckedCreateWithoutLineaInput = {
   creadoEn?: Date | string
   actualizadoEn?: Date | string
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
 export type ProductoCreateOrConnectWithoutLineaInput = {
@@ -914,6 +1030,10 @@ export type ProductoCreateWithoutTipoProductoInput = {
   linea: Prisma.LineaCreateNestedOneWithoutProductosInput
   marca: Prisma.MarcaCreateNestedOneWithoutProductosInput
   especificacionPantalla?: Prisma.EspecificacionPantallaCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
 export type ProductoUncheckedCreateWithoutTipoProductoInput = {
@@ -934,6 +1054,10 @@ export type ProductoUncheckedCreateWithoutTipoProductoInput = {
   creadoEn?: Date | string
   actualizadoEn?: Date | string
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
 export type ProductoCreateOrConnectWithoutTipoProductoInput = {
@@ -980,6 +1104,10 @@ export type ProductoCreateWithoutMarcaInput = {
   linea: Prisma.LineaCreateNestedOneWithoutProductosInput
   tipoProducto: Prisma.TipoProductoCreateNestedOneWithoutProductosInput
   especificacionPantalla?: Prisma.EspecificacionPantallaCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
 export type ProductoUncheckedCreateWithoutMarcaInput = {
@@ -1000,6 +1128,10 @@ export type ProductoUncheckedCreateWithoutMarcaInput = {
   creadoEn?: Date | string
   actualizadoEn?: Date | string
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
 export type ProductoCreateOrConnectWithoutMarcaInput = {
@@ -1028,6 +1160,411 @@ export type ProductoUpdateManyWithWhereWithoutMarcaInput = {
   data: Prisma.XOR<Prisma.ProductoUpdateManyMutationInput, Prisma.ProductoUncheckedUpdateManyWithoutMarcaInput>
 }
 
+export type ProductoCreateWithoutFichaTecnicaFullInput = {
+  id?: string
+  clave: string
+  descripcion: string
+  imagenUrl?: string | null
+  imagenNombre?: string | null
+  imagenMimeType?: string | null
+  imagenTamano?: number | null
+  existencia?: number
+  modelo: string
+  color?: string | null
+  claveMLFull?: string | null
+  codigoUniversal?: string | null
+  creadoEn?: Date | string
+  actualizadoEn?: Date | string
+  linea: Prisma.LineaCreateNestedOneWithoutProductosInput
+  marca: Prisma.MarcaCreateNestedOneWithoutProductosInput
+  tipoProducto: Prisma.TipoProductoCreateNestedOneWithoutProductosInput
+  especificacionPantalla?: Prisma.EspecificacionPantallaCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
+}
+
+export type ProductoUncheckedCreateWithoutFichaTecnicaFullInput = {
+  id?: string
+  clave: string
+  descripcion: string
+  imagenUrl?: string | null
+  imagenNombre?: string | null
+  imagenMimeType?: string | null
+  imagenTamano?: number | null
+  existencia?: number
+  modelo: string
+  color?: string | null
+  claveMLFull?: string | null
+  codigoUniversal?: string | null
+  tipoProductoId: string
+  lineaId: string
+  marcaId: string
+  creadoEn?: Date | string
+  actualizadoEn?: Date | string
+  especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
+}
+
+export type ProductoCreateOrConnectWithoutFichaTecnicaFullInput = {
+  where: Prisma.ProductoWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaFullInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaFullInput>
+}
+
+export type ProductoUpsertWithoutFichaTecnicaFullInput = {
+  update: Prisma.XOR<Prisma.ProductoUpdateWithoutFichaTecnicaFullInput, Prisma.ProductoUncheckedUpdateWithoutFichaTecnicaFullInput>
+  create: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaFullInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaFullInput>
+  where?: Prisma.ProductoWhereInput
+}
+
+export type ProductoUpdateToOneWithWhereWithoutFichaTecnicaFullInput = {
+  where?: Prisma.ProductoWhereInput
+  data: Prisma.XOR<Prisma.ProductoUpdateWithoutFichaTecnicaFullInput, Prisma.ProductoUncheckedUpdateWithoutFichaTecnicaFullInput>
+}
+
+export type ProductoUpdateWithoutFichaTecnicaFullInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenTamano?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  existencia?: Prisma.IntFieldUpdateOperationsInput | number
+  modelo?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  claveMLFull?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoUniversal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  linea?: Prisma.LineaUpdateOneRequiredWithoutProductosNestedInput
+  marca?: Prisma.MarcaUpdateOneRequiredWithoutProductosNestedInput
+  tipoProducto?: Prisma.TipoProductoUpdateOneRequiredWithoutProductosNestedInput
+  especificacionPantalla?: Prisma.EspecificacionPantallaUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
+}
+
+export type ProductoUncheckedUpdateWithoutFichaTecnicaFullInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenTamano?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  existencia?: Prisma.IntFieldUpdateOperationsInput | number
+  modelo?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  claveMLFull?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoUniversal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoProductoId?: Prisma.StringFieldUpdateOperationsInput | string
+  lineaId?: Prisma.StringFieldUpdateOperationsInput | string
+  marcaId?: Prisma.StringFieldUpdateOperationsInput | string
+  creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
+}
+
+export type ProductoCreateWithoutFichaTecnicaCInput = {
+  id?: string
+  clave: string
+  descripcion: string
+  imagenUrl?: string | null
+  imagenNombre?: string | null
+  imagenMimeType?: string | null
+  imagenTamano?: number | null
+  existencia?: number
+  modelo: string
+  color?: string | null
+  claveMLFull?: string | null
+  codigoUniversal?: string | null
+  creadoEn?: Date | string
+  actualizadoEn?: Date | string
+  linea: Prisma.LineaCreateNestedOneWithoutProductosInput
+  marca: Prisma.MarcaCreateNestedOneWithoutProductosInput
+  tipoProducto: Prisma.TipoProductoCreateNestedOneWithoutProductosInput
+  especificacionPantalla?: Prisma.EspecificacionPantallaCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
+}
+
+export type ProductoUncheckedCreateWithoutFichaTecnicaCInput = {
+  id?: string
+  clave: string
+  descripcion: string
+  imagenUrl?: string | null
+  imagenNombre?: string | null
+  imagenMimeType?: string | null
+  imagenTamano?: number | null
+  existencia?: number
+  modelo: string
+  color?: string | null
+  claveMLFull?: string | null
+  codigoUniversal?: string | null
+  tipoProductoId: string
+  lineaId: string
+  marcaId: string
+  creadoEn?: Date | string
+  actualizadoEn?: Date | string
+  especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
+}
+
+export type ProductoCreateOrConnectWithoutFichaTecnicaCInput = {
+  where: Prisma.ProductoWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaCInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaCInput>
+}
+
+export type ProductoUpsertWithoutFichaTecnicaCInput = {
+  update: Prisma.XOR<Prisma.ProductoUpdateWithoutFichaTecnicaCInput, Prisma.ProductoUncheckedUpdateWithoutFichaTecnicaCInput>
+  create: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaCInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaCInput>
+  where?: Prisma.ProductoWhereInput
+}
+
+export type ProductoUpdateToOneWithWhereWithoutFichaTecnicaCInput = {
+  where?: Prisma.ProductoWhereInput
+  data: Prisma.XOR<Prisma.ProductoUpdateWithoutFichaTecnicaCInput, Prisma.ProductoUncheckedUpdateWithoutFichaTecnicaCInput>
+}
+
+export type ProductoUpdateWithoutFichaTecnicaCInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenTamano?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  existencia?: Prisma.IntFieldUpdateOperationsInput | number
+  modelo?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  claveMLFull?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoUniversal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  linea?: Prisma.LineaUpdateOneRequiredWithoutProductosNestedInput
+  marca?: Prisma.MarcaUpdateOneRequiredWithoutProductosNestedInput
+  tipoProducto?: Prisma.TipoProductoUpdateOneRequiredWithoutProductosNestedInput
+  especificacionPantalla?: Prisma.EspecificacionPantallaUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
+}
+
+export type ProductoUncheckedUpdateWithoutFichaTecnicaCInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenTamano?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  existencia?: Prisma.IntFieldUpdateOperationsInput | number
+  modelo?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  claveMLFull?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoUniversal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoProductoId?: Prisma.StringFieldUpdateOperationsInput | string
+  lineaId?: Prisma.StringFieldUpdateOperationsInput | string
+  marcaId?: Prisma.StringFieldUpdateOperationsInput | string
+  creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
+}
+
+export type ProductoCreateWithoutFichaTecnicaBInput = {
+  id?: string
+  clave: string
+  descripcion: string
+  imagenUrl?: string | null
+  imagenNombre?: string | null
+  imagenMimeType?: string | null
+  imagenTamano?: number | null
+  existencia?: number
+  modelo: string
+  color?: string | null
+  claveMLFull?: string | null
+  codigoUniversal?: string | null
+  creadoEn?: Date | string
+  actualizadoEn?: Date | string
+  linea: Prisma.LineaCreateNestedOneWithoutProductosInput
+  marca: Prisma.MarcaCreateNestedOneWithoutProductosInput
+  tipoProducto: Prisma.TipoProductoCreateNestedOneWithoutProductosInput
+  especificacionPantalla?: Prisma.EspecificacionPantallaCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
+}
+
+export type ProductoUncheckedCreateWithoutFichaTecnicaBInput = {
+  id?: string
+  clave: string
+  descripcion: string
+  imagenUrl?: string | null
+  imagenNombre?: string | null
+  imagenMimeType?: string | null
+  imagenTamano?: number | null
+  existencia?: number
+  modelo: string
+  color?: string | null
+  claveMLFull?: string | null
+  codigoUniversal?: string | null
+  tipoProductoId: string
+  lineaId: string
+  marcaId: string
+  creadoEn?: Date | string
+  actualizadoEn?: Date | string
+  especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
+}
+
+export type ProductoCreateOrConnectWithoutFichaTecnicaBInput = {
+  where: Prisma.ProductoWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaBInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaBInput>
+}
+
+export type ProductoUpsertWithoutFichaTecnicaBInput = {
+  update: Prisma.XOR<Prisma.ProductoUpdateWithoutFichaTecnicaBInput, Prisma.ProductoUncheckedUpdateWithoutFichaTecnicaBInput>
+  create: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaBInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaBInput>
+  where?: Prisma.ProductoWhereInput
+}
+
+export type ProductoUpdateToOneWithWhereWithoutFichaTecnicaBInput = {
+  where?: Prisma.ProductoWhereInput
+  data: Prisma.XOR<Prisma.ProductoUpdateWithoutFichaTecnicaBInput, Prisma.ProductoUncheckedUpdateWithoutFichaTecnicaBInput>
+}
+
+export type ProductoUpdateWithoutFichaTecnicaBInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenTamano?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  existencia?: Prisma.IntFieldUpdateOperationsInput | number
+  modelo?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  claveMLFull?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoUniversal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  linea?: Prisma.LineaUpdateOneRequiredWithoutProductosNestedInput
+  marca?: Prisma.MarcaUpdateOneRequiredWithoutProductosNestedInput
+  tipoProducto?: Prisma.TipoProductoUpdateOneRequiredWithoutProductosNestedInput
+  especificacionPantalla?: Prisma.EspecificacionPantallaUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
+}
+
+export type ProductoUncheckedUpdateWithoutFichaTecnicaBInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenTamano?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  existencia?: Prisma.IntFieldUpdateOperationsInput | number
+  modelo?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  claveMLFull?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoUniversal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoProductoId?: Prisma.StringFieldUpdateOperationsInput | string
+  lineaId?: Prisma.StringFieldUpdateOperationsInput | string
+  marcaId?: Prisma.StringFieldUpdateOperationsInput | string
+  creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
+}
+
+export type ProductoCreateWithoutUbicacionesInput = {
+  id?: string
+  clave: string
+  descripcion: string
+  imagenUrl?: string | null
+  imagenNombre?: string | null
+  imagenMimeType?: string | null
+  imagenTamano?: number | null
+  existencia?: number
+  modelo: string
+  color?: string | null
+  claveMLFull?: string | null
+  codigoUniversal?: string | null
+  creadoEn?: Date | string
+  actualizadoEn?: Date | string
+  linea: Prisma.LineaCreateNestedOneWithoutProductosInput
+  marca: Prisma.MarcaCreateNestedOneWithoutProductosInput
+  tipoProducto: Prisma.TipoProductoCreateNestedOneWithoutProductosInput
+  especificacionPantalla?: Prisma.EspecificacionPantallaCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+}
+
+export type ProductoUncheckedCreateWithoutUbicacionesInput = {
+  id?: string
+  clave: string
+  descripcion: string
+  imagenUrl?: string | null
+  imagenNombre?: string | null
+  imagenMimeType?: string | null
+  imagenTamano?: number | null
+  existencia?: number
+  modelo: string
+  color?: string | null
+  claveMLFull?: string | null
+  codigoUniversal?: string | null
+  tipoProductoId: string
+  lineaId: string
+  marcaId: string
+  creadoEn?: Date | string
+  actualizadoEn?: Date | string
+  especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+}
+
+export type ProductoCreateOrConnectWithoutUbicacionesInput = {
+  where: Prisma.ProductoWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProductoCreateWithoutUbicacionesInput, Prisma.ProductoUncheckedCreateWithoutUbicacionesInput>
+}
+
+export type ProductoUpsertWithWhereUniqueWithoutUbicacionesInput = {
+  where: Prisma.ProductoWhereUniqueInput
+  update: Prisma.XOR<Prisma.ProductoUpdateWithoutUbicacionesInput, Prisma.ProductoUncheckedUpdateWithoutUbicacionesInput>
+  create: Prisma.XOR<Prisma.ProductoCreateWithoutUbicacionesInput, Prisma.ProductoUncheckedCreateWithoutUbicacionesInput>
+}
+
+export type ProductoUpdateWithWhereUniqueWithoutUbicacionesInput = {
+  where: Prisma.ProductoWhereUniqueInput
+  data: Prisma.XOR<Prisma.ProductoUpdateWithoutUbicacionesInput, Prisma.ProductoUncheckedUpdateWithoutUbicacionesInput>
+}
+
+export type ProductoUpdateManyWithWhereWithoutUbicacionesInput = {
+  where: Prisma.ProductoScalarWhereInput
+  data: Prisma.XOR<Prisma.ProductoUpdateManyMutationInput, Prisma.ProductoUncheckedUpdateManyWithoutUbicacionesInput>
+}
+
 export type ProductoCreateWithoutEspecificacionPantallaInput = {
   id?: string
   clave: string
@@ -1046,6 +1583,10 @@ export type ProductoCreateWithoutEspecificacionPantallaInput = {
   linea: Prisma.LineaCreateNestedOneWithoutProductosInput
   marca: Prisma.MarcaCreateNestedOneWithoutProductosInput
   tipoProducto: Prisma.TipoProductoCreateNestedOneWithoutProductosInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
 export type ProductoUncheckedCreateWithoutEspecificacionPantallaInput = {
@@ -1066,6 +1607,10 @@ export type ProductoUncheckedCreateWithoutEspecificacionPantallaInput = {
   marcaId: string
   creadoEn?: Date | string
   actualizadoEn?: Date | string
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
 export type ProductoCreateOrConnectWithoutEspecificacionPantallaInput = {
@@ -1102,6 +1647,10 @@ export type ProductoUpdateWithoutEspecificacionPantallaInput = {
   linea?: Prisma.LineaUpdateOneRequiredWithoutProductosNestedInput
   marca?: Prisma.MarcaUpdateOneRequiredWithoutProductosNestedInput
   tipoProducto?: Prisma.TipoProductoUpdateOneRequiredWithoutProductosNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
 export type ProductoUncheckedUpdateWithoutEspecificacionPantallaInput = {
@@ -1122,6 +1671,10 @@ export type ProductoUncheckedUpdateWithoutEspecificacionPantallaInput = {
   marcaId?: Prisma.StringFieldUpdateOperationsInput | string
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
 export type ProductoCreateManyLineaInput = {
@@ -1161,6 +1714,10 @@ export type ProductoUpdateWithoutLineaInput = {
   marca?: Prisma.MarcaUpdateOneRequiredWithoutProductosNestedInput
   tipoProducto?: Prisma.TipoProductoUpdateOneRequiredWithoutProductosNestedInput
   especificacionPantalla?: Prisma.EspecificacionPantallaUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
 export type ProductoUncheckedUpdateWithoutLineaInput = {
@@ -1181,6 +1738,10 @@ export type ProductoUncheckedUpdateWithoutLineaInput = {
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
 export type ProductoUncheckedUpdateManyWithoutLineaInput = {
@@ -1239,6 +1800,10 @@ export type ProductoUpdateWithoutTipoProductoInput = {
   linea?: Prisma.LineaUpdateOneRequiredWithoutProductosNestedInput
   marca?: Prisma.MarcaUpdateOneRequiredWithoutProductosNestedInput
   especificacionPantalla?: Prisma.EspecificacionPantallaUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
 export type ProductoUncheckedUpdateWithoutTipoProductoInput = {
@@ -1259,6 +1824,10 @@ export type ProductoUncheckedUpdateWithoutTipoProductoInput = {
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
 export type ProductoUncheckedUpdateManyWithoutTipoProductoInput = {
@@ -1317,6 +1886,10 @@ export type ProductoUpdateWithoutMarcaInput = {
   linea?: Prisma.LineaUpdateOneRequiredWithoutProductosNestedInput
   tipoProducto?: Prisma.TipoProductoUpdateOneRequiredWithoutProductosNestedInput
   especificacionPantalla?: Prisma.EspecificacionPantallaUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
 export type ProductoUncheckedUpdateWithoutMarcaInput = {
@@ -1337,6 +1910,10 @@ export type ProductoUncheckedUpdateWithoutMarcaInput = {
   creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
 export type ProductoUncheckedUpdateManyWithoutMarcaInput = {
@@ -1358,6 +1935,103 @@ export type ProductoUncheckedUpdateManyWithoutMarcaInput = {
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type ProductoUpdateWithoutUbicacionesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenTamano?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  existencia?: Prisma.IntFieldUpdateOperationsInput | number
+  modelo?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  claveMLFull?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoUniversal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  linea?: Prisma.LineaUpdateOneRequiredWithoutProductosNestedInput
+  marca?: Prisma.MarcaUpdateOneRequiredWithoutProductosNestedInput
+  tipoProducto?: Prisma.TipoProductoUpdateOneRequiredWithoutProductosNestedInput
+  especificacionPantalla?: Prisma.EspecificacionPantallaUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+}
+
+export type ProductoUncheckedUpdateWithoutUbicacionesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenTamano?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  existencia?: Prisma.IntFieldUpdateOperationsInput | number
+  modelo?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  claveMLFull?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoUniversal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoProductoId?: Prisma.StringFieldUpdateOperationsInput | string
+  lineaId?: Prisma.StringFieldUpdateOperationsInput | string
+  marcaId?: Prisma.StringFieldUpdateOperationsInput | string
+  creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+}
+
+export type ProductoUncheckedUpdateManyWithoutUbicacionesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenTamano?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  existencia?: Prisma.IntFieldUpdateOperationsInput | number
+  modelo?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  claveMLFull?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoUniversal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoProductoId?: Prisma.StringFieldUpdateOperationsInput | string
+  lineaId?: Prisma.StringFieldUpdateOperationsInput | string
+  marcaId?: Prisma.StringFieldUpdateOperationsInput | string
+  creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type ProductoCountOutputType
+ */
+
+export type ProductoCountOutputType = {
+  ubicaciones: number
+}
+
+export type ProductoCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ubicaciones?: boolean | ProductoCountOutputTypeCountUbicacionesArgs
+}
+
+/**
+ * ProductoCountOutputType without action
+ */
+export type ProductoCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProductoCountOutputType
+   */
+  select?: Prisma.ProductoCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ProductoCountOutputType without action
+ */
+export type ProductoCountOutputTypeCountUbicacionesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UbicacionWhereInput
+}
 
 
 export type ProductoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1382,6 +2056,11 @@ export type ProductoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   marca?: boolean | Prisma.MarcaDefaultArgs<ExtArgs>
   tipoProducto?: boolean | Prisma.TipoProductoDefaultArgs<ExtArgs>
   especificacionPantalla?: boolean | Prisma.Producto$especificacionPantallaArgs<ExtArgs>
+  fichaTecnicaB?: boolean | Prisma.Producto$fichaTecnicaBArgs<ExtArgs>
+  fichaTecnicaC?: boolean | Prisma.Producto$fichaTecnicaCArgs<ExtArgs>
+  fichaTecnicaFull?: boolean | Prisma.Producto$fichaTecnicaFullArgs<ExtArgs>
+  ubicaciones?: boolean | Prisma.Producto$ubicacionesArgs<ExtArgs>
+  _count?: boolean | Prisma.ProductoCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["producto"]>
 
 export type ProductoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1456,6 +2135,11 @@ export type ProductoInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   marca?: boolean | Prisma.MarcaDefaultArgs<ExtArgs>
   tipoProducto?: boolean | Prisma.TipoProductoDefaultArgs<ExtArgs>
   especificacionPantalla?: boolean | Prisma.Producto$especificacionPantallaArgs<ExtArgs>
+  fichaTecnicaB?: boolean | Prisma.Producto$fichaTecnicaBArgs<ExtArgs>
+  fichaTecnicaC?: boolean | Prisma.Producto$fichaTecnicaCArgs<ExtArgs>
+  fichaTecnicaFull?: boolean | Prisma.Producto$fichaTecnicaFullArgs<ExtArgs>
+  ubicaciones?: boolean | Prisma.Producto$ubicacionesArgs<ExtArgs>
+  _count?: boolean | Prisma.ProductoCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProductoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   linea?: boolean | Prisma.LineaDefaultArgs<ExtArgs>
@@ -1475,6 +2159,10 @@ export type $ProductoPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     marca: Prisma.$MarcaPayload<ExtArgs>
     tipoProducto: Prisma.$TipoProductoPayload<ExtArgs>
     especificacionPantalla: Prisma.$EspecificacionPantallaPayload<ExtArgs> | null
+    fichaTecnicaB: Prisma.$FichaTecnicaBPayload<ExtArgs> | null
+    fichaTecnicaC: Prisma.$FichaTecnicaCPayload<ExtArgs> | null
+    fichaTecnicaFull: Prisma.$FichaTecnicaFullPayload<ExtArgs> | null
+    ubicaciones: Prisma.$UbicacionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1892,6 +2580,10 @@ export interface Prisma__ProductoClient<T, Null = never, ExtArgs extends runtime
   marca<T extends Prisma.MarcaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MarcaDefaultArgs<ExtArgs>>): Prisma.Prisma__MarcaClient<runtime.Types.Result.GetResult<Prisma.$MarcaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   tipoProducto<T extends Prisma.TipoProductoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TipoProductoDefaultArgs<ExtArgs>>): Prisma.Prisma__TipoProductoClient<runtime.Types.Result.GetResult<Prisma.$TipoProductoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   especificacionPantalla<T extends Prisma.Producto$especificacionPantallaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Producto$especificacionPantallaArgs<ExtArgs>>): Prisma.Prisma__EspecificacionPantallaClient<runtime.Types.Result.GetResult<Prisma.$EspecificacionPantallaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  fichaTecnicaB<T extends Prisma.Producto$fichaTecnicaBArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Producto$fichaTecnicaBArgs<ExtArgs>>): Prisma.Prisma__FichaTecnicaBClient<runtime.Types.Result.GetResult<Prisma.$FichaTecnicaBPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  fichaTecnicaC<T extends Prisma.Producto$fichaTecnicaCArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Producto$fichaTecnicaCArgs<ExtArgs>>): Prisma.Prisma__FichaTecnicaCClient<runtime.Types.Result.GetResult<Prisma.$FichaTecnicaCPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  fichaTecnicaFull<T extends Prisma.Producto$fichaTecnicaFullArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Producto$fichaTecnicaFullArgs<ExtArgs>>): Prisma.Prisma__FichaTecnicaFullClient<runtime.Types.Result.GetResult<Prisma.$FichaTecnicaFullPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  ubicaciones<T extends Prisma.Producto$ubicacionesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Producto$ubicacionesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UbicacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2355,6 +3047,87 @@ export type Producto$especificacionPantallaArgs<ExtArgs extends runtime.Types.Ex
    */
   include?: Prisma.EspecificacionPantallaInclude<ExtArgs> | null
   where?: Prisma.EspecificacionPantallaWhereInput
+}
+
+/**
+ * Producto.fichaTecnicaB
+ */
+export type Producto$fichaTecnicaBArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FichaTecnicaB
+   */
+  select?: Prisma.FichaTecnicaBSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FichaTecnicaB
+   */
+  omit?: Prisma.FichaTecnicaBOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FichaTecnicaBInclude<ExtArgs> | null
+  where?: Prisma.FichaTecnicaBWhereInput
+}
+
+/**
+ * Producto.fichaTecnicaC
+ */
+export type Producto$fichaTecnicaCArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FichaTecnicaC
+   */
+  select?: Prisma.FichaTecnicaCSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FichaTecnicaC
+   */
+  omit?: Prisma.FichaTecnicaCOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FichaTecnicaCInclude<ExtArgs> | null
+  where?: Prisma.FichaTecnicaCWhereInput
+}
+
+/**
+ * Producto.fichaTecnicaFull
+ */
+export type Producto$fichaTecnicaFullArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FichaTecnicaFull
+   */
+  select?: Prisma.FichaTecnicaFullSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FichaTecnicaFull
+   */
+  omit?: Prisma.FichaTecnicaFullOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FichaTecnicaFullInclude<ExtArgs> | null
+  where?: Prisma.FichaTecnicaFullWhereInput
+}
+
+/**
+ * Producto.ubicaciones
+ */
+export type Producto$ubicacionesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Ubicacion
+   */
+  select?: Prisma.UbicacionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Ubicacion
+   */
+  omit?: Prisma.UbicacionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UbicacionInclude<ExtArgs> | null
+  where?: Prisma.UbicacionWhereInput
+  orderBy?: Prisma.UbicacionOrderByWithRelationInput | Prisma.UbicacionOrderByWithRelationInput[]
+  cursor?: Prisma.UbicacionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UbicacionScalarFieldEnum | Prisma.UbicacionScalarFieldEnum[]
 }
 
 /**

@@ -19,7 +19,19 @@ Campos previstos:
 - `tipoProductoId`, relación obligatoria con el catálogo de tipos de producto.
 - `lineaId`.
 - `marcaId`.
+- `ubicaciones`, relación obligatoria de una o más ubicaciones comerciales.
 - Fechas de creación y actualización.
+
+## Ubicación comercial
+
+Cada ubicación define `almacen`, `cuentaAsociada`, `marketplace` e imagen o logo
+opcional. Los marketplaces iniciales son Mercado Libre, Amazon, Walmart,
+TiendaNube y ClaroShop. Un producto se relaciona con una o varias ubicaciones y
+puede participar en todos los marketplaces disponibles. Las ubicaciones pueden
+editarse; su imagen admite archivo o URL, se copia al almacenamiento local y se
+muestra ajustada como miniatura sin deformarse.
+
+`codigoUniversal` puede contener un código interno generado por TUFIS o un GTIN oficial capturado. El código interno se construye de forma determinista a partir de Clave, clave de Línea y clave de Marca. Un número interno nunca se identifica como GTIN oficial.
 
 ## Tipo de producto
 
@@ -110,9 +122,10 @@ Match, pero debe reducir la puntuación y mostrarse como incompatibilidad explí
 
 ## Objetivo de Smart Match
 
-Al introducir el modelo de un teléfono, encontrar los cristales templados que ya
-existen en inventario y que más se aproximan a su pantalla. Esto permite reutilizar
-stock originalmente registrado para otros modelos.
+Al introducir un modelo reciente, encontrar los cristales templados que ya existen
+en inventario y que más se aproximan a su pantalla. La ficha técnica de un cristal
+templado registrado para el modelo buscado funciona como referencia, aunque no
+tenga existencia. No se requieren productos de tipo teléfono.
 
 Smart Match compara datos técnicos. No requiere una relación manual previa entre
 un teléfono y un cristal.
@@ -121,14 +134,20 @@ un teléfono y un cristal.
 
 El modelo buscado debe:
 
-- Ser un producto tipo teléfono.
+- Ser un producto tipo cristal templado usado como referencia.
 - Tener una EspecificacionPantalla válida.
+- Puede tener existencia cero, porque aporta las medidas objetivo.
 
 Los candidatos deben:
 
 - Ser productos tipo cristal templado.
 - Tener existencia mayor que cero.
 - Tener una EspecificacionPantalla válida.
+
+Smart Match nunca compara ni exige productos de tipo teléfono. El modelo usado
+como referencia se excluye siempre de los resultados, incluso cuando existan
+varios productos con el mismo nombre de modelo. Las sugerencias deben ser
+únicamente modelos alternativos.
 
 Se mostrarán como máximo cinco sugerencias. Si hay menos de cinco candidatos
 válidos, se muestran los disponibles.
@@ -209,3 +228,43 @@ Cada sugerencia debe incluir:
 - Acción para abrir el producto.
 
 La tolerancia debe ser configuración de dominio, no un número incrustado en JSX.
+
+## Ficha Técnica Full y convivencia con A/B/C — 13 de agosto de 2026
+
+`FichaTecnicaFull` pertenece uno a uno a `Producto`. Almacena la fuente y todas
+las secciones como JSON estructurado para no perder campos desconocidos o
+repetidos. Sus metadatos mínimos son URL, proveedor, marca fuente, modelo fuente,
+diagonal fuente, diferencia de diagonal, resultado de validación, número de
+secciones y fechas.
+
+La FTF concentra Display, Design/DF y Sensors/SES. Los datos antiguos A y B se
+preservan y pueden complementar la presentación mientras se migra al registro
+unificado; un valor existente nunca debe reemplazarse silenciosamente por un valor
+vacío o menos específico. La Ficha C no forma parte de la FTF y sigue siendo el
+análisis físico independiente del cristal templado.
+
+El seguimiento se modela con un lote y sus registros. Cada registro guarda una
+copia de los datos comerciales necesarios para crear el producto, estado,
+diagnóstico, URL fuente, identidad encontrada, diagonal esperada y encontrada,
+intentos y fecha de proceso. Esta persistencia permite retomar pendientes sin
+depender de la sesión del navegador ni del archivo temporal.
+
+Cada registro dispone de fecha de disponibilidad y bloqueo. El trabajador reclama
+un registro de forma exclusiva y recupera trabajos abandonados.
+`ImportacionFtfIntento` conserva cada intento por separado; los diagnósticos
+anteriores nunca se sobrescriben.
+
+La identidad FTF exige marca normalizada, similitud de modelo igual o superior a
+95 %, mismos tokens críticos de variante y diferencia de diagonal menor o igual a
+0.08 pulgadas. La mejor coincidencia se ordena por puntuación de modelo y después
+por menor diferencia de diagonal.
+
+DeviceSpecifications es el proveedor primario y SmartGSM el fallback automático.
+La FTF conserva el proveedor realmente utilizado y su URL exacta.
+
+La convivencia temporal con `EspecificacionPantalla` se resuelve mediante una
+transferencia explícita desde la sección `Display`. Antes del `upsert` se valida
+la relación por Clave, identidad de modelo y diagonal. Una FTF incompleta no se
+convierte en un registro comparable: queda en revisión hasta obtener los campos
+obligatorios. Las dimensiones derivadas de diagonal y proporción son cálculos
+deterministas; el porcentaje de área nunca se estima cuando la fuente no lo aporta.

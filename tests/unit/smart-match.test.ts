@@ -8,6 +8,8 @@ describe("Smart Match", () => {
     const resultado = calcularCompatibilidad(pantalla, { ...pantalla });
     expect(resultado.porcentaje).toBe(100);
     expect(resultado.estado).toBe("Compatible");
+    expect(resultado.nivel).toBe("Alta compatibilidad");
+    expect(resultado.formaCoincide).toBe(true);
   });
 
   it("reduce la puntuación y explica diferencias relevantes", () => {
@@ -15,5 +17,14 @@ describe("Smart Match", () => {
     expect(resultado.porcentaje).toBeLessThan(75);
     expect(resultado.estado).toBe("No recomendado");
     expect(resultado.advertencias.some((texto) => texto.includes("forma no coincide"))).toBe(true);
+    expect(resultado.formaCoincide).toBe(false);
+  });
+
+  it("marca una puntuación intermedia como compatible con observaciones", () => {
+    const resultado = calcularCompatibilidad(pantalla, { ...pantalla, anchoDisplayMm: 75, altoDisplayMm: 165 });
+    expect(resultado.porcentaje).toBeGreaterThanOrEqual(50);
+    expect(resultado.porcentaje).toBeLessThan(75);
+    expect(resultado.estado).toBe("Compatible con observaciones");
+    expect(resultado.nivel).toBe("Requiere revisión");
   });
 });

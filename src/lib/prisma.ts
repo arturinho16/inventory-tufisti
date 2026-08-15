@@ -5,7 +5,7 @@ const globalPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 
-const clienteEnCacheEsActual = globalPrisma.prisma && "formaPantallaPersonalizada" in globalPrisma.prisma;
+const clienteEnCacheEsActual = globalPrisma.prisma && "formaPantallaPersonalizada" in globalPrisma.prisma && "programacionRespaldo" in globalPrisma.prisma && "cuentaMercadoLibre" in globalPrisma.prisma && "productoMercadoLibre" in globalPrisma.prisma;
 
 export const prisma = clienteEnCacheEsActual ? globalPrisma.prisma! : new PrismaClient({ adapter });
 
