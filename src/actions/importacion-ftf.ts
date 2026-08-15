@@ -16,6 +16,11 @@ export type FilaUrlFtf = { clave: string; marca: string; modelo: string; diagona
 export type ResultadoImportacionFtf = { clave: string; estado: "BUSCANDO" | "COMPLETADA" | "ERROR"; mensaje: string; url?: string; secciones?: number };
 export type FiltrosSeguimientoFtf = { loteId?: string; estado?: string; marca?: string; diagonal?: string };
 
+const CAMPOS_EDITABLES_DISPLAY = [
+  "Type/technology", "Diagonal size", "Aspect ratio", "Width", "Height", "Resolution",
+  "Pixel density", "Color depth", "Display area", "Protection", "Other features",
+] as const;
+
 const diagnosticoIdentidad = (validacion: ReturnType<typeof validarIdentidadFtf>, diagonalFuente: number | null) => [
   `marca ${validacion.marcaCoincide ? "correcta" : "diferente"}`,
   `modelo ${validacion.modeloCoincide ? "correcto" : `con ${validacion.puntuacionModelo.toFixed(1)}% de coincidencia`}`,
@@ -130,17 +135,58 @@ export async function listarSeguimientoFtf(filtros: FiltrosSeguimientoFtf = {}) 
   ]);
   const productos = registros.length ? await prisma.producto.findMany({
     where: { clave: { in: [...new Set(registros.map((registro) => registro.clave))] } },
-    select: { clave: true, fichaTecnicaFull: { select: { secciones: true } }, especificacionPantalla: { select: { id: true } } },
+    select: { id: true, clave: true, modelo: true, marca: { select: { nombre: true } }, fichaTecnicaFull: { select: { secciones: true, marcaFuente: true, modeloFuente: true, diagonalFuente: true } }, especificacionPantalla: { select: { id: true } } },
   }) : [];
   type EstadoTecnico = "SIN_FTF" | "FTF_INCOMPLETA" | "LISTA_PARALELO" | "EN_PARALELO";
-  const tecnicoPorClave = new Map<string, { estadoTecnico: EstadoTecnico; faltantesFtf: string[] }>();
+  const tecnicoPorClave = new Map<string, { productoId: string | null; ftfDescargada: boolean; estadoTecnico: EstadoTecnico; faltantesFtf: string[] }>();
   for (const producto of productos) {
-    if (producto.especificacionPantalla) { tecnicoPorClave.set(producto.clave, { estadoTecnico: "EN_PARALELO", faltantesFtf: [] }); continue; }
-    if (!producto.fichaTecnicaFull) { tecnicoPorClave.set(producto.clave, { estadoTecnico: "SIN_FTF", faltantesFtf: [] }); continue; }
-    const faltantes = faltantesPantallaFtf(extraerPantallaFtf(producto.fichaTecnicaFull.secciones as unknown as SeccionFtf[]));
-    tecnicoPorClave.set(producto.clave, { estadoTecnico: faltantes.length ? "FTF_INCOMPLETA" : "LISTA_PARALELO", faltantesFtf: faltantes });
+    if (producto.especificacionPantalla) { tecnicoPorClave.set(producto.clave, { productoId: producto.id, ftfDescargada: Boolean(producto.fichaTecnicaFull), estadoTecnico: "EN_PARALELO", faltantesFtf: [] }); continue; }
+    if (!producto.fichaTecnicaFull) { tecnicoPorClave.set(producto.clave, { productoId: producto.id, ftfDescargada: false, estadoTecnico: "SIN_FTF", faltantesFtf: [] }); continue; }
+    const pantalla = extraerPantallaFtf(producto.fichaTecnicaFull.secciones as unknown as SeccionFtf[]);
+    const faltantes = faltantesPantallaFtf(pantalla);
+    const diagonalEsperada = Number(registros.find((registro) => registro.clave === producto.clave)?.diagonalEsperada ?? producto.fichaTecnicaFull.diagonalFuente);
+    const diagonalIdentidad = pantalla.diagonalPulgadas ?? (producto.fichaTecnicaFull.diagonalFuente === null ? null : Number(producto.fichaTecnicaFull.diagonalFuente));
+    const identidad = validarIdentidadFtf({ marca: producto.marca.nombre, modelo: producto.modelo, diagonal: diagonalEsperada }, { marca: producto.fichaTecnicaFull.marcaFuente, modelo: producto.fichaTecnicaFull.modeloFuente, diagonal: diagonalIdentidad });
+    const problemas = [...faltantes, ...(!identidad.valida ? [`Identidad FTF no válida: ${diagnosticoIdentidad(identidad, diagonalIdentidad)}`] : [])];
+    tecnicoPorClave.set(producto.clave, { productoId: producto.id, ftfDescargada: true, estadoTecnico: problemas.length ? "FTF_INCOMPLETA" : "LISTA_PARALELO", faltantesFtf: problemas });
   }
-  return { registros: registros.map((r) => ({ id: r.id, loteId: r.loteId, archivo: r.lote.nombreArchivo, fila: r.fila, clave: r.clave, marca: r.marca, modelo: r.modelo, diagonal: Number(r.diagonalEsperada), estado: r.estado, mensaje: r.mensaje, url: r.urlFuente, marcaEncontrada: r.marcaEncontrada, modeloEncontrado: r.modeloEncontrado, diagonalEncontrada: r.diagonalEncontrada === null ? null : Number(r.diagonalEncontrada), intentos: r.intentos, historial: r.intentosDetalle.map((i) => ({ ...i, creadoEn: i.creadoEn.toISOString() })), actualizadoEn: r.actualizadoEn.toISOString(), ...(tecnicoPorClave.get(r.clave) ?? { estadoTecnico: "SIN_FTF" as const, faltantesFtf: [] as string[] }) })), lotes: lotes.map((l) => ({ ...l, creadoEn: l.creadoEn.toISOString() })), marcas: marcas.map((m) => m.marca), estados: estados.map((e) => ({ estado: e.estado, total: e._count })), diagonales: diagonales.map((d) => Number(d.diagonalEsperada)) };
+  const completadaMasReciente = new Map<string, Date>();
+  for (const registro of registros) if (registro.estado === "COMPLETADA" && (!completadaMasReciente.get(registro.clave) || registro.actualizadoEn > completadaMasReciente.get(registro.clave)!)) completadaMasReciente.set(registro.clave, registro.actualizadoEn);
+  return { registros: registros.map((r) => ({ id: r.id, loteId: r.loteId, archivo: r.lote.nombreArchivo, fila: r.fila, clave: r.clave, marca: r.marca, modelo: r.modelo, diagonal: Number(r.diagonalEsperada), estado: r.estado, superado: r.estado !== "COMPLETADA" && Boolean(completadaMasReciente.get(r.clave) && completadaMasReciente.get(r.clave)! > r.actualizadoEn), mensaje: r.mensaje, url: r.urlFuente, marcaEncontrada: r.marcaEncontrada, modeloEncontrado: r.modeloEncontrado, diagonalEncontrada: r.diagonalEncontrada === null ? null : Number(r.diagonalEncontrada), intentos: r.intentos, historial: r.intentosDetalle.map((i) => ({ ...i, creadoEn: i.creadoEn.toISOString() })), actualizadoEn: r.actualizadoEn.toISOString(), ...(tecnicoPorClave.get(r.clave) ?? { productoId: null, ftfDescargada: false, estadoTecnico: "SIN_FTF" as const, faltantesFtf: [] as string[] }) })), lotes: lotes.map((l) => ({ ...l, creadoEn: l.creadoEn.toISOString() })), marcas: marcas.map((m) => m.marca), estados: estados.map((e) => ({ estado: e.estado, total: e._count })), diagonales: diagonales.map((d) => Number(d.diagonalEsperada)) };
+}
+
+export async function obtenerFtfSeguimiento(registroId: string) {
+  const registro = await prisma.importacionFtfRegistro.findUnique({ where: { id: registroId }, select: { clave: true } });
+  if (!registro) throw new Error("El registro ya no existe.");
+  const producto = await prisma.producto.findUnique({ where: { clave: registro.clave }, include: { fichaTecnicaFull: true } });
+  if (!producto?.fichaTecnicaFull) throw new Error("La FTF todavía no ha sido descargada.");
+  const secciones = producto.fichaTecnicaFull.secciones as unknown as SeccionFtf[];
+  const display = secciones.find((seccion) => seccion.clave === "display" || seccion.clave.startsWith("display_"));
+  const campos = Object.fromEntries(CAMPOS_EDITABLES_DISPLAY.map((etiqueta) => [etiqueta, display?.campos.find((campo) => campo.etiqueta.toLocaleLowerCase("es-MX") === etiqueta.toLocaleLowerCase("es-MX"))?.valores.join(" | ") ?? ""]));
+  return { productoId: producto.id, clave: producto.clave, modelo: producto.modelo, proveedor: producto.fichaTecnicaFull.proveedor, url: producto.fichaTecnicaFull.urlFuente, cantidadSecciones: producto.fichaTecnicaFull.cantidadSecciones, secciones, campos, faltantes: faltantesPantallaFtf(extraerPantallaFtf(secciones)) };
+}
+
+export async function guardarCamposDisplayFtf(registroId: string, valores: Record<string, string>) {
+  const registro = await prisma.importacionFtfRegistro.findUnique({ where: { id: registroId }, select: { clave: true } });
+  if (!registro) throw new Error("El registro ya no existe.");
+  const producto = await prisma.producto.findUnique({ where: { clave: registro.clave }, include: { fichaTecnicaFull: true } });
+  if (!producto?.fichaTecnicaFull) throw new Error("No existe una FTF descargada para editar.");
+  const secciones = structuredClone(producto.fichaTecnicaFull.secciones as unknown as SeccionFtf[]);
+  let display = secciones.find((seccion) => seccion.clave === "display" || seccion.clave.startsWith("display_"));
+  if (!display) { display = { clave: "display", titulo: "Display", campos: [] }; secciones.push(display); }
+  for (const etiqueta of CAMPOS_EDITABLES_DISPLAY) {
+    const valor = String(valores[etiqueta] ?? "").trim();
+    if (!valor) continue;
+    const existente = display.campos.find((campo) => campo.etiqueta.toLocaleLowerCase("es-MX") === etiqueta.toLocaleLowerCase("es-MX"));
+    const valoresCampo = valor.split("|").map((item) => item.trim()).filter(Boolean);
+    if (existente) existente.valores = valoresCampo; else display.campos.push({ etiqueta, valores: valoresCampo });
+  }
+  const faltantes = faltantesPantallaFtf(extraerPantallaFtf(secciones));
+  await prisma.$transaction([
+    prisma.fichaTecnicaFull.update({ where: { productoId: producto.id }, data: { secciones: secciones as unknown as Prisma.InputJsonValue, cantidadSecciones: secciones.length, validacion: faltantes.length ? "COMPLETADA_MANUAL_INCOMPLETA" : "COMPLETADA_MANUAL" } }),
+    prisma.importacionFtfIntento.create({ data: { registroId, accion: "EDICION_MANUAL_FTF", estado: faltantes.length ? "REVISION" : "COMPLETADA", mensaje: faltantes.length ? `FTF editada; aún faltan ${faltantes.join(", ")}.` : "FTF completada manualmente y lista para validar su paso a Paralelo.", metadatos: { camposEditados: Object.keys(valores).filter((clave) => valores[clave]?.trim()) } } }),
+  ]);
+  return { correcto: faltantes.length === 0, faltantes, mensaje: faltantes.length ? `Cambios guardados. Aún faltan: ${faltantes.join(", ")}.` : "FTF completada; ya puede validarse para Paralelo." };
 }
 
 export async function actualizarEsperadoRegistroFtf(registroId: string, modelo: string, diagonal: number) {

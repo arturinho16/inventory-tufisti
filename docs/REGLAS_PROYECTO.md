@@ -436,3 +436,20 @@ permanecer automatizados y ejecutarse después de cambios futuros en el dominio.
 La publicación en un servidor externo seguirá requiriendo comprobar nuevamente
 las variables productivas, la salud de los contenedores y la respuesta HTTP de la
 ruta después del despliegue correspondiente.
+
+## Revisión, visualización y edición de FTF — 15 de agosto de 2026
+
+- Seguimiento debe confirmar por separado si la FTF fue descargada, si contiene
+  todos los campos obligatorios de Display y si su identidad corresponde al
+  producto esperado. `Descargada` nunca equivale automáticamente a `completa`.
+- Toda FTF descargada ofrece una acción `+` para visualizar sus secciones y campos
+  persistidos, además de una acción `Editar` para completar valores faltantes de
+  Display sin repetir el scraping.
+- Las ediciones manuales conservan la fuente original, quedan registradas como un
+  intento de auditoría y vuelven a calcular los campos faltantes. No corrigen ni
+  aprueban silenciosamente una identidad de modelo diferente.
+- Si una Clave tiene un intento fallido antiguo y otro intento posterior completado,
+  el anterior se muestra como `Histórico resuelto` y no cuenta como pendiente.
+- `Pasar a Paralelo` muestra únicamente FTF descargadas que estén completas y cuya
+  marca, modelo, variante y diagonal superen el matching. Las FTF incompletas o con
+  identidad inválida permanecen exclusivamente en Seguimiento hasta corregirse.

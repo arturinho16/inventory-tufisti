@@ -35,7 +35,7 @@ export async function listarTransferenciasFtf(marca?: string) {
   }) : [];
   const diagonalPorClave = new Map<string, number>();
   for (const registro of esperadas) if (!diagonalPorClave.has(registro.clave)) diagonalPorClave.set(registro.clave, Number(registro.diagonalEsperada));
-  return Promise.all(fichas.map(async (ficha) => {
+  const resultados = await Promise.all(fichas.map(async (ficha) => {
     const datos = extraerPantallaFtf(ficha.secciones as unknown as SeccionFtf[]);
     const diagonalEsperada = diagonalPorClave.get(ficha.producto.clave) ?? datos.diagonalPulgadas;
     const identidad = diagonalEsperada === null ? null : validarIdentidadFtf(
@@ -57,6 +57,7 @@ export async function listarTransferenciasFtf(marca?: string) {
       estado: ficha.producto.especificacionPantalla ? "EXISTENTE" as const : problemas.length ? "REVISION" as const : "LISTA" as const,
     };
   }));
+  return resultados.filter((registro) => registro.estado !== "REVISION");
 }
 
 export async function transferirFtfAParalelo(productoId: string, confirmarActualizacion = false) {
