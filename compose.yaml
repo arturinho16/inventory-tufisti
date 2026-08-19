@@ -1,0 +1,156 @@
+services:
+  base-datos:
+    image: postgres:17-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-tufis}
+      POSTGRES_USER: ${POSTGRES_USER:-tufis}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en el archivo .env}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    volumes:
+      - datos_postgres:/var/lib/postgresql/data
+    networks:
+      - datos
+
+  migraciones:
+    build:
+      context: .
+      target: migraciones
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?Define DATABASE_URL en el archivo .env}
+    depends_on:
+      base-datos:
+        condition: service_healthy
+    networks:
+      - datos
+    restart: "no"
+
+  aplicacion:
+    build:
+      context: .
+      target: produccion
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?Define DATABASE_URL en el archivo .env}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      FTF_PROVIDER_URL: http://proveedor-ftf:8080
+      FTF_WORKER_TOKEN: ${FTF_WORKER_TOKEN:?Define FTF_WORKER_TOKEN en el archivo .env.docker}
+      MERCADOLIBRE_CLIENT_ID: ${MERCADOLIBRE_CLIENT_ID:-}
+      MERCADOLIBRE_CLIENT_SECRET: ${MERCADOLIBRE_CLIENT_SECRET:-}
+      MERCADOLIBRE_REDIRECT_URI: ${MERCADOLIBRE_REDIRECT_URI:-}
+      MERCADOLIBRE_TOKEN_ENCRYPTION_KEY: ${MERCADOLIBRE_TOKEN_ENCRYPTION_KEY:-}
+      RESPALDOS_ADMIN_KEY: ${RESPALDOS_ADMIN_KEY:?Define RESPALDOS_ADMIN_KEY en el archivo .env.docker}
+      RESPALDOS_CRON_TOKEN: ${RESPALDOS_CRON_TOKEN:?Define RESPALDOS_CRON_TOKEN en el archivo .env.docker}
+      RESPALDOS_PROGRAMADOS_DIR: /app/datos/respaldos-programados
+    depends_on:
+      migraciones:
+        condition: service_completed_successfully
+      proveedor-ftf:
+        condition: service_healthy
+    ports:
+      - "${TUFIS_BIND_ADDRESS:-0.0.0.0}:${TUFIS_PORT:-3000}:3000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/inventario').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - imagenes_productos:/app/public/imagenes/productos
+      - respaldos_programados:/app/datos/respaldos-programados
+      - datos_importaciones:/app/.datos
+    networks:
+      - datos
+      - salida
+
+  proveedor-ftf:
+    build:
+      context: .
+      target: proveedor-ftf
+    restart: unless-stopped
+    environment:
+      FTF_REQUEST_INTERVAL_SECONDS: ${FTF_REQUEST_INTERVAL_SECONDS:-120}
+      FTF_HTML_STORAGE_DIR: /app/storage/html
+      FTF_MAX_RETRIES: ${FTF_MAX_RETRIES:-2}
+      FTF_RETRY_BASE_SECONDS: ${FTF_RETRY_BASE_SECONDS:-1}
+      FTF_MAX_CANDIDATES: ${FTF_MAX_CANDIDATES:-5}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/salud', timeout=5)"]
+      interval: 20s
+      timeout: 8s
+      retries: 5
+      start_period: 20s
+    networks:
+      - salida
+    volumes:
+      - html_ftf:/app/storage/html
+
+  programador-ftf:
+    build:
+      context: .
+      target: programador
+    command: ["node", "scripts/programador-ftf.mjs"]
+    restart: unless-stopped
+    environment:
+      FTF_WORKER_TOKEN: ${FTF_WORKER_TOKEN:?Define FTF_WORKER_TOKEN en el archivo .env.docker}
+      FTF_WORKER_URL: http://aplicacion:3000/api/tareas/importaciones-ftf
+    depends_on:
+      aplicacion:
+        condition: service_healthy
+    networks:
+      - salida
+
+  programador-respaldos:
+    build:
+      context: .
+      target: programador
+    restart: unless-stopped
+    environment:
+      RESPALDOS_CRON_TOKEN: ${RESPALDOS_CRON_TOKEN:?Define RESPALDOS_CRON_TOKEN en el archivo .env.docker}
+      RESPALDOS_CRON_URL: http://aplicacion:3000/api/tareas/respaldos
+    depends_on:
+      aplicacion:
+        condition: service_healthy
+    networks:
+      - salida
+
+  programador-mercadolibre:
+    build:
+      context: .
+      target: programador
+    command: ["node", "scripts/programador-mercadolibre.mjs"]
+    restart: unless-stopped
+    environment:
+      RESPALDOS_CRON_TOKEN: ${RESPALDOS_CRON_TOKEN:?Define RESPALDOS_CRON_TOKEN en el archivo .env.docker}
+      MERCADOLIBRE_CRON_URL: http://aplicacion:3000/api/tareas/mercadolibre
+    depends_on:
+      aplicacion:
+        condition: service_healthy
+    networks:
+      - salida
+
+volumes:
+  datos_postgres:
+  imagenes_productos:
+    name: inventory-tufisti_imagenes_productos
+    external: true
+  respaldos_programados:
+  datos_importaciones:
+  html_ftf:
+
+networks:
+  datos:
+    internal: true
+  salida:

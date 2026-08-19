@@ -1,0 +1,17 @@
+.git
+.gitignore
+.next
+node_modules
+npm-debug.log*
+*.log
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.codegraph
+.datos
+wiki
+referencias
+automatizacion
+public/imagenes/productos/*
+!public/imagenes/productos/.gitkeep

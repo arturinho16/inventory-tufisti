@@ -62,6 +62,51 @@ export type Marca = Prisma.MarcaModel
  */
 export type Producto = Prisma.ProductoModel
 /**
+ * Model FichaTecnicaFull
+ * 
+ */
+export type FichaTecnicaFull = Prisma.FichaTecnicaFullModel
+/**
+ * Model FichaFtfPendiente
+ * 
+ */
+export type FichaFtfPendiente = Prisma.FichaFtfPendienteModel
+/**
+ * Model ImportacionFtfLote
+ * 
+ */
+export type ImportacionFtfLote = Prisma.ImportacionFtfLoteModel
+/**
+ * Model ImportacionFtfRegistro
+ * 
+ */
+export type ImportacionFtfRegistro = Prisma.ImportacionFtfRegistroModel
+/**
+ * Model ImportacionFtfIntento
+ * 
+ */
+export type ImportacionFtfIntento = Prisma.ImportacionFtfIntentoModel
+/**
+ * Model FichaTecnicaC
+ * 
+ */
+export type FichaTecnicaC = Prisma.FichaTecnicaCModel
+/**
+ * Model FichaTecnicaB
+ * 
+ */
+export type FichaTecnicaB = Prisma.FichaTecnicaBModel
+/**
+ * Model Ubicacion
+ * 
+ */
+export type Ubicacion = Prisma.UbicacionModel
+/**
+ * Model ProductoMercadoLibre
+ * 
+ */
+export type ProductoMercadoLibre = Prisma.ProductoMercadoLibreModel
+/**
  * Model EspecificacionPantalla
  * 
  */
@@ -71,3 +116,38 @@ export type EspecificacionPantalla = Prisma.EspecificacionPantallaModel
  * 
  */
 export type FormaPantallaPersonalizada = Prisma.FormaPantallaPersonalizadaModel
+/**
+ * Model ProgramacionRespaldo
+ * 
+ */
+export type ProgramacionRespaldo = Prisma.ProgramacionRespaldoModel
+/**
+ * Model EjecucionRespaldo
+ * 
+ */
+export type EjecucionRespaldo = Prisma.EjecucionRespaldoModel
+/**
+ * Model CuentaMercadoLibre
+ * 
+ */
+export type CuentaMercadoLibre = Prisma.CuentaMercadoLibreModel
+/**
+ * Model NotificacionMercadoLibre
+ * 
+ */
+export type NotificacionMercadoLibre = Prisma.NotificacionMercadoLibreModel
+/**
+ * Model VentaMercadoLibre
+ * 
+ */
+export type VentaMercadoLibre = Prisma.VentaMercadoLibreModel
+/**
+ * Model PartidaVentaMercadoLibre
+ * 
+ */
+export type PartidaVentaMercadoLibre = Prisma.PartidaVentaMercadoLibreModel
+/**
+ * Model IntentoOAuthMercadoLibre
+ * 
+ */
+export type IntentoOAuthMercadoLibre = Prisma.IntentoOAuthMercadoLibreModel

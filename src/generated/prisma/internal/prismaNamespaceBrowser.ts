@@ -55,8 +55,24 @@ export const ModelName = {
   TipoProducto: 'TipoProducto',
   Marca: 'Marca',
   Producto: 'Producto',
+  FichaTecnicaFull: 'FichaTecnicaFull',
+  FichaFtfPendiente: 'FichaFtfPendiente',
+  ImportacionFtfLote: 'ImportacionFtfLote',
+  ImportacionFtfRegistro: 'ImportacionFtfRegistro',
+  ImportacionFtfIntento: 'ImportacionFtfIntento',
+  FichaTecnicaC: 'FichaTecnicaC',
+  FichaTecnicaB: 'FichaTecnicaB',
+  Ubicacion: 'Ubicacion',
+  ProductoMercadoLibre: 'ProductoMercadoLibre',
   EspecificacionPantalla: 'EspecificacionPantalla',
-  FormaPantallaPersonalizada: 'FormaPantallaPersonalizada'
+  FormaPantallaPersonalizada: 'FormaPantallaPersonalizada',
+  ProgramacionRespaldo: 'ProgramacionRespaldo',
+  EjecucionRespaldo: 'EjecucionRespaldo',
+  CuentaMercadoLibre: 'CuentaMercadoLibre',
+  NotificacionMercadoLibre: 'NotificacionMercadoLibre',
+  VentaMercadoLibre: 'VentaMercadoLibre',
+  PartidaVentaMercadoLibre: 'PartidaVentaMercadoLibre',
+  IntentoOAuthMercadoLibre: 'IntentoOAuthMercadoLibre'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -132,6 +148,213 @@ export const ProductoScalarFieldEnum = {
 export type ProductoScalarFieldEnum = (typeof ProductoScalarFieldEnum)[keyof typeof ProductoScalarFieldEnum]
 
 
+export const FichaTecnicaFullScalarFieldEnum = {
+  id: 'id',
+  productoId: 'productoId',
+  urlFuente: 'urlFuente',
+  proveedor: 'proveedor',
+  marcaFuente: 'marcaFuente',
+  modeloFuente: 'modeloFuente',
+  diagonalFuente: 'diagonalFuente',
+  diferenciaDiagonal: 'diferenciaDiagonal',
+  validacion: 'validacion',
+  secciones: 'secciones',
+  cantidadSecciones: 'cantidadSecciones',
+  extraidoEn: 'extraidoEn',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type FichaTecnicaFullScalarFieldEnum = (typeof FichaTecnicaFullScalarFieldEnum)[keyof typeof FichaTecnicaFullScalarFieldEnum]
+
+
+export const FichaFtfPendienteScalarFieldEnum = {
+  id: 'id',
+  sourceId: 'sourceId',
+  claveOrigen: 'claveOrigen',
+  marcaFuente: 'marcaFuente',
+  modeloFuente: 'modeloFuente',
+  diagonalFuente: 'diagonalFuente',
+  urlFuente: 'urlFuente',
+  proveedor: 'proveedor',
+  secciones: 'secciones',
+  cantidadSecciones: 'cantidadSecciones',
+  estado: 'estado',
+  productoId: 'productoId',
+  diagnostico: 'diagnostico',
+  asociadoEn: 'asociadoEn',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type FichaFtfPendienteScalarFieldEnum = (typeof FichaFtfPendienteScalarFieldEnum)[keyof typeof FichaFtfPendienteScalarFieldEnum]
+
+
+export const ImportacionFtfLoteScalarFieldEnum = {
+  id: 'id',
+  nombreArchivo: 'nombreArchivo',
+  total: 'total',
+  estado: 'estado',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type ImportacionFtfLoteScalarFieldEnum = (typeof ImportacionFtfLoteScalarFieldEnum)[keyof typeof ImportacionFtfLoteScalarFieldEnum]
+
+
+export const ImportacionFtfRegistroScalarFieldEnum = {
+  id: 'id',
+  loteId: 'loteId',
+  fila: 'fila',
+  clave: 'clave',
+  marca: 'marca',
+  modelo: 'modelo',
+  diagonalEsperada: 'diagonalEsperada',
+  estado: 'estado',
+  mensaje: 'mensaje',
+  urlFuente: 'urlFuente',
+  marcaEncontrada: 'marcaEncontrada',
+  modeloEncontrado: 'modeloEncontrado',
+  diagonalEncontrada: 'diagonalEncontrada',
+  datosProducto: 'datosProducto',
+  intentos: 'intentos',
+  disponibleEn: 'disponibleEn',
+  bloqueadoEn: 'bloqueadoEn',
+  procesadoEn: 'procesadoEn',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type ImportacionFtfRegistroScalarFieldEnum = (typeof ImportacionFtfRegistroScalarFieldEnum)[keyof typeof ImportacionFtfRegistroScalarFieldEnum]
+
+
+export const ImportacionFtfIntentoScalarFieldEnum = {
+  id: 'id',
+  registroId: 'registroId',
+  accion: 'accion',
+  proveedor: 'proveedor',
+  url: 'url',
+  estado: 'estado',
+  mensaje: 'mensaje',
+  marcaEncontrada: 'marcaEncontrada',
+  modeloEncontrado: 'modeloEncontrado',
+  diagonalEncontrada: 'diagonalEncontrada',
+  metadatos: 'metadatos',
+  creadoEn: 'creadoEn'
+} as const
+
+export type ImportacionFtfIntentoScalarFieldEnum = (typeof ImportacionFtfIntentoScalarFieldEnum)[keyof typeof ImportacionFtfIntentoScalarFieldEnum]
+
+
+export const FichaTecnicaCScalarFieldEnum = {
+  id: 'id',
+  productoId: 'productoId',
+  geometriaPrevista: 'geometriaPrevista',
+  anchoExteriorMm: 'anchoExteriorMm',
+  altoExteriorMm: 'altoExteriorMm',
+  grosorMm: 'grosorMm',
+  radiosEsquina: 'radiosEsquina',
+  aberturas: 'aberturas',
+  marcoBorde: 'marcoBorde',
+  curvatura: 'curvatura',
+  adhesivo: 'adhesivo',
+  huellaComprobada: 'huellaComprobada',
+  fuente: 'fuente',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type FichaTecnicaCScalarFieldEnum = (typeof FichaTecnicaCScalarFieldEnum)[keyof typeof FichaTecnicaCScalarFieldEnum]
+
+
+export const FichaTecnicaBScalarFieldEnum = {
+  id: 'id',
+  productoId: 'productoId',
+  anchoCuerpoMm: 'anchoCuerpoMm',
+  altoCuerpoMm: 'altoCuerpoMm',
+  grosorCuerpoMm: 'grosorCuerpoMm',
+  anchoDisplayMm: 'anchoDisplayMm',
+  altoDisplayMm: 'altoDisplayMm',
+  diagonalDisplayMm: 'diagonalDisplayMm',
+  aspectRatio: 'aspectRatio',
+  areaDisplayPorcentaje: 'areaDisplayPorcentaje',
+  biselLateralMm: 'biselLateralMm',
+  biselVerticalTotalMm: 'biselVerticalTotalMm',
+  curvatura: 'curvatura',
+  pesoGramos: 'pesoGramos',
+  volumenCm3: 'volumenCm3',
+  materiales: 'materiales',
+  colores: 'colores',
+  certificaciones: 'certificaciones',
+  tipoHuella: 'tipoHuella',
+  huellaBajoPantalla: 'huellaBajoPantalla',
+  sensores: 'sensores',
+  advertencias: 'advertencias',
+  fuenteDf: 'fuenteDf',
+  fuenteSes: 'fuenteSes',
+  modeloOpenAI: 'modeloOpenAI',
+  analizadoEn: 'analizadoEn',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type FichaTecnicaBScalarFieldEnum = (typeof FichaTecnicaBScalarFieldEnum)[keyof typeof FichaTecnicaBScalarFieldEnum]
+
+
+export const UbicacionScalarFieldEnum = {
+  id: 'id',
+  almacen: 'almacen',
+  cuentaAsociada: 'cuentaAsociada',
+  marketplace: 'marketplace',
+  imagenUrl: 'imagenUrl',
+  imagenNombre: 'imagenNombre',
+  imagenMimeType: 'imagenMimeType',
+  imagenTamano: 'imagenTamano',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type UbicacionScalarFieldEnum = (typeof UbicacionScalarFieldEnum)[keyof typeof UbicacionScalarFieldEnum]
+
+
+export const ProductoMercadoLibreScalarFieldEnum = {
+  id: 'id',
+  cuentaId: 'cuentaId',
+  publicacionId: 'publicacionId',
+  variacionId: 'variacionId',
+  userProductId: 'userProductId',
+  inventoryId: 'inventoryId',
+  codigoVendedor: 'codigoVendedor',
+  titulo: 'titulo',
+  estado: 'estado',
+  condicion: 'condicion',
+  logistica: 'logistica',
+  existencia: 'existencia',
+  vendidos: 'vendidos',
+  existenciaFullTotal: 'existenciaFullTotal',
+  existenciaFullDisponible: 'existenciaFullDisponible',
+  existenciaFullNoDisponible: 'existenciaFullNoDisponible',
+  detalleFullNoDisponible: 'detalleFullNoDisponible',
+  stockFullConsultadoEn: 'stockFullConsultadoEn',
+  gtin: 'gtin',
+  marca: 'marca',
+  modelo: 'modelo',
+  imagenOrigenUrl: 'imagenOrigenUrl',
+  imagenUrl: 'imagenUrl',
+  imagenNombre: 'imagenNombre',
+  imagenMimeType: 'imagenMimeType',
+  imagenTamano: 'imagenTamano',
+  errorImagen: 'errorImagen',
+  enlacePublicacion: 'enlacePublicacion',
+  actualizadoMercadoLibreEn: 'actualizadoMercadoLibreEn',
+  sincronizadoEn: 'sincronizadoEn',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type ProductoMercadoLibreScalarFieldEnum = (typeof ProductoMercadoLibreScalarFieldEnum)[keyof typeof ProductoMercadoLibreScalarFieldEnum]
+
+
 export const EspecificacionPantallaScalarFieldEnum = {
   id: 'id',
   productoId: 'productoId',
@@ -154,6 +377,10 @@ export const EspecificacionPantallaScalarFieldEnum = {
   areaDisplayPorcentaje: 'areaDisplayPorcentaje',
   cristalFrontal: 'cristalFrontal',
   refrescoHz: 'refrescoHz',
+  fuenteImagen: 'fuenteImagen',
+  esParcial: 'esParcial',
+  camposOmitidos: 'camposOmitidos',
+  metadatosCampos: 'metadatosCampos',
   creadoEn: 'creadoEn',
   actualizadoEn: 'actualizadoEn'
 } as const
@@ -171,12 +398,148 @@ export const FormaPantallaPersonalizadaScalarFieldEnum = {
 export type FormaPantallaPersonalizadaScalarFieldEnum = (typeof FormaPantallaPersonalizadaScalarFieldEnum)[keyof typeof FormaPantallaPersonalizadaScalarFieldEnum]
 
 
+export const ProgramacionRespaldoScalarFieldEnum = {
+  id: 'id',
+  nombre: 'nombre',
+  activa: 'activa',
+  frecuencia: 'frecuencia',
+  diaSemana: 'diaSemana',
+  hora: 'hora',
+  minuto: 'minuto',
+  zonaHoraria: 'zonaHoraria',
+  marcas: 'marcas',
+  lineas: 'lineas',
+  fichas: 'fichas',
+  incluirImagenes: 'incluirImagenes',
+  retencionCantidad: 'retencionCantidad',
+  ultimaEjecucion: 'ultimaEjecucion',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type ProgramacionRespaldoScalarFieldEnum = (typeof ProgramacionRespaldoScalarFieldEnum)[keyof typeof ProgramacionRespaldoScalarFieldEnum]
+
+
+export const EjecucionRespaldoScalarFieldEnum = {
+  id: 'id',
+  programacionId: 'programacionId',
+  clavePeriodo: 'clavePeriodo',
+  estado: 'estado',
+  archivoNombre: 'archivoNombre',
+  archivoRuta: 'archivoRuta',
+  tamanoBytes: 'tamanoBytes',
+  cantidades: 'cantidades',
+  error: 'error',
+  iniciadaEn: 'iniciadaEn',
+  finalizadaEn: 'finalizadaEn'
+} as const
+
+export type EjecucionRespaldoScalarFieldEnum = (typeof EjecucionRespaldoScalarFieldEnum)[keyof typeof EjecucionRespaldoScalarFieldEnum]
+
+
+export const CuentaMercadoLibreScalarFieldEnum = {
+  id: 'id',
+  usuarioMercadoLibreId: 'usuarioMercadoLibreId',
+  apodo: 'apodo',
+  sitioId: 'sitioId',
+  accessTokenCifrado: 'accessTokenCifrado',
+  refreshTokenCifrado: 'refreshTokenCifrado',
+  tokenExpiraEn: 'tokenExpiraEn',
+  alcance: 'alcance',
+  versionToken: 'versionToken',
+  ultimoError: 'ultimoError',
+  conectadoEn: 'conectadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type CuentaMercadoLibreScalarFieldEnum = (typeof CuentaMercadoLibreScalarFieldEnum)[keyof typeof CuentaMercadoLibreScalarFieldEnum]
+
+
+export const NotificacionMercadoLibreScalarFieldEnum = {
+  id: 'id',
+  identificador: 'identificador',
+  cuentaId: 'cuentaId',
+  tema: 'tema',
+  recurso: 'recurso',
+  aplicacionId: 'aplicacionId',
+  usuarioId: 'usuarioId',
+  intentos: 'intentos',
+  estado: 'estado',
+  payload: 'payload',
+  error: 'error',
+  enviadaEn: 'enviadaEn',
+  recibidaEn: 'recibidaEn',
+  procesadaEn: 'procesadaEn',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type NotificacionMercadoLibreScalarFieldEnum = (typeof NotificacionMercadoLibreScalarFieldEnum)[keyof typeof NotificacionMercadoLibreScalarFieldEnum]
+
+
+export const VentaMercadoLibreScalarFieldEnum = {
+  id: 'id',
+  cuentaId: 'cuentaId',
+  ordenId: 'ordenId',
+  estado: 'estado',
+  fechaCreacion: 'fechaCreacion',
+  fechaCierre: 'fechaCierre',
+  importeTotal: 'importeTotal',
+  moneda: 'moneda',
+  sincronizadaEn: 'sincronizadaEn',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type VentaMercadoLibreScalarFieldEnum = (typeof VentaMercadoLibreScalarFieldEnum)[keyof typeof VentaMercadoLibreScalarFieldEnum]
+
+
+export const PartidaVentaMercadoLibreScalarFieldEnum = {
+  id: 'id',
+  ventaId: 'ventaId',
+  publicacionId: 'publicacionId',
+  variacionId: 'variacionId',
+  titulo: 'titulo',
+  cantidad: 'cantidad',
+  precioUnitario: 'precioUnitario'
+} as const
+
+export type PartidaVentaMercadoLibreScalarFieldEnum = (typeof PartidaVentaMercadoLibreScalarFieldEnum)[keyof typeof PartidaVentaMercadoLibreScalarFieldEnum]
+
+
+export const IntentoOAuthMercadoLibreScalarFieldEnum = {
+  id: 'id',
+  estadoHash: 'estadoHash',
+  verificadorCifrado: 'verificadorCifrado',
+  expiraEn: 'expiraEn',
+  usadoEn: 'usadoEn',
+  creadoEn: 'creadoEn'
+} as const
+
+export type IntentoOAuthMercadoLibreScalarFieldEnum = (typeof IntentoOAuthMercadoLibreScalarFieldEnum)[keyof typeof IntentoOAuthMercadoLibreScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -193,4 +556,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

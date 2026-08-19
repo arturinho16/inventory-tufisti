@@ -29,3 +29,64 @@ export const TipoFormaPantalla = {
 } as const
 
 export type TipoFormaPantalla = (typeof TipoFormaPantalla)[keyof typeof TipoFormaPantalla]
+
+
+export const FrecuenciaRespaldo = {
+  DIARIO: 'DIARIO',
+  SEMANAL: 'SEMANAL'
+} as const
+
+export type FrecuenciaRespaldo = (typeof FrecuenciaRespaldo)[keyof typeof FrecuenciaRespaldo]
+
+
+export const EstadoEjecucionRespaldo = {
+  EN_PROCESO: 'EN_PROCESO',
+  COMPLETADO: 'COMPLETADO',
+  ERROR: 'ERROR'
+} as const
+
+export type EstadoEjecucionRespaldo = (typeof EstadoEjecucionRespaldo)[keyof typeof EstadoEjecucionRespaldo]
+
+
+export const Marketplace = {
+  MERCADO_LIBRE: 'MERCADO_LIBRE',
+  AMAZON: 'AMAZON',
+  WALMART: 'WALMART',
+  TIENDANUBE: 'TIENDANUBE',
+  CLAROSHOP: 'CLAROSHOP'
+} as const
+
+export type Marketplace = (typeof Marketplace)[keyof typeof Marketplace]
+
+
+export const EstadoImportacionFtf = {
+  VALIDANDO: 'VALIDANDO',
+  VALIDADA: 'VALIDADA',
+  BUSCANDO: 'BUSCANDO',
+  NO_ENCONTRADA: 'NO_ENCONTRADA',
+  REVISION: 'REVISION',
+  IMPORTANDO: 'IMPORTANDO',
+  COMPLETADA: 'COMPLETADA',
+  ERROR: 'ERROR'
+} as const
+
+export type EstadoImportacionFtf = (typeof EstadoImportacionFtf)[keyof typeof EstadoImportacionFtf]
+
+
+export const EstadoFichaFtfPendiente = {
+  PENDIENTE: 'PENDIENTE',
+  ASOCIADA: 'ASOCIADA',
+  DESCARTADA: 'DESCARTADA'
+} as const
+
+export type EstadoFichaFtfPendiente = (typeof EstadoFichaFtfPendiente)[keyof typeof EstadoFichaFtfPendiente]
+
+
+export const EstadoNotificacionMercadoLibre = {
+  PENDIENTE: 'PENDIENTE',
+  PROCESADA: 'PROCESADA',
+  IGNORADA: 'IGNORADA',
+  ERROR: 'ERROR'
+} as const
+
+export type EstadoNotificacionMercadoLibre = (typeof EstadoNotificacionMercadoLibre)[keyof typeof EstadoNotificacionMercadoLibre]
