@@ -27,4 +27,20 @@ describe("Smart Match", () => {
     expect(resultado.estado).toBe("Compatible con observaciones");
     expect(resultado.nivel).toBe("Requiere revisión");
   });
+
+  it("incorpora todos los campos FTF compartidos y explica sus diferencias", () => {
+    const objetivo = { ...pantalla, detalleFtf: { "design:width:0": "74.2 mm", "sensors:sensors:0": "Fingerprint, proximity", "battery:capacity:0": "5000 mAh" } };
+    const candidato = { ...pantalla, detalleFtf: { "design:width:0": "74.2 mm", "sensors:sensors:0": "Fingerprint, proximity", "battery:capacity:0": "4500 mAh" } };
+    const resultado = calcularCompatibilidad(objetivo, candidato);
+    expect(resultado.coincidencias.some((texto) => texto.includes("2 de 3 campos"))).toBe(true);
+    expect(resultado.advertencias.some((texto) => texto.includes("1 campos con diferencias"))).toBe(true);
+  });
+
+  it("omite el área ausente sin convertirla en cero e informa cobertura reducida", () => {
+    const resultado = calcularCompatibilidad({ ...pantalla, areaDisplayPorcentaje: null }, pantalla);
+    expect(Number.isFinite(resultado.porcentaje)).toBe(true);
+    expect(resultado.porcentaje).toBe(100);
+    expect(resultado.cobertura).toBeLessThan(100);
+    expect(resultado.advertencias.some((texto) => texto.includes("Área del display no comparada"))).toBe(true);
+  });
 });

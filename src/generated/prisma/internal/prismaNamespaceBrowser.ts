@@ -56,6 +56,7 @@ export const ModelName = {
   Marca: 'Marca',
   Producto: 'Producto',
   FichaTecnicaFull: 'FichaTecnicaFull',
+  FichaFtfPendiente: 'FichaFtfPendiente',
   ImportacionFtfLote: 'ImportacionFtfLote',
   ImportacionFtfRegistro: 'ImportacionFtfRegistro',
   ImportacionFtfIntento: 'ImportacionFtfIntento',
@@ -165,6 +166,28 @@ export const FichaTecnicaFullScalarFieldEnum = {
 } as const
 
 export type FichaTecnicaFullScalarFieldEnum = (typeof FichaTecnicaFullScalarFieldEnum)[keyof typeof FichaTecnicaFullScalarFieldEnum]
+
+
+export const FichaFtfPendienteScalarFieldEnum = {
+  id: 'id',
+  sourceId: 'sourceId',
+  claveOrigen: 'claveOrigen',
+  marcaFuente: 'marcaFuente',
+  modeloFuente: 'modeloFuente',
+  diagonalFuente: 'diagonalFuente',
+  urlFuente: 'urlFuente',
+  proveedor: 'proveedor',
+  secciones: 'secciones',
+  cantidadSecciones: 'cantidadSecciones',
+  estado: 'estado',
+  productoId: 'productoId',
+  diagnostico: 'diagnostico',
+  asociadoEn: 'asociadoEn',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type FichaFtfPendienteScalarFieldEnum = (typeof FichaFtfPendienteScalarFieldEnum)[keyof typeof FichaFtfPendienteScalarFieldEnum]
 
 
 export const ImportacionFtfLoteScalarFieldEnum = {
@@ -355,6 +378,9 @@ export const EspecificacionPantallaScalarFieldEnum = {
   cristalFrontal: 'cristalFrontal',
   refrescoHz: 'refrescoHz',
   fuenteImagen: 'fuenteImagen',
+  esParcial: 'esParcial',
+  camposOmitidos: 'camposOmitidos',
+  metadatosCampos: 'metadatosCampos',
   creadoEn: 'creadoEn',
   actualizadoEn: 'actualizadoEn'
 } as const

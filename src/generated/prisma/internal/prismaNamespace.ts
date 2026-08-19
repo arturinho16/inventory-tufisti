@@ -402,6 +402,7 @@ export const ModelName = {
   Marca: 'Marca',
   Producto: 'Producto',
   FichaTecnicaFull: 'FichaTecnicaFull',
+  FichaFtfPendiente: 'FichaFtfPendiente',
   ImportacionFtfLote: 'ImportacionFtfLote',
   ImportacionFtfRegistro: 'ImportacionFtfRegistro',
   ImportacionFtfIntento: 'ImportacionFtfIntento',
@@ -433,7 +434,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "linea" | "tipoProducto" | "marca" | "producto" | "fichaTecnicaFull" | "importacionFtfLote" | "importacionFtfRegistro" | "importacionFtfIntento" | "fichaTecnicaC" | "fichaTecnicaB" | "ubicacion" | "productoMercadoLibre" | "especificacionPantalla" | "formaPantallaPersonalizada" | "programacionRespaldo" | "ejecucionRespaldo" | "cuentaMercadoLibre" | "notificacionMercadoLibre" | "ventaMercadoLibre" | "partidaVentaMercadoLibre" | "intentoOAuthMercadoLibre"
+    modelProps: "linea" | "tipoProducto" | "marca" | "producto" | "fichaTecnicaFull" | "fichaFtfPendiente" | "importacionFtfLote" | "importacionFtfRegistro" | "importacionFtfIntento" | "fichaTecnicaC" | "fichaTecnicaB" | "ubicacion" | "productoMercadoLibre" | "especificacionPantalla" | "formaPantallaPersonalizada" | "programacionRespaldo" | "ejecucionRespaldo" | "cuentaMercadoLibre" | "notificacionMercadoLibre" | "ventaMercadoLibre" | "partidaVentaMercadoLibre" | "intentoOAuthMercadoLibre"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -804,6 +805,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.FichaTecnicaFullCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.FichaTecnicaFullCountAggregateOutputType> | number
+        }
+      }
+    }
+    FichaFtfPendiente: {
+      payload: Prisma.$FichaFtfPendientePayload<ExtArgs>
+      fields: Prisma.FichaFtfPendienteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FichaFtfPendienteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FichaFtfPendientePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FichaFtfPendienteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FichaFtfPendientePayload>
+        }
+        findFirst: {
+          args: Prisma.FichaFtfPendienteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FichaFtfPendientePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FichaFtfPendienteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FichaFtfPendientePayload>
+        }
+        findMany: {
+          args: Prisma.FichaFtfPendienteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FichaFtfPendientePayload>[]
+        }
+        create: {
+          args: Prisma.FichaFtfPendienteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FichaFtfPendientePayload>
+        }
+        createMany: {
+          args: Prisma.FichaFtfPendienteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FichaFtfPendienteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FichaFtfPendientePayload>[]
+        }
+        delete: {
+          args: Prisma.FichaFtfPendienteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FichaFtfPendientePayload>
+        }
+        update: {
+          args: Prisma.FichaFtfPendienteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FichaFtfPendientePayload>
+        }
+        deleteMany: {
+          args: Prisma.FichaFtfPendienteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FichaFtfPendienteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FichaFtfPendienteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FichaFtfPendientePayload>[]
+        }
+        upsert: {
+          args: Prisma.FichaFtfPendienteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FichaFtfPendientePayload>
+        }
+        aggregate: {
+          args: Prisma.FichaFtfPendienteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFichaFtfPendiente>
+        }
+        groupBy: {
+          args: Prisma.FichaFtfPendienteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FichaFtfPendienteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FichaFtfPendienteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FichaFtfPendienteCountAggregateOutputType> | number
         }
       }
     }
@@ -2107,6 +2182,28 @@ export const FichaTecnicaFullScalarFieldEnum = {
 export type FichaTecnicaFullScalarFieldEnum = (typeof FichaTecnicaFullScalarFieldEnum)[keyof typeof FichaTecnicaFullScalarFieldEnum]
 
 
+export const FichaFtfPendienteScalarFieldEnum = {
+  id: 'id',
+  sourceId: 'sourceId',
+  claveOrigen: 'claveOrigen',
+  marcaFuente: 'marcaFuente',
+  modeloFuente: 'modeloFuente',
+  diagonalFuente: 'diagonalFuente',
+  urlFuente: 'urlFuente',
+  proveedor: 'proveedor',
+  secciones: 'secciones',
+  cantidadSecciones: 'cantidadSecciones',
+  estado: 'estado',
+  productoId: 'productoId',
+  diagnostico: 'diagnostico',
+  asociadoEn: 'asociadoEn',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type FichaFtfPendienteScalarFieldEnum = (typeof FichaFtfPendienteScalarFieldEnum)[keyof typeof FichaFtfPendienteScalarFieldEnum]
+
+
 export const ImportacionFtfLoteScalarFieldEnum = {
   id: 'id',
   nombreArchivo: 'nombreArchivo',
@@ -2295,6 +2392,9 @@ export const EspecificacionPantallaScalarFieldEnum = {
   cristalFrontal: 'cristalFrontal',
   refrescoHz: 'refrescoHz',
   fuenteImagen: 'fuenteImagen',
+  esParcial: 'esParcial',
+  camposOmitidos: 'camposOmitidos',
+  metadatosCampos: 'metadatosCampos',
   creadoEn: 'creadoEn',
   actualizadoEn: 'actualizadoEn'
 } as const
@@ -2572,6 +2672,20 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
+ * Reference to a field of type 'EstadoFichaFtfPendiente'
+ */
+export type EnumEstadoFichaFtfPendienteFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoFichaFtfPendiente'>
+    
+
+
+/**
+ * Reference to a field of type 'EstadoFichaFtfPendiente[]'
+ */
+export type ListEnumEstadoFichaFtfPendienteFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoFichaFtfPendiente[]'>
+    
+
+
+/**
  * Reference to a field of type 'EstadoImportacionFtf'
  */
 export type EnumEstadoImportacionFtfFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoImportacionFtf'>
@@ -2831,6 +2945,7 @@ export type GlobalOmitConfig = {
   marca?: Prisma.MarcaOmit
   producto?: Prisma.ProductoOmit
   fichaTecnicaFull?: Prisma.FichaTecnicaFullOmit
+  fichaFtfPendiente?: Prisma.FichaFtfPendienteOmit
   importacionFtfLote?: Prisma.ImportacionFtfLoteOmit
   importacionFtfRegistro?: Prisma.ImportacionFtfRegistroOmit
   importacionFtfIntento?: Prisma.ImportacionFtfIntentoOmit

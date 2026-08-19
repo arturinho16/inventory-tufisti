@@ -376,3 +376,44 @@ o `Ya está en Paralelo`. Cuando la ficha está incompleta enumera los campos qu
 faltan, de modo que `Completada` en la cola nunca se confunda con lista técnica.
 Los intentos fallidos antiguos de una Clave que posteriormente quedó completada se
 muestran como `Histórico resuelto` y no incrementan el contador de pendientes.
+
+## Paralelo Visual y FTF no asociadas — 17 de agosto de 2026
+
+Ruta de Paralelo Visual: `/paralelo/registros`.
+
+- La cabecera muestra el total de cristales templados registrados, cuántos tienen
+  parámetros de pantalla y cuántos tienen FTF asociada.
+- El listado contiene todos los productos de categoría cristal templado, con la
+  misma cobertura que Inventario. Admite búsqueda por Clave, modelo o descripción,
+  filtros y paginación en servidor.
+- Las tarjetas sin especificación permanecen visibles con el texto `Parámetros
+  pendientes` y una acción para agregar la ficha. Las tarjetas con especificación
+  muestran `Ficha técnica disponible`.
+- La acción `+` abre una sola ficha unificada. `Resumen técnico` contiene identidad,
+  Display, diseño físico del dispositivo, sensores y el bloque independiente de
+  datos físicos del cristal. `Ficha completa` contiene todas las secciones restantes.
+  El contador de esta página es dinámico y no limita la ficha a 25 o 26 secciones.
+
+La pestaña `FTF no asociadas` forma parte de
+`/automatizacion/importar-url`. Lista las fichas descargadas que no tuvieron una
+asociación automática segura y permite filtrarlas por marca, modelo o Clave de
+origen. Al abrir una ficha, el operador busca productos por Clave, marca o modelo,
+selecciona un candidato, revisa marca, modelo, variante y diagonal y confirma.
+
+Los productos con FTF existente no son candidatos ordinarios. Cuando una búsqueda
+coincida únicamente con productos ya asociados, la pantalla debe explicar que el
+producto existe y que ya tiene FTF, en lugar de presentar un resultado vacío sin
+motivo. La sustitución de una FTF no se mezcla con la asociación manual inicial.
+
+Seguimiento y Pasar a Paralelo muestran únicamente trabajo activo. Al quedar una
+fila correctamente enlazada desaparece de Seguimiento; al transferirse desaparece
+de Pasar a Paralelo. El historial continúa persistido para auditoría y no se pierde.
+
+En una `FTF incompleta`, Seguimiento ofrece `Completar datos`, con campos de Display,
+URL de evidencia y nota, y `Liberar como ficha parcial`. La segunda acción exige
+motivo y confirmación; retira el producto de Seguimiento y lo publica en Paralelo.
+Su detalle advierte la condición parcial y Smart Match muestra la cobertura comparada.
+
+Cada tarjeta de `FTF no asociadas` permite `Eliminar de pendientes`. La acción pide
+un motivo y confirmación, retira la ficha de la bandeja activa y conserva el descarte
+para auditoría. Nunca elimina ni reemplaza la FTF ya asociada a un producto.

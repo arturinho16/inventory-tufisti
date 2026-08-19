@@ -35,6 +35,19 @@ def clean(value):
     return re.sub(r"\s+", " ", html_lib.unescape(re.sub(r"<[^>]+>", " ", value or ""))).strip()
 
 
+def cell_lines(value):
+    """Conserva las líneas visibles de una celda sin mezclar su texto de ayuda."""
+    value = re.sub(r"<p\b[^>]*>[\s\S]*?</p>", "", value or "", flags=re.I)
+    value = re.sub(r"<br\s*/?>", "\n", value, flags=re.I)
+    visible = html_lib.unescape(re.sub(r"<[^>]+>", " ", value))
+    lines = []
+    for item in visible.splitlines():
+        item = re.sub(r"\s+", " ", item).strip()
+        if item and item not in lines:
+            lines.append(item)
+    return lines
+
+
 def norm(value):
     value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode().lower()
     return re.sub(r"[^a-z0-9+]+", " ", value).strip()
@@ -124,10 +137,14 @@ def parse_ftf(raw):
         fields = []
         if table:
             for row in re.finditer(r"<tr[^>]*>([\s\S]*?)</tr>", table.group(0), re.I):
-                cells = [clean(cell) for cell in re.findall(r"<(?:td|th)[^>]*>([\s\S]*?)</(?:td|th)>", row.group(1), re.I)]
-                if len(cells) >= 2 and cells[0] and cells[-1]:
-                    values = [item.strip() for item in re.split(r"\s*[|\n]\s*", cells[-1]) if item.strip()]
-                    fields.append({"etiqueta": cells[0], "valores": values or [cells[-1]]})
+                cells = re.findall(r"<(?:td|th)[^>]*>([\s\S]*?)</(?:td|th)>", row.group(1), re.I)
+                if len(cells) >= 2:
+                    labels, values = cell_lines(cells[0]), cell_lines(cells[-1])
+                    if labels and values:
+                        expanded = []
+                        for value in values:
+                            expanded.extend(item.strip() for item in value.split("|") if item.strip())
+                        fields.append({"etiqueta": labels[0], "valores": expanded or values})
         if name and fields:
             sections.append({"clave": key(name), "titulo": name, "campos": fields})
     identity = next((section for section in sections if "brand_and_model" in section["clave"]), None)
@@ -138,10 +155,10 @@ def parse_ftf(raw):
     model = field(identity, "Model") or title[len(brand):].strip()
     display = next((section for section in sections if section["clave"] == "display" or section["clave"].startswith("display_")), None)
     diagonal_raw = field(display, "Diagonal size")
-    number = re.search(r"\d+(?:[.,]\d+)?", diagonal_raw or "")
+    number = re.search(r"(\d+(?:[.,]\d+)?)\s*(?:in|inches)\b", diagonal_raw or "", re.I)
     if not brand or not model or not sections:
         raise RuntimeError("La página no contiene una FTF reconocible.")
-    return {"proveedor":"DeviceSpecifications","marca":brand,"modelo":model,"diagonal":float(number.group().replace(",", ".")) if number else None,"secciones":sections}
+    return {"proveedor":"DeviceSpecifications","marca":brand,"modelo":model,"diagonal":float(number.group(1).replace(",", ".")) if number else None,"secciones":sections}
 
 
 def search(brand, model):

@@ -453,3 +453,116 @@ ruta después del despliegue correspondiente.
 - `Pasar a Paralelo` muestra únicamente FTF descargadas que estén completas y cuya
   marca, modelo, variante y diagonal superen el matching. Las FTF incompletas o con
   identidad inválida permanecen exclusivamente en Seguimiento hasta corregirse.
+
+## Consolidación de inventario, FTF y Paralelo — 17 de agosto de 2026
+
+Estas decisiones son posteriores y prevalecen sobre cualquier descripción anterior
+del mismo flujo:
+
+- Inventario y Paralelo Visual deben partir del mismo universo de productos cuya
+  categoría técnica sea `CRISTAL_TEMPLADO`. Todo cristal templado que aparezca en
+  Inventario debe aparecer también en Paralelo Visual, aunque todavía no tenga
+  `EspecificacionPantalla`, FTF o medición física.
+- Paralelo Visual consulta productos, no solamente especificaciones existentes, y
+  muestra el conteo total equivalente al Inventario. Cada tarjeta indica si dispone
+  de parámetros técnicos o si están pendientes; la ausencia de ficha nunca oculta
+  el producto.
+- La ficha visible es una sola ficha técnica unificada. Las antiguas fichas A y B
+  no se presentan como fichas separadas: sus datos útiles complementan la FTF sin
+  sobrescribir valores más completos. La Ficha C se conserva como bloque separado
+  porque contiene mediciones físicas reales del cristal templado.
+- La ficha unificada debe conservar todas las secciones y campos descargados. La
+  primera página muestra identidad y las tres áreas principales: pantalla, diseño
+  físico del dispositivo y sensores. La segunda página muestra todas las demás
+  secciones, sin imponer un límite fijo de 25 o 26. Los títulos y etiquetas se
+  traducen al español cuando exista traducción aprobada; los valores técnicos se
+  muestran completos y fieles a la fuente.
+- Smart Match utiliza el detalle completo de la FTF para encontrar semejanzas. No
+  se deben resumir, descartar ni inventar campos con el único propósito de presentar
+  la ficha o calcular compatibilidad.
+- Toda FTF descargada debe asociarse al producto correcto por Clave, marca, modelo,
+  variante y diagonal. La regla es independiente de la marca: se aplica a Motorola,
+  Honor, Nubia y cualquier catálogo futuro.
+- Las FTF que no puedan asociarse automáticamente permanecen en una bandeja
+  persistente `FTF no asociadas`. El operador puede buscarlas y asociarlas
+  manualmente por Clave, marca o modelo después de revisar la comparación.
+- La asociación manual ordinaria sólo ofrece productos que todavía no tengan FTF,
+  para impedir reemplazos silenciosos. Si el producto ya tiene FTF, la interfaz debe
+  indicarlo claramente; reemplazarla requerirá en el futuro una operación distinta,
+  explícita y auditada.
+- Una FTF pendiente duplicada, con Clave de origen perteneciente a otro modelo o
+  cuyo posible destino ya tenga FTF no se asocia automáticamente. Permanece para
+  revisión, descarte o reemplazo explícito posterior.
+- `Seguimiento` y `Pasar a Paralelo` son bandejas activas, no archivos históricos.
+  Cuando todas las FTF de una fila estén enlazadas correctamente, la fila sale de
+  Seguimiento y entra en Pasar a Paralelo. Cuando se complete la transferencia, sale
+  de Pasar a Paralelo. Los registros e intentos se conservan en PostgreSQL para
+  auditoría, aunque ya no aparezcan en esas bandejas.
+- Al cargar un lote nuevo —por ejemplo, una marca futura desde Excel— las marcas ya
+  terminadas no deben reaparecer en Seguimiento ni en Pasar a Paralelo. Los estados
+  visibles representan únicamente trabajo pendiente real.
+
+## Liberación controlada de FTF parcial — 18 de agosto de 2026
+
+- Seguimiento permite completar campos faltantes con URL o nota de evidencia, o
+  liberar explícitamente la ficha como parcial.
+- La liberación exige identidad válida, diagonal y dimensiones esenciales, motivo
+  y confirmación. El producto sale de Seguimiento y queda en Paralelo Visual.
+- Los campos ausentes se guardan como `null`, nunca como cero ni como datos inferidos.
+  Se conservan omisiones, procedencia y motivo para auditoría.
+- Smart Match excluye criterios ausentes y muestra la cobertura técnica comparada.
+- Una FTF no asociada puede descartarse desde su tarjeta con motivo explícito. El
+  descarte es lógico (`DESCARTADA`) y auditado: la fuente deja la bandeja, pero no se
+  borra ni modifica ninguna `FichaTecnicaFull` ya vinculada a un producto.
+
+## Reglas vigentes del flujo por lote y URL — 18 de agosto de 2026
+
+Este bloque consolida las decisiones del 18 de agosto de 2026 y prevalece sobre
+cualquier regla anterior que obligue a buscar nuevamente una URL proporcionada,
+oculte una FTF descargada o impida toda liberación parcial.
+
+### URL preferida y descarga
+
+- Si el Excel contiene una URL de FTF, se guarda y muestra inmediatamente en
+  `Enlace preferido de la FTF`. Es el primer y único destino inicial: no se ejecuta
+  una búsqueda previa ni se sustituye silenciosamente por otro resultado.
+- Se valida protocolo, dominio admitido y formato. Una URL válida de
+  DeviceSpecifications se abre directamente mediante Scrapling. La búsqueda y
+  SmartGSM sólo son alternativas cuando falta URL o el operador decide corregirla.
+- Una descarga correcta se persiste aunque la identidad requiera revisión. Debe
+  mostrarse `FTF descargada · revisar identidad`, nunca como una falta de descarga.
+- El parser toma como etiqueta sólo el nombre real del campo y conserva separados
+  sus valores; los textos explicativos HTML no se concatenan ni desplazan el dato.
+
+### Validación de identidad y diagonal
+
+- Se comparan marca, modelo, tokens críticos de variante y diagonal. La diagonal
+  procede del campo `Display` de la FTF y se contrasta con el Excel; no se usan
+  dimensiones del cuerpo ni campos ajenos.
+- Diferencias no críticas, como la presencia adicional de `5G`, no eliminan una FTF
+  descargada. Si no alcanza aprobación automática, queda en revisión con diagnóstico.
+- Cada registro se evalúa individualmente. Un lote no entra en bloque a `Pasar a
+  Paralelo`: sólo entra cada ficha completa y validada; las demás siguen accionables.
+
+### Resolución desde Seguimiento
+
+- Toda FTF descargada puede visualizarse. Los campos faltantes pueden completarse
+  desde el frontend con URL de evidencia y/o nota. Se conserva la fuente original,
+  se recalculan faltantes y se registra `EDICION_MANUAL_FTF` con la procedencia.
+- El operador puede `Liberar como ficha parcial` si la fuente omite un dato opcional.
+  Requiere identidad válida, diagonal en mm y pulgadas, ancho y alto del display,
+  aspect ratio, motivo de al menos diez caracteres y confirmación consciente.
+- La liberación crea el registro de Paralelo, marca `esParcial`, guarda
+  `camposOmitidos` y auditoría, cierra la importación y lo retira de Seguimiento.
+  Los opcionales ausentes permanecen `null`; nunca se convierten en cero.
+- Smart Match usa sólo criterios disponibles en ambos productos y muestra cobertura
+  técnica. El detalle advierte la ficha parcial y presenta `No especificado`.
+
+### FTF no asociadas
+
+- La bandeja contiene sólo registros `PENDIENTE`. Una ficha duplicada, innecesaria
+  o cuyo producto ya tenga FTF puede retirarse con `Eliminar de pendientes`.
+- El descarte exige motivo de al menos cinco caracteres y confirmación. Cambia a
+  `DESCARTADA` y registra fecha, motivo, origen y aviso en el diagnóstico.
+- Es una baja lógica: no borra evidencia, productos ni modifica o reemplaza ninguna
+  `FichaTecnicaFull`, incluso si corresponde al mismo modelo.

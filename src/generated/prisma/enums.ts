@@ -73,6 +73,15 @@ export const EstadoImportacionFtf = {
 export type EstadoImportacionFtf = (typeof EstadoImportacionFtf)[keyof typeof EstadoImportacionFtf]
 
 
+export const EstadoFichaFtfPendiente = {
+  PENDIENTE: 'PENDIENTE',
+  ASOCIADA: 'ASOCIADA',
+  DESCARTADA: 'DESCARTADA'
+} as const
+
+export type EstadoFichaFtfPendiente = (typeof EstadoFichaFtfPendiente)[keyof typeof EstadoFichaFtfPendiente]
+
+
 export const EstadoNotificacionMercadoLibre = {
   PENDIENTE: 'PENDIENTE',
   PROCESADA: 'PROCESADA',

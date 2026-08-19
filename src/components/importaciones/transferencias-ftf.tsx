@@ -40,7 +40,7 @@ export function TransferenciasFtf({ inicial }: { inicial: Transferencias }) {
       {registro.estado === "LISTA" && <button type="button" disabled={ocupado === registro.productoId} onClick={() => transferir(registro.productoId)} className="mt-5 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--primary-container)] px-5 py-2.5 font-semibold text-white disabled:opacity-50"><i className={`bx ${ocupado === registro.productoId ? "bx-loader-alt animate-spin" : "bx-check-shield"} mr-2`} />{ocupado === registro.productoId ? "Comparando y guardando…" : "Validar FTF guardada y pasar a Paralelo"}</button>}
       {registro.estado === "REVISION" && <p className="mt-5 rounded-2xl bg-white/70 p-4 text-sm font-semibold">Esta FTF debe completarse primero en Seguimiento. Pasar a Paralelo no volverá a consultar el proveedor.</p>}
       {mensajes[registro.productoId] && <p role="status" className="mt-3 w-full text-sm font-semibold">{mensajes[registro.productoId]}</p>}
-    </article>)}{!registros.length && <p className="rounded-[2rem] bg-white/55 p-8 text-center text-[var(--on-surface-variant)]">No hay FTF disponibles para transferir.</p>}</div>
+    </article>)}{!registros.length && <p className="rounded-[2rem] bg-white/55 p-8 text-center text-[var(--on-surface-variant)]">No hay FTF pendientes de transferir. Las fichas que ya están en Paralelo se conservan allí y no vuelven a esta bandeja.</p>}</div>
   </section>;
 }
 

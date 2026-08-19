@@ -617,10 +617,6 @@ export type ProgramacionRespaldoCreatelineasInput = {
   set: string[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type EnumFrecuenciaRespaldoFieldUpdateOperationsInput = {
   set?: $Enums.FrecuenciaRespaldo
 }

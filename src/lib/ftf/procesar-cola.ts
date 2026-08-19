@@ -12,8 +12,17 @@ const normalizar = (valor: unknown) => String(valor ?? "").normalize("NFD").repl
 const marketplace = (valor: string) => ({ mercadolibre: "MERCADO_LIBRE", ml: "MERCADO_LIBRE", amazon: "AMAZON", walmart: "WALMART", tiendanube: "TIENDANUBE", claroshop: "CLAROSHOP" } as const)[normalizar(valor)];
 const extraerUrlPreferida = (url: string) => /devicespecifications\.com\/en\/model\//i.test(url) ? extraerDeviceSpecificationsGuardado(url) : extraerFichaFtf(url);
 
-async function intento(registroId: string, datos: { accion: string; estado: "BUSCANDO" | "IMPORTANDO" | "COMPLETADA" | "ERROR" | "NO_ENCONTRADA"; mensaje: string; proveedor?: string; url?: string; marca?: string; modelo?: string; diagonal?: number | null; metadatos?: Prisma.InputJsonValue }) {
+async function intento(registroId: string, datos: { accion: string; estado: "BUSCANDO" | "IMPORTANDO" | "COMPLETADA" | "REVISION" | "ERROR" | "NO_ENCONTRADA"; mensaje: string; proveedor?: string; url?: string; marca?: string; modelo?: string; diagonal?: number | null; metadatos?: Prisma.InputJsonValue }) {
   await prisma.importacionFtfIntento.create({ data: { registroId, accion: datos.accion, estado: datos.estado, mensaje: datos.mensaje, proveedor: datos.proveedor, url: datos.url, marcaEncontrada: datos.marca, modeloEncontrado: datos.modelo, diagonalEncontrada: datos.diagonal, metadatos: datos.metadatos } });
+}
+
+function diagnosticoIdentidad(validacion: ReturnType<typeof validarIdentidadFtf>, diagonalFuente: number | null) {
+  return [
+    `marca ${validacion.marcaCoincide ? "correcta" : "diferente"}`,
+    `modelo ${validacion.modeloCoincide ? "correcto" : `${validacion.puntuacionModelo.toFixed(1)}%`}`,
+    `variante ${validacion.variantesCoinciden ? "correcta" : `diferente (esperada: ${validacion.tokensEsperados.join(", ") || "base"}; encontrada: ${validacion.tokensFuente.join(", ") || "base"})`}`,
+    `diagonal ${validacion.diagonalCoincide ? `${diagonalFuente} in, correcta` : `${diagonalFuente ?? "no encontrada"} in, diferente`}`,
+  ].join(", ");
 }
 
 async function actualizarLote(loteId: string) {
@@ -33,7 +42,8 @@ export async function procesarSiguienteImportacionFtf() {
   const tomado = await prisma.importacionFtfRegistro.updateMany({ where: { id: candidato.id, estado: "BUSCANDO", bloqueadoEn: null }, data: { bloqueadoEn: ahora, mensaje: "Buscando una ficha técnica segura…", intentos: { increment: 1 } } });
   if (!tomado.count) return null;
   const fila = candidato.datosProducto as unknown as ProductoExcelFtf;
-  await intento(candidato.id, { accion: "BUSQUEDA_AUTOMATICA", estado: "BUSCANDO", mensaje: "Inició la búsqueda automática." });
+  const accionInicial = fila.urlFtf ? "URL_PREFERIDA_EXCEL" : "BUSQUEDA_AUTOMATICA";
+  await intento(candidato.id, { accion: accionInicial, estado: "BUSCANDO", url: fila.urlFtf || undefined, mensaje: fila.urlFtf ? "Inició la descarga desde la URL preferida del Excel." : "Inició la búsqueda automática." });
   try {
     if (await prisma.producto.findUnique({ where: { clave: fila.clave }, select: { id: true } })) throw new Error("La Clave fue creada después de validar; no se sobrescribió.");
     const [linea, marca, tipo, ubicacion] = await Promise.all([
@@ -44,7 +54,26 @@ export async function procesarSiguienteImportacionFtf() {
     ]);
     const mp = marketplace(fila.marketplace);
     if (!linea || !marca || !tipo || !ubicacion || !mp || ubicacion.marketplace !== mp) throw new Error("Los catálogos o la ubicación del registro ya no son válidos.");
-    const encontrada = fila.urlFtf ? await (async () => { const ficha = await extraerUrlPreferida(fila.urlFtf); const validacion = validarIdentidadFtf({ marca: fila.marca, modelo: fila.modelo, diagonal: fila.diagonal }, ficha); if (!validacion.valida || validacion.diferencia === null) throw new Error(`La URL FTF del Excel no coincidió de forma segura con ${fila.marca} ${fila.modelo}, ${fila.diagonal} in.`); return { url: fila.urlFtf, ficha, diferenciaDiagonal: validacion.diferencia, puntuacionModelo: validacion.puntuacionModelo }; })() : await buscarFichaFtf(fila.marca, fila.modelo, fila.diagonal);
+    const encontrada = fila.urlFtf ? await (async () => {
+      const ficha = await extraerUrlPreferida(fila.urlFtf);
+      const validacion = validarIdentidadFtf({ marca: fila.marca, modelo: fila.modelo, diagonal: fila.diagonal }, ficha);
+      if (!validacion.valida || validacion.diferencia === null) {
+        const mensaje = `FTF descargada desde el enlace del Excel; requiere revisión de identidad: ${diagnosticoIdentidad(validacion, ficha.diagonal)}. La fuente contiene ${ficha.marca} ${ficha.modelo}.`;
+        await prisma.$transaction([
+          prisma.fichaFtfPendiente.upsert({
+            where: { sourceId: `importacion-ftf:${candidato.id}` },
+            create: { sourceId: `importacion-ftf:${candidato.id}`, claveOrigen: fila.clave, marcaFuente: ficha.marca, modeloFuente: ficha.modelo, diagonalFuente: ficha.diagonal, urlFuente: fila.urlFtf, proveedor: ficha.proveedor, secciones: ficha.secciones as unknown as Prisma.InputJsonValue, cantidadSecciones: ficha.secciones.length, diagnostico: validacion as unknown as Prisma.InputJsonValue },
+            update: { claveOrigen: fila.clave, marcaFuente: ficha.marca, modeloFuente: ficha.modelo, diagonalFuente: ficha.diagonal, urlFuente: fila.urlFtf, proveedor: ficha.proveedor, secciones: ficha.secciones as unknown as Prisma.InputJsonValue, cantidadSecciones: ficha.secciones.length, estado: "PENDIENTE", diagnostico: validacion as unknown as Prisma.InputJsonValue },
+          }),
+          prisma.importacionFtfRegistro.update({ where: { id: candidato.id }, data: { estado: "REVISION", mensaje, urlFuente: fila.urlFtf, marcaEncontrada: ficha.marca, modeloEncontrado: ficha.modelo, diagonalEncontrada: ficha.diagonal, bloqueadoEn: null, procesadoEn: new Date() } }),
+          prisma.importacionFtfIntento.create({ data: { registroId: candidato.id, accion: "URL_PREFERIDA_EXCEL", estado: "REVISION", url: fila.urlFtf, proveedor: ficha.proveedor, mensaje, marcaEncontrada: ficha.marca, modeloEncontrado: ficha.modelo, diagonalEncontrada: ficha.diagonal, metadatos: validacion as unknown as Prisma.InputJsonValue } }),
+        ]);
+        await actualizarLote(candidato.loteId);
+        return null;
+      }
+      return { url: fila.urlFtf, ficha, diferenciaDiagonal: validacion.diferencia, puntuacionModelo: validacion.puntuacionModelo };
+    })() : await buscarFichaFtf(fila.marca, fila.modelo, fila.diagonal);
+    if (!encontrada) return { id: candidato.id, clave: candidato.clave, estado: "REVISION" as const, mensaje: "FTF descargada; identidad pendiente de revisión." };
     await prisma.importacionFtfRegistro.update({ where: { id: candidato.id }, data: { estado: "IMPORTANDO", mensaje: "Coincidencia validada; creando producto y FTF…", urlFuente: encontrada.url, marcaEncontrada: encontrada.ficha.marca, modeloEncontrado: encontrada.ficha.modelo, diagonalEncontrada: encontrada.ficha.diagonal } });
     await intento(candidato.id, { accion: "COINCIDENCIA_VALIDADA", estado: "IMPORTANDO", mensaje: `Coincidencia validada con ${encontrada.ficha.proveedor}.`, proveedor: encontrada.ficha.proveedor, url: encontrada.url, marca: encontrada.ficha.marca, modelo: encontrada.ficha.modelo, diagonal: encontrada.ficha.diagonal, metadatos: { puntuacionModelo: encontrada.puntuacionModelo, diferenciaDiagonal: encontrada.diferenciaDiagonal } });
     const imagen = await copiarImagenExterna(fila.imagenUrl, fila.clave, fila.modelo);

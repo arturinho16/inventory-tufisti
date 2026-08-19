@@ -323,6 +323,7 @@ export type ProductoWhereInput = {
   fichaTecnicaB?: Prisma.XOR<Prisma.FichaTecnicaBNullableScalarRelationFilter, Prisma.FichaTecnicaBWhereInput> | null
   fichaTecnicaC?: Prisma.XOR<Prisma.FichaTecnicaCNullableScalarRelationFilter, Prisma.FichaTecnicaCWhereInput> | null
   fichaTecnicaFull?: Prisma.XOR<Prisma.FichaTecnicaFullNullableScalarRelationFilter, Prisma.FichaTecnicaFullWhereInput> | null
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteListRelationFilter
   ubicaciones?: Prisma.UbicacionListRelationFilter
 }
 
@@ -351,6 +352,7 @@ export type ProductoOrderByWithRelationInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBOrderByWithRelationInput
   fichaTecnicaC?: Prisma.FichaTecnicaCOrderByWithRelationInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullOrderByWithRelationInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteOrderByRelationAggregateInput
   ubicaciones?: Prisma.UbicacionOrderByRelationAggregateInput
 }
 
@@ -382,6 +384,7 @@ export type ProductoWhereUniqueInput = Prisma.AtLeast<{
   fichaTecnicaB?: Prisma.XOR<Prisma.FichaTecnicaBNullableScalarRelationFilter, Prisma.FichaTecnicaBWhereInput> | null
   fichaTecnicaC?: Prisma.XOR<Prisma.FichaTecnicaCNullableScalarRelationFilter, Prisma.FichaTecnicaCWhereInput> | null
   fichaTecnicaFull?: Prisma.XOR<Prisma.FichaTecnicaFullNullableScalarRelationFilter, Prisma.FichaTecnicaFullWhereInput> | null
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteListRelationFilter
   ubicaciones?: Prisma.UbicacionListRelationFilter
 }, "id" | "clave">
 
@@ -455,6 +458,7 @@ export type ProductoCreateInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
@@ -480,6 +484,7 @@ export type ProductoUncheckedCreateInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
@@ -505,6 +510,7 @@ export type ProductoUpdateInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
@@ -530,6 +536,7 @@ export type ProductoUncheckedUpdateInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
@@ -673,6 +680,11 @@ export type ProductoSumOrderByAggregateInput = {
 export type ProductoScalarRelationFilter = {
   is?: Prisma.ProductoWhereInput
   isNot?: Prisma.ProductoWhereInput
+}
+
+export type ProductoNullableScalarRelationFilter = {
+  is?: Prisma.ProductoWhereInput | null
+  isNot?: Prisma.ProductoWhereInput | null
 }
 
 export type ProductoCreateNestedManyWithoutLineaInput = {
@@ -835,6 +847,22 @@ export type ProductoUpdateOneRequiredWithoutFichaTecnicaFullNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProductoUpdateToOneWithWhereWithoutFichaTecnicaFullInput, Prisma.ProductoUpdateWithoutFichaTecnicaFullInput>, Prisma.ProductoUncheckedUpdateWithoutFichaTecnicaFullInput>
 }
 
+export type ProductoCreateNestedOneWithoutFichasFtfAsociadasInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutFichasFtfAsociadasInput, Prisma.ProductoUncheckedCreateWithoutFichasFtfAsociadasInput>
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutFichasFtfAsociadasInput
+  connect?: Prisma.ProductoWhereUniqueInput
+}
+
+export type ProductoUpdateOneWithoutFichasFtfAsociadasNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutFichasFtfAsociadasInput, Prisma.ProductoUncheckedCreateWithoutFichasFtfAsociadasInput>
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutFichasFtfAsociadasInput
+  upsert?: Prisma.ProductoUpsertWithoutFichasFtfAsociadasInput
+  disconnect?: Prisma.ProductoWhereInput | boolean
+  delete?: Prisma.ProductoWhereInput | boolean
+  connect?: Prisma.ProductoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProductoUpdateToOneWithWhereWithoutFichasFtfAsociadasInput, Prisma.ProductoUpdateWithoutFichasFtfAsociadasInput>, Prisma.ProductoUncheckedUpdateWithoutFichasFtfAsociadasInput>
+}
+
 export type ProductoCreateNestedOneWithoutFichaTecnicaCInput = {
   create?: Prisma.XOR<Prisma.ProductoCreateWithoutFichaTecnicaCInput, Prisma.ProductoUncheckedCreateWithoutFichaTecnicaCInput>
   connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutFichaTecnicaCInput
@@ -936,6 +964,7 @@ export type ProductoCreateWithoutLineaInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
@@ -960,6 +989,7 @@ export type ProductoUncheckedCreateWithoutLineaInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
@@ -1033,6 +1063,7 @@ export type ProductoCreateWithoutTipoProductoInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
@@ -1057,6 +1088,7 @@ export type ProductoUncheckedCreateWithoutTipoProductoInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
@@ -1107,6 +1139,7 @@ export type ProductoCreateWithoutMarcaInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
@@ -1131,6 +1164,7 @@ export type ProductoUncheckedCreateWithoutMarcaInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
@@ -1181,6 +1215,7 @@ export type ProductoCreateWithoutFichaTecnicaFullInput = {
   especificacionPantalla?: Prisma.EspecificacionPantallaCreateNestedOneWithoutProductoInput
   fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
@@ -1205,6 +1240,7 @@ export type ProductoUncheckedCreateWithoutFichaTecnicaFullInput = {
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
@@ -1245,6 +1281,7 @@ export type ProductoUpdateWithoutFichaTecnicaFullInput = {
   especificacionPantalla?: Prisma.EspecificacionPantallaUpdateOneWithoutProductoNestedInput
   fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
@@ -1269,6 +1306,123 @@ export type ProductoUncheckedUpdateWithoutFichaTecnicaFullInput = {
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedUpdateManyWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
+}
+
+export type ProductoCreateWithoutFichasFtfAsociadasInput = {
+  id?: string
+  clave: string
+  descripcion: string
+  imagenUrl?: string | null
+  imagenNombre?: string | null
+  imagenMimeType?: string | null
+  imagenTamano?: number | null
+  existencia?: number
+  modelo: string
+  color?: string | null
+  claveMLFull?: string | null
+  codigoUniversal?: string | null
+  creadoEn?: Date | string
+  actualizadoEn?: Date | string
+  linea: Prisma.LineaCreateNestedOneWithoutProductosInput
+  marca: Prisma.MarcaCreateNestedOneWithoutProductosInput
+  tipoProducto: Prisma.TipoProductoCreateNestedOneWithoutProductosInput
+  especificacionPantalla?: Prisma.EspecificacionPantallaCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
+}
+
+export type ProductoUncheckedCreateWithoutFichasFtfAsociadasInput = {
+  id?: string
+  clave: string
+  descripcion: string
+  imagenUrl?: string | null
+  imagenNombre?: string | null
+  imagenMimeType?: string | null
+  imagenTamano?: number | null
+  existencia?: number
+  modelo: string
+  color?: string | null
+  claveMLFull?: string | null
+  codigoUniversal?: string | null
+  tipoProductoId: string
+  lineaId: string
+  marcaId: string
+  creadoEn?: Date | string
+  actualizadoEn?: Date | string
+  especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
+}
+
+export type ProductoCreateOrConnectWithoutFichasFtfAsociadasInput = {
+  where: Prisma.ProductoWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProductoCreateWithoutFichasFtfAsociadasInput, Prisma.ProductoUncheckedCreateWithoutFichasFtfAsociadasInput>
+}
+
+export type ProductoUpsertWithoutFichasFtfAsociadasInput = {
+  update: Prisma.XOR<Prisma.ProductoUpdateWithoutFichasFtfAsociadasInput, Prisma.ProductoUncheckedUpdateWithoutFichasFtfAsociadasInput>
+  create: Prisma.XOR<Prisma.ProductoCreateWithoutFichasFtfAsociadasInput, Prisma.ProductoUncheckedCreateWithoutFichasFtfAsociadasInput>
+  where?: Prisma.ProductoWhereInput
+}
+
+export type ProductoUpdateToOneWithWhereWithoutFichasFtfAsociadasInput = {
+  where?: Prisma.ProductoWhereInput
+  data: Prisma.XOR<Prisma.ProductoUpdateWithoutFichasFtfAsociadasInput, Prisma.ProductoUncheckedUpdateWithoutFichasFtfAsociadasInput>
+}
+
+export type ProductoUpdateWithoutFichasFtfAsociadasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenTamano?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  existencia?: Prisma.IntFieldUpdateOperationsInput | number
+  modelo?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  claveMLFull?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoUniversal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  linea?: Prisma.LineaUpdateOneRequiredWithoutProductosNestedInput
+  marca?: Prisma.MarcaUpdateOneRequiredWithoutProductosNestedInput
+  tipoProducto?: Prisma.TipoProductoUpdateOneRequiredWithoutProductosNestedInput
+  especificacionPantalla?: Prisma.EspecificacionPantallaUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
+}
+
+export type ProductoUncheckedUpdateWithoutFichasFtfAsociadasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagenTamano?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  existencia?: Prisma.IntFieldUpdateOperationsInput | number
+  modelo?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  claveMLFull?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoUniversal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoProductoId?: Prisma.StringFieldUpdateOperationsInput | string
+  lineaId?: Prisma.StringFieldUpdateOperationsInput | string
+  marcaId?: Prisma.StringFieldUpdateOperationsInput | string
+  creadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
+  fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
@@ -1293,6 +1447,7 @@ export type ProductoCreateWithoutFichaTecnicaCInput = {
   especificacionPantalla?: Prisma.EspecificacionPantallaCreateNestedOneWithoutProductoInput
   fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
@@ -1317,6 +1472,7 @@ export type ProductoUncheckedCreateWithoutFichaTecnicaCInput = {
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
@@ -1357,6 +1513,7 @@ export type ProductoUpdateWithoutFichaTecnicaCInput = {
   especificacionPantalla?: Prisma.EspecificacionPantallaUpdateOneWithoutProductoNestedInput
   fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
@@ -1381,6 +1538,7 @@ export type ProductoUncheckedUpdateWithoutFichaTecnicaCInput = {
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
@@ -1405,6 +1563,7 @@ export type ProductoCreateWithoutFichaTecnicaBInput = {
   especificacionPantalla?: Prisma.EspecificacionPantallaCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
@@ -1429,6 +1588,7 @@ export type ProductoUncheckedCreateWithoutFichaTecnicaBInput = {
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
@@ -1469,6 +1629,7 @@ export type ProductoUpdateWithoutFichaTecnicaBInput = {
   especificacionPantalla?: Prisma.EspecificacionPantallaUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
@@ -1493,6 +1654,7 @@ export type ProductoUncheckedUpdateWithoutFichaTecnicaBInput = {
   especificacionPantalla?: Prisma.EspecificacionPantallaUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
@@ -1518,6 +1680,7 @@ export type ProductoCreateWithoutUbicacionesInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteCreateNestedManyWithoutProductoInput
 }
 
 export type ProductoUncheckedCreateWithoutUbicacionesInput = {
@@ -1542,6 +1705,7 @@ export type ProductoUncheckedCreateWithoutUbicacionesInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedCreateNestedManyWithoutProductoInput
 }
 
 export type ProductoCreateOrConnectWithoutUbicacionesInput = {
@@ -1586,6 +1750,7 @@ export type ProductoCreateWithoutEspecificacionPantallaInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionCreateNestedManyWithoutProductosInput
 }
 
@@ -1610,6 +1775,7 @@ export type ProductoUncheckedCreateWithoutEspecificacionPantallaInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedCreateNestedOneWithoutProductoInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedCreateNestedOneWithoutProductoInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedCreateNestedManyWithoutProductoInput
   ubicaciones?: Prisma.UbicacionUncheckedCreateNestedManyWithoutProductosInput
 }
 
@@ -1650,6 +1816,7 @@ export type ProductoUpdateWithoutEspecificacionPantallaInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
@@ -1674,6 +1841,7 @@ export type ProductoUncheckedUpdateWithoutEspecificacionPantallaInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
@@ -1717,6 +1885,7 @@ export type ProductoUpdateWithoutLineaInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
@@ -1741,6 +1910,7 @@ export type ProductoUncheckedUpdateWithoutLineaInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
@@ -1803,6 +1973,7 @@ export type ProductoUpdateWithoutTipoProductoInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
@@ -1827,6 +1998,7 @@ export type ProductoUncheckedUpdateWithoutTipoProductoInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
@@ -1889,6 +2061,7 @@ export type ProductoUpdateWithoutMarcaInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUpdateManyWithoutProductosNestedInput
 }
 
@@ -1913,6 +2086,7 @@ export type ProductoUncheckedUpdateWithoutMarcaInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedUpdateManyWithoutProductoNestedInput
   ubicaciones?: Prisma.UbicacionUncheckedUpdateManyWithoutProductosNestedInput
 }
 
@@ -1957,6 +2131,7 @@ export type ProductoUpdateWithoutUbicacionesInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUpdateManyWithoutProductoNestedInput
 }
 
 export type ProductoUncheckedUpdateWithoutUbicacionesInput = {
@@ -1981,6 +2156,7 @@ export type ProductoUncheckedUpdateWithoutUbicacionesInput = {
   fichaTecnicaB?: Prisma.FichaTecnicaBUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaC?: Prisma.FichaTecnicaCUncheckedUpdateOneWithoutProductoNestedInput
   fichaTecnicaFull?: Prisma.FichaTecnicaFullUncheckedUpdateOneWithoutProductoNestedInput
+  fichasFtfAsociadas?: Prisma.FichaFtfPendienteUncheckedUpdateManyWithoutProductoNestedInput
 }
 
 export type ProductoUncheckedUpdateManyWithoutUbicacionesInput = {
@@ -2009,10 +2185,12 @@ export type ProductoUncheckedUpdateManyWithoutUbicacionesInput = {
  */
 
 export type ProductoCountOutputType = {
+  fichasFtfAsociadas: number
   ubicaciones: number
 }
 
 export type ProductoCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  fichasFtfAsociadas?: boolean | ProductoCountOutputTypeCountFichasFtfAsociadasArgs
   ubicaciones?: boolean | ProductoCountOutputTypeCountUbicacionesArgs
 }
 
@@ -2024,6 +2202,13 @@ export type ProductoCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
    * Select specific fields to fetch from the ProductoCountOutputType
    */
   select?: Prisma.ProductoCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ProductoCountOutputType without action
+ */
+export type ProductoCountOutputTypeCountFichasFtfAsociadasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FichaFtfPendienteWhereInput
 }
 
 /**
@@ -2059,6 +2244,7 @@ export type ProductoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   fichaTecnicaB?: boolean | Prisma.Producto$fichaTecnicaBArgs<ExtArgs>
   fichaTecnicaC?: boolean | Prisma.Producto$fichaTecnicaCArgs<ExtArgs>
   fichaTecnicaFull?: boolean | Prisma.Producto$fichaTecnicaFullArgs<ExtArgs>
+  fichasFtfAsociadas?: boolean | Prisma.Producto$fichasFtfAsociadasArgs<ExtArgs>
   ubicaciones?: boolean | Prisma.Producto$ubicacionesArgs<ExtArgs>
   _count?: boolean | Prisma.ProductoCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["producto"]>
@@ -2138,6 +2324,7 @@ export type ProductoInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   fichaTecnicaB?: boolean | Prisma.Producto$fichaTecnicaBArgs<ExtArgs>
   fichaTecnicaC?: boolean | Prisma.Producto$fichaTecnicaCArgs<ExtArgs>
   fichaTecnicaFull?: boolean | Prisma.Producto$fichaTecnicaFullArgs<ExtArgs>
+  fichasFtfAsociadas?: boolean | Prisma.Producto$fichasFtfAsociadasArgs<ExtArgs>
   ubicaciones?: boolean | Prisma.Producto$ubicacionesArgs<ExtArgs>
   _count?: boolean | Prisma.ProductoCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -2162,6 +2349,7 @@ export type $ProductoPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     fichaTecnicaB: Prisma.$FichaTecnicaBPayload<ExtArgs> | null
     fichaTecnicaC: Prisma.$FichaTecnicaCPayload<ExtArgs> | null
     fichaTecnicaFull: Prisma.$FichaTecnicaFullPayload<ExtArgs> | null
+    fichasFtfAsociadas: Prisma.$FichaFtfPendientePayload<ExtArgs>[]
     ubicaciones: Prisma.$UbicacionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -2583,6 +2771,7 @@ export interface Prisma__ProductoClient<T, Null = never, ExtArgs extends runtime
   fichaTecnicaB<T extends Prisma.Producto$fichaTecnicaBArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Producto$fichaTecnicaBArgs<ExtArgs>>): Prisma.Prisma__FichaTecnicaBClient<runtime.Types.Result.GetResult<Prisma.$FichaTecnicaBPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   fichaTecnicaC<T extends Prisma.Producto$fichaTecnicaCArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Producto$fichaTecnicaCArgs<ExtArgs>>): Prisma.Prisma__FichaTecnicaCClient<runtime.Types.Result.GetResult<Prisma.$FichaTecnicaCPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   fichaTecnicaFull<T extends Prisma.Producto$fichaTecnicaFullArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Producto$fichaTecnicaFullArgs<ExtArgs>>): Prisma.Prisma__FichaTecnicaFullClient<runtime.Types.Result.GetResult<Prisma.$FichaTecnicaFullPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  fichasFtfAsociadas<T extends Prisma.Producto$fichasFtfAsociadasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Producto$fichasFtfAsociadasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FichaFtfPendientePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ubicaciones<T extends Prisma.Producto$ubicacionesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Producto$ubicacionesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UbicacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3104,6 +3293,30 @@ export type Producto$fichaTecnicaFullArgs<ExtArgs extends runtime.Types.Extensio
    */
   include?: Prisma.FichaTecnicaFullInclude<ExtArgs> | null
   where?: Prisma.FichaTecnicaFullWhereInput
+}
+
+/**
+ * Producto.fichasFtfAsociadas
+ */
+export type Producto$fichasFtfAsociadasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FichaFtfPendiente
+   */
+  select?: Prisma.FichaFtfPendienteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FichaFtfPendiente
+   */
+  omit?: Prisma.FichaFtfPendienteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FichaFtfPendienteInclude<ExtArgs> | null
+  where?: Prisma.FichaFtfPendienteWhereInput
+  orderBy?: Prisma.FichaFtfPendienteOrderByWithRelationInput | Prisma.FichaFtfPendienteOrderByWithRelationInput[]
+  cursor?: Prisma.FichaFtfPendienteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FichaFtfPendienteScalarFieldEnum | Prisma.FichaFtfPendienteScalarFieldEnum[]
 }
 
 /**

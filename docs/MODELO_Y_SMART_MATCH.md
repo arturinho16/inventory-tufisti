@@ -243,6 +243,29 @@ unificado; un valor existente nunca debe reemplazarse silenciosamente por un val
 vacío o menos específico. La Ficha C no forma parte de la FTF y sigue siendo el
 análisis físico independiente del cristal templado.
 
+Paralelo Visual presenta una sola ficha técnica unificada en dos páginas. El
+resumen reúne identidad, Display, Design y Sensors, conservando la medición física
+del cristal como bloque independiente. La segunda página muestra, sin descartar
+campos repetidos o desconocidos, todas las secciones restantes de la FTF. Los
+títulos y etiquetas conocidos se presentan en español y los valores técnicos se
+conservan exactamente como fueron extraídos de la fuente.
+
+Smart Match mantiene las dimensiones, forma, proporción y área como señales
+prioritarias. Cuando referencia y candidato disponen de FTF, también compara cada
+campo compartido de sus secciones estructuradas y añade una señal suplementaria
+de detalle con peso centralizado. El resultado debe indicar cuántos campos tienen
+similitud alta y cuántos requieren revisión; los campos ausentes en uno de los dos
+productos no se califican como coincidencia ni se sustituyen con valores inventados.
+
+Las FTF descargadas que no puedan asociarse automáticamente se conservan en una
+bandeja persistente de pendientes con su identidad fuente, URL y todas sus
+secciones. El operador busca el producto destino por Clave, marca o modelo y
+revisa la comparación antes de asociar. Una coincidencia válida se confirma de
+forma ordinaria; una identidad que no cumpla los umbrales exige una segunda
+confirmación explícita bajo responsabilidad del operador. La decisión y su
+diagnóstico quedan auditados, y nunca se reemplaza una FTF existente desde esta
+bandeja.
+
 El seguimiento se modela con un lote y sus registros. Cada registro guarda una
 copia de los datos comerciales necesarios para crear el producto, estado,
 diagnóstico, URL fuente, identidad encontrada, diagonal esperada y encontrada,
@@ -290,3 +313,37 @@ no aprueba una identidad diferente ni cambia silenciosamente el modelo fuente.
 Los intentos fallidos anteriores a una importación completada de la misma Clave
 se conservan para auditoría como históricos resueltos. No se eliminan ni se
 contabilizan como pendientes activos.
+
+## Universo técnico y asociación manual — 17 de agosto de 2026
+
+La pertenencia a Paralelo Visual se determina desde la categoría técnica
+`CRISTAL_TEMPLADO` de `Producto.tipoProducto`; `EspecificacionPantalla` deja de
+ser una condición de visibilidad. La relación sigue siendo necesaria para ejecutar
+la comparación de medidas, pero un cristal sin ella se muestra con estado técnico
+pendiente.
+
+`FichaTecnicaFull` continúa siendo uno a uno con `Producto`. Las fichas descargadas
+sin destino seguro se almacenan en `FichaFtfPendiente` con identidad de origen,
+diagonal, proveedor, URL, secciones completas, estado, diagnóstico y eventual
+producto asociado. Una asociación cambia su estado y conserva la evidencia; no
+elimina la fuente pendiente ni la auditoría.
+
+La búsqueda manual consulta por Clave, marca o modelo. Por defecto excluye productos
+que ya tengan `FichaTecnicaFull`, pues elegirlos implicaría reemplazar datos. Una
+consulta sin resultados no demuestra que el producto no exista: puede significar
+que ya tiene FTF. La interfaz debe diferenciar ambos casos y mostrar el producto y
+su estado cuando sea útil para el diagnóstico, sin habilitar la asociación ordinaria.
+
+La FTF unificada conserva un arreglo ordenado de secciones y, dentro de cada una,
+  campos con múltiples valores. Este contrato no presupone un número fijo de secciones.
+  El resumen visual selecciona Display, Design y Sensors; el resto permanece disponible
+  en una segunda página. La Ficha C mantiene su relación independiente uno a uno con
+  el producto y nunca se rellena con datos comerciales del dispositivo.
+
+## Especificación parcial y cobertura — 18 de agosto de 2026
+
+`EspecificacionPantalla` identifica una liberación excepcional mediante `esParcial`,
+`camposOmitidos` y `metadatosCampos`. Diagonal, ancho, alto y proporción permanecen
+como mínimo técnico; tecnología, resolución, densidad, profundidad de color y área
+pueden ser `null`. Smart Match pondera sólo criterios presentes en ambos productos
+y comunica compatibilidad y cobertura por separado.

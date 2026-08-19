@@ -173,3 +173,35 @@ La aplicación productiva se publica mediante Docker Compose. Después de cambio
 de esquema o interfaz que deban quedar visibles en el servidor, se ejecutan las
 migraciones y se reconstruye el contenedor de aplicación; posteriormente se
 comprueba el estado saludable y una respuesta HTTP correcta en la ruta afectada.
+
+## Asociación pendiente y consulta de Paralelo — 17 de agosto de 2026
+
+- `FichaFtfPendiente` conserva FTF completas que no alcanzaron una asociación
+  automática segura. Su estado separa pendientes activos de fichas asociadas o
+  descartadas y sus índices deben sostener filtros por estado, marca, modelo y Clave.
+- Las acciones de asociación manual se ejecutan en servidor, vuelven a evaluar la
+  identidad y usan una transacción para crear `FichaTecnicaFull` y cerrar el
+  pendiente. Nunca sobrescriben una FTF existente mediante la operación ordinaria.
+- La consulta de candidatos debe poder diagnosticar por separado `producto no
+  encontrado` y `producto encontrado con FTF existente`; la interfaz no debe
+  interpretar ambos resultados como una lista vacía equivalente.
+- `/paralelo/registros` pagina sobre `Producto` filtrado por categoría
+  `CRISTAL_TEMPLADO` e incluye opcionalmente especificación, FTF y ficha física.
+  Así se conserva la igualdad de cobertura con Inventario sin crear registros
+  técnicos ficticios.
+- Las bandejas activas filtran en el servidor los estados finalizados. Ocultar una
+  fila terminada no implica borrarla: lote, intentos, diagnóstico y asociación se
+  conservan como auditoría persistente.
+
+## Liberación parcial auditada — 18 de agosto de 2026
+
+La acción `liberarFtfParcial` valida identidad y campos esenciales, crea
+`EspecificacionPantalla` en una transacción y cierra el registro de importación.
+Registra `LIBERACION_FTF_PARCIAL` con motivo, omisiones y procedencia. Los campos
+opcionales desconocidos son nulos y Smart Match los excluye del cálculo.
+
+El flujo prioriza `urlPreferida`: cuando existe, la valida y descarga directamente;
+el buscador sólo se invoca cuando falta. `FichaFtfPendiente` aplica bajas lógicas
+con estado `DESCARTADA`; nunca ejecuta un borrado físico ni modifica
+`FichaTecnicaFull`. Ambas operaciones revalidan `/automatizacion/importar-url` para
+retirar inmediatamente los elementos cerrados de las bandejas activas.

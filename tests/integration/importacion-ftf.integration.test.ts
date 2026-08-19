@@ -9,6 +9,7 @@ const loteId = `ftf-integracion-${sufijo}`;
 const claveCompleta = `FTF-E2E-${sufijo}`;
 const claveIncompleta = `FTF-INC-${sufijo}`;
 const claveRecuperada = `FTF-REC-${sufijo}`;
+const claveRevision = `FTF-REV-${sufijo}`;
 let imagenCreada: string | null = null;
 
 const displayCompleto = [{ clave: "display", titulo: "Display", campos: [
@@ -32,7 +33,8 @@ beforeAll(async () => {
 
 afterAll(async () => {
   if (imagenCreada) await eliminarImagenLocal(imagenCreada);
-  await prisma.importacionFtfLote.deleteMany({ where: { id: { startsWith: `ftf-` }, registros: { some: { clave: { in: [claveCompleta, claveIncompleta, claveRecuperada] } } } } });
+  await prisma.fichaFtfPendiente.deleteMany({ where: { claveOrigen: claveRevision } });
+  await prisma.importacionFtfLote.deleteMany({ where: { id: { startsWith: `ftf-` }, registros: { some: { clave: { in: [claveCompleta, claveIncompleta, claveRecuperada, claveRevision] } } } } });
   await prisma.producto.deleteMany({ where: { clave: { in: [claveCompleta, claveIncompleta] } } });
   await prisma.ubicacion.deleteMany({ where: { id: `ubicacion-${sufijo}` } });
   await prisma.tipoProducto.deleteMany({ where: { id: `tipo-${sufijo}` } });
@@ -76,5 +78,27 @@ describe("importación FTF con PostgreSQL", () => {
     const recuperado = await prisma.importacionFtfRegistro.findFirstOrThrow({ where: { loteId: recuperacionId } });
     expect(recuperado.estado).toBe("BUSCANDO");
     expect(recuperado.bloqueadoEn).toBeNull();
+  });
+
+  it("conserva una FTF descargada cuando la URL del Excel requiere revisión de identidad", async () => {
+    vi.stubGlobal("fetch", vi.fn(async (entrada: string | URL) => {
+      const url = String(entrada);
+      if (url.startsWith("http://proveedor-ftf.test/extraer")) return new Response(JSON.stringify({
+        ficha: { proveedor: "DeviceSpecifications", marca: `Marca E2E ${sufijo}`, modelo: "Modelo E2E Pro 5G", diagonal: 6.67, secciones: displayCompleto },
+      }), { status: 200, headers: { "content-type": "application/json" } });
+      throw new Error(`Solicitud inesperada: ${url}`);
+    }));
+    const loteRevision = `${loteId}-revision`;
+    const urlFtf = "https://www.devicespecifications.com/en/model/revision";
+    await prisma.importacionFtfLote.create({ data: { id: loteRevision, nombreArchivo: "revision.xlsx", total: 1, estado: "BUSCANDO", registros: { create: {
+      fila: 2, clave: claveRevision, marca: `Marca E2E ${sufijo}`, modelo: "Modelo E2E Pro", diagonalEsperada: 6.67, estado: "BUSCANDO", urlFuente: urlFtf,
+      datosProducto: { clave: claveRevision, descripcion: "Producto en revisión", linea: `Línea E2E ${sufijo}`, existencia: 2, color: "Transparente", tipoProducto: `Tipo E2E ${sufijo}`, marca: `Marca E2E ${sufijo}`, modelo: "Modelo E2E Pro", imagenUrl: "https://1.1.1.1/revision.png", diagonal: 6.67, almacen: `Almacén ${sufijo}`, cuenta: `Cuenta ${sufijo}`, marketplace: "Amazon", urlFtf, fila: 2 },
+    } } } });
+    const resultado = await procesarSiguienteImportacionFtf();
+    expect(resultado?.estado).toBe("REVISION");
+    const registro = await prisma.importacionFtfRegistro.findFirstOrThrow({ where: { loteId: loteRevision } });
+    expect(registro).toMatchObject({ estado: "REVISION", urlFuente: urlFtf, modeloEncontrado: "Modelo E2E Pro 5G" });
+    expect(await prisma.producto.findUnique({ where: { clave: claveRevision } })).toBeNull();
+    await expect(prisma.fichaFtfPendiente.findUniqueOrThrow({ where: { sourceId: `importacion-ftf:${registro.id}` } })).resolves.toMatchObject({ claveOrigen: claveRevision, diagonalFuente: expect.anything() });
   });
 });

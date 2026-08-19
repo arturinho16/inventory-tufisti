@@ -15,6 +15,10 @@ const nombresCampos: Record<keyof DatosPantallaFtf, string> = {
   areaDisplayPorcentaje: "área del display", cristalFrontal: "cristal frontal", refrescoHz: "frecuencia de refresco",
 };
 
+const CAMPOS_MINIMOS_PARALELO: Array<keyof DatosPantallaFtf> = [
+  "diagonalMm", "diagonalPulgadas", "anchoDisplayMm", "altoDisplayMm", "aspectRatio",
+];
+
 async function esperadoPorClave(clave: string, diagonalFuente: number | null) {
   const registro = await prisma.importacionFtfRegistro.findFirst({
     where: { clave, estado: "COMPLETADA" }, orderBy: { actualizadoEn: "desc" },
@@ -57,7 +61,10 @@ export async function listarTransferenciasFtf(marca?: string) {
       estado: ficha.producto.especificacionPantalla ? "EXISTENTE" as const : problemas.length ? "REVISION" as const : "LISTA" as const,
     };
   }));
-  return resultados.filter((registro) => registro.estado !== "REVISION");
+  // Esta vista es una bandeja de trabajo, no un historial. Una ficha que ya
+  // existe en Paralelo deja de ser accionable y no debe mezclarse con el
+  // siguiente lote que importe el operador.
+  return resultados.filter((registro) => registro.estado === "LISTA");
 }
 
 export async function transferirFtfAParalelo(productoId: string, confirmarActualizacion = false) {
@@ -94,4 +101,45 @@ export async function transferirFtfAParalelo(productoId: string, confirmarActual
     revalidatePath("/paralelo/buscar");
   } catch { /* PostgreSQL ya confirmó la transferencia. */ }
   return { correcto: true, mensaje: `La Clave ${ficha.producto.clave} ya está disponible en Paralelo Visual.` };
+}
+
+export async function liberarFtfParcial(registroId: string, motivo: string) {
+  const justificacion = motivo.trim();
+  if (justificacion.length < 10) throw new Error("Explica en al menos 10 caracteres por qué se liberará la ficha sin esos campos.");
+  const registro = await prisma.importacionFtfRegistro.findUnique({ where: { id: registroId } });
+  if (!registro) throw new Error("El registro ya no existe.");
+  const ficha = await prisma.fichaTecnicaFull.findFirst({
+    where: { producto: { clave: registro.clave } },
+    include: { producto: { include: { marca: { select: { nombre: true } }, especificacionPantalla: { select: { id: true } } } } },
+  });
+  if (!ficha) throw new Error("La FTF todavía no está asociada al producto.");
+  if (ficha.producto.especificacionPantalla) throw new Error("El producto ya está en Paralelo.");
+  const datos = extraerPantallaFtf(ficha.secciones as unknown as SeccionFtf[]);
+  const diagonalEsperada = Number(registro.diagonalEsperada);
+  const identidad = validarIdentidadFtf(
+    { marca: ficha.producto.marca.nombre, modelo: ficha.producto.modelo, diagonal: diagonalEsperada },
+    { marca: ficha.marcaFuente, modelo: ficha.modeloFuente, diagonal: datos.diagonalPulgadas },
+  );
+  if (!identidad.valida) throw new Error("Primero corrige la identidad de marca, modelo, variante o diagonal.");
+  const faltantesMinimos = CAMPOS_MINIMOS_PARALELO.filter((campo) => datos[campo] === null || datos[campo] === "");
+  if (faltantesMinimos.length) throw new Error(`No puede liberarse: faltan datos mínimos de comparación (${faltantesMinimos.map((campo) => nombresCampos[campo]).join(", ")}).`);
+  const omitidos = faltantesPantallaFtf(datos).map((campo) => String(campo));
+  if (!omitidos.length) throw new Error("La ficha ya está completa; usa la transferencia normal.");
+  const valores = {
+    clave: ficha.producto.clave, modelo: ficha.producto.modelo, lineaId: ficha.producto.lineaId, marcaId: ficha.producto.marcaId,
+    tecnologia: datos.tecnologia, tipoFormaPantalla: datos.tipoFormaPantalla, tipoFormaOtro: datos.tipoFormaOtro,
+    diagonalMm: datos.diagonalMm!, diagonalPulgadas: datos.diagonalPulgadas!, anchoDisplayMm: datos.anchoDisplayMm!,
+    altoDisplayMm: datos.altoDisplayMm!, aspectRatio: datos.aspectRatio!, resolucionAnchoPx: datos.resolucionAnchoPx,
+    resolucionAltoPx: datos.resolucionAltoPx, densidadPpi: datos.densidadPpi, profundidadColor: datos.profundidadColor,
+    areaDisplayPorcentaje: datos.areaDisplayPorcentaje, cristalFrontal: datos.cristalFrontal, refrescoHz: datos.refrescoHz,
+    esParcial: true, camposOmitidos: omitidos,
+    metadatosCampos: { liberacion: { motivo: justificacion, omitidos, fecha: new Date().toISOString(), origen: "USUARIO_FRONTEND" } } as Prisma.InputJsonValue,
+  };
+  await prisma.$transaction([
+    prisma.especificacionPantalla.create({ data: { productoId: ficha.productoId, ...valores } }),
+    prisma.importacionFtfRegistro.update({ where: { id: registroId }, data: { estado: "COMPLETADA", mensaje: `Liberada como ficha parcial. Campos omitidos: ${omitidos.map((campo) => nombresCampos[campo as keyof DatosPantallaFtf]).join(", ")}. Motivo: ${justificacion}`, procesadoEn: new Date() } }),
+    prisma.importacionFtfIntento.create({ data: { registroId, accion: "LIBERACION_FTF_PARCIAL", estado: "COMPLETADA", proveedor: ficha.proveedor, url: ficha.urlFuente, mensaje: `El usuario liberó la ficha como parcial: ${justificacion}`, marcaEncontrada: ficha.marcaFuente, modeloEncontrado: ficha.modeloFuente, diagonalEncontrada: datos.diagonalPulgadas, metadatos: { omitidos, motivo: justificacion, coberturaReducida: true } as Prisma.InputJsonValue } }),
+  ]);
+  revalidatePath("/automatizacion/importar-url"); revalidatePath("/paralelo/registros"); revalidatePath("/paralelo/buscar");
+  return { correcto: true, mensaje: `La Clave ${ficha.producto.clave} fue liberada como ficha parcial y salió de Seguimiento.` };
 }

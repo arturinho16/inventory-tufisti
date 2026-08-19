@@ -3,12 +3,16 @@ import Link from "next/link";
 import { BuscadorModelos } from "@/components/smart-match/buscador-modelos";
 import { prisma } from "@/lib/prisma";
 import { calcularCompatibilidad, type PantallaComparable } from "@/lib/smart-match/calcular-compatibilidad";
+import type { SeccionFtf } from "@/lib/ftf/extraer-url";
 
 export const dynamic = "force-dynamic";
 
-const aComparable = (pantalla: { anchoDisplayMm: unknown; altoDisplayMm: unknown; diagonalMm: unknown; tipoFormaPantalla: string; tipoFormaOtro: string | null; aspectRatio: string; areaDisplayPorcentaje: unknown; cristalFrontal: string | null; tecnologia: string }, fichaB?: { anchoCuerpoMm: unknown; altoCuerpoMm: unknown; biselLateralMm: unknown; biselVerticalTotalMm: unknown; huellaBajoPantalla: boolean | null } | null): PantallaComparable => ({
-  anchoDisplayMm: Number(pantalla.anchoDisplayMm), altoDisplayMm: Number(pantalla.altoDisplayMm), diagonalMm: Number(pantalla.diagonalMm), tipoFormaPantalla: pantalla.tipoFormaPantalla, tipoFormaOtro: pantalla.tipoFormaOtro, aspectRatio: pantalla.aspectRatio, areaDisplayPorcentaje: Number(pantalla.areaDisplayPorcentaje), cristalFrontal: pantalla.cristalFrontal, tecnologia: pantalla.tecnologia,
+const normalizarClaveFtf = (valor: string) => valor.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+const detalleFtf = (secciones: unknown): Record<string, string> => Object.fromEntries(((secciones as SeccionFtf[] | null) ?? []).flatMap((seccion) => seccion.campos.map((campo, indice) => [`${normalizarClaveFtf(seccion.clave)}:${normalizarClaveFtf(campo.etiqueta)}:${indice}`, campo.valores.join(" | ")] as const)));
+const aComparable = (pantalla: { anchoDisplayMm: unknown; altoDisplayMm: unknown; diagonalMm: unknown; tipoFormaPantalla: string; tipoFormaOtro: string | null; aspectRatio: string; areaDisplayPorcentaje: unknown; cristalFrontal: string | null; tecnologia: string | null }, fichaB?: { anchoCuerpoMm: unknown; altoCuerpoMm: unknown; biselLateralMm: unknown; biselVerticalTotalMm: unknown; huellaBajoPantalla: boolean | null } | null, seccionesFtf?: unknown): PantallaComparable => ({
+  anchoDisplayMm: Number(pantalla.anchoDisplayMm), altoDisplayMm: Number(pantalla.altoDisplayMm), diagonalMm: Number(pantalla.diagonalMm), tipoFormaPantalla: pantalla.tipoFormaPantalla, tipoFormaOtro: pantalla.tipoFormaOtro, aspectRatio: pantalla.aspectRatio, areaDisplayPorcentaje: pantalla.areaDisplayPorcentaje == null ? null : Number(pantalla.areaDisplayPorcentaje), cristalFrontal: pantalla.cristalFrontal, tecnologia: pantalla.tecnologia,
   anchoCuerpoMm: fichaB?.anchoCuerpoMm == null ? null : Number(fichaB.anchoCuerpoMm), altoCuerpoMm: fichaB?.altoCuerpoMm == null ? null : Number(fichaB.altoCuerpoMm), biselLateralMm: fichaB?.biselLateralMm == null ? null : Number(fichaB.biselLateralMm), biselVerticalTotalMm: fichaB?.biselVerticalTotalMm == null ? null : Number(fichaB.biselVerticalTotalMm), huellaBajoPantalla: fichaB?.huellaBajoPantalla ?? null,
+  detalleFtf: detalleFtf(seccionesFtf),
 });
 
 export default async function BuscarCristal({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
@@ -16,15 +20,15 @@ export default async function BuscarCristal({ searchParams }: { searchParams: Pr
   const modelo = typeof params.modelo === "string" ? params.modelo.trim() : "";
   const referencias = modelo ? await prisma.producto.findMany({
     where: { modelo: { contains: modelo, mode: "insensitive" }, tipoProducto: { categoria: "CRISTAL_TEMPLADO" }, especificacionPantalla: { isNot: null } },
-    take: 10, include: { especificacionPantalla: true, fichaTecnicaB: true, linea: true, marca: true },
+    take: 10, include: { especificacionPantalla: true, fichaTecnicaB: true, fichaTecnicaFull: { select: { secciones: true } }, linea: true, marca: true },
   }) : [];
   const referencia = referencias.sort((a, b) => Number(a.modelo.toLocaleLowerCase("es-MX") !== modelo.toLocaleLowerCase("es-MX")) - Number(b.modelo.toLocaleLowerCase("es-MX") !== modelo.toLocaleLowerCase("es-MX")))[0];
   const cristales = referencia ? await prisma.producto.findMany({
     where: { tipoProducto: { categoria: "CRISTAL_TEMPLADO" }, existencia: { gt: 0 }, especificacionPantalla: { isNot: null }, NOT: { modelo: { equals: referencia.modelo, mode: "insensitive" } } },
-    include: { especificacionPantalla: true, fichaTecnicaB: true, linea: true, marca: true },
+    include: { especificacionPantalla: true, fichaTecnicaB: true, fichaTecnicaFull: { select: { secciones: true } }, linea: true, marca: true },
   }) : [];
   const resultados = referencia?.especificacionPantalla ? cristales
-    .map((cristal) => ({ cristal, resultado: calcularCompatibilidad(aComparable(referencia.especificacionPantalla!, referencia.fichaTecnicaB), aComparable(cristal.especificacionPantalla!, cristal.fichaTecnicaB)) }))
+    .map((cristal) => ({ cristal, resultado: calcularCompatibilidad(aComparable(referencia.especificacionPantalla!, referencia.fichaTecnicaB, referencia.fichaTecnicaFull?.secciones), aComparable(cristal.especificacionPantalla!, cristal.fichaTecnicaB, cristal.fichaTecnicaFull?.secciones)) }))
     .sort((a, b) => b.resultado.porcentaje - a.resultado.porcentaje || a.resultado.diferenciaAnchoMm - b.resultado.diferenciaAnchoMm || a.resultado.diferenciaAltoMm - b.resultado.diferenciaAltoMm || Number(b.resultado.formaCoincide) - Number(a.resultado.formaCoincide) || b.cristal.existencia - a.cristal.existencia)
     .slice(0, 5) : [];
 
@@ -36,7 +40,7 @@ export default async function BuscarCristal({ searchParams }: { searchParams: Pr
     {referencia && !resultados.length && <EstadoVacio titulo="No hay cristales comparables" texto="Registra fichas técnicas para cristales templados y asegúrate de que tengan existencia." />}
     {resultados.length > 0 && <section><h2 className="mb-5 text-2xl font-bold">Las 5 mejores opciones</h2><div className="space-y-5">{resultados.map(({ cristal, resultado }, indice) => <article key={cristal.id} className="rounded-[2.5rem] border border-white/60 bg-white/45 p-6 backdrop-blur-xl">
       <div className="grid gap-6 lg:grid-cols-[auto_minmax(0,1fr)_12rem]"><div className="flex gap-4"><span className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--primary)] font-bold text-white">{indice + 1}</span><Miniatura url={cristal.imagenUrl} descripcion={cristal.descripcion} /></div><div><p className="font-mono text-xs font-semibold text-[var(--primary)]">Clave {cristal.clave}</p><h3 className="text-xl font-bold">{cristal.descripcion}</h3><p className="text-[var(--on-surface-variant)]">{cristal.marca.nombre} · {cristal.modelo} · {cristal.linea.nombre} · Existencia: {cristal.existencia}</p><p className="mt-3 inline-flex items-center gap-2 rounded-full bg-purple-100 px-4 py-2 font-semibold text-[var(--primary)]"><i className="bx bx-ruler" />Pantalla de {Number(cristal.especificacionPantalla!.diagonalPulgadas).toFixed(2)} pulgadas</p><div className="mt-4 grid gap-3 text-sm sm:grid-cols-2"><ComparacionMedida nombre="Ancho de pantalla" buscado={Number(referencia!.especificacionPantalla!.anchoDisplayMm)} opcion={Number(cristal.especificacionPantalla!.anchoDisplayMm)} diferencia={resultado.diferenciaAnchoMm} /><ComparacionMedida nombre="Alto de pantalla" buscado={Number(referencia!.especificacionPantalla!.altoDisplayMm)} opcion={Number(cristal.especificacionPantalla!.altoDisplayMm)} diferencia={resultado.diferenciaAltoMm} /></div></div><div className="text-center lg:text-right"><strong className="block text-4xl text-[var(--primary)]">{resultado.porcentaje}%</strong><span className="mt-2 inline-block rounded-full bg-purple-100 px-3 py-1 text-sm font-semibold text-[var(--primary)]">{resultado.estado}</span><small className="mt-2 block text-[var(--on-surface-variant)]">{resultado.nivel}</small></div></div>
-      <div className="mt-5 grid gap-4 md:grid-cols-2"><Detalle titulo="Coincidencias" icono="bx-check" clase="bg-emerald-50 text-emerald-800" textos={resultado.coincidencias} /><Detalle titulo="Observaciones" icono="bx-error-circle" clase="bg-amber-50 text-amber-900" textos={resultado.advertencias} vacio="Sin diferencias relevantes." /></div><Link href={`/productos/${cristal.id}/editar`} className="mt-5 inline-flex items-center gap-2 rounded-full bg-purple-100 px-5 py-3 font-semibold text-[var(--primary)]">Abrir producto<i className="bx bx-right-arrow-alt" /></Link>
+      <p className="mt-4 font-mono text-xs text-[var(--on-surface-variant)]">Cobertura técnica comparada: {resultado.cobertura}%</p><div className="mt-5 grid gap-4 md:grid-cols-2"><Detalle titulo="Coincidencias" icono="bx-check" clase="bg-emerald-50 text-emerald-800" textos={resultado.coincidencias} /><Detalle titulo="Observaciones" icono="bx-error-circle" clase="bg-amber-50 text-amber-900" textos={resultado.advertencias} vacio="Sin diferencias relevantes." /></div><Link href={`/productos/${cristal.id}/editar`} className="mt-5 inline-flex items-center gap-2 rounded-full bg-purple-100 px-5 py-3 font-semibold text-[var(--primary)]">Abrir producto<i className="bx bx-right-arrow-alt" /></Link>
     </article>)}</div></section>}
   </main>;
 }

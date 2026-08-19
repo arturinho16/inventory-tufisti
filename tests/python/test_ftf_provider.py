@@ -91,6 +91,29 @@ class ProviderTests(unittest.TestCase):
         self.assertEqual([section["clave"] for section in ficha["secciones"]], ["brand_and_model", "display", "wi_fi"])
         self.assertEqual(ficha["secciones"][1]["campos"][1]["valores"], ["HDR", "DCI-P3"])
 
+    def test_parsea_html_real_sin_mezclar_descripcion_del_campo(self):
+        html = """
+        <h1>Honor 600e - Specifications</h1>
+        <header class="section-header"><h2 class="header">Brand and model</h2></header>
+        <table class="model-information-table">
+          <tr><td>Brand<p>Brand name of the company.</p></td><td>Honor</td></tr>
+          <tr><td>Model<p>Model name of the device.</p></td><td>600e</td></tr>
+        </table>
+        <header class="section-header"><h2 class="header">Display</h2></header>
+        <table class="model-information-table">
+          <tr><td>Diagonal size<p>Display size is measured diagonally.</p></td>
+          <td><span></span>6.6 in <span>(inches)</span><br />167.64 mm <span>(millimeters)</span><br />16.76 cm</td></tr>
+          <tr><td>Width<p>Approximate display width.</p></td><td>70.25 mm<br />2.77 in</td></tr>
+        </table>
+        """
+        ficha = provider.parse_ftf(html)
+        display = ficha["secciones"][1]
+        self.assertEqual(ficha["marca"], "Honor")
+        self.assertEqual(ficha["modelo"], "600e")
+        self.assertEqual(ficha["diagonal"], 6.6)
+        self.assertEqual(display["campos"][0]["etiqueta"], "Diagonal size")
+        self.assertEqual(display["campos"][0]["valores"], ["6.6 in (inches)", "167.64 mm (millimeters)", "16.76 cm"])
+
 
 if __name__ == "__main__":
     unittest.main()

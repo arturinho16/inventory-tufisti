@@ -67,6 +67,11 @@ export type Producto = Prisma.ProductoModel
  */
 export type FichaTecnicaFull = Prisma.FichaTecnicaFullModel
 /**
+ * Model FichaFtfPendiente
+ * 
+ */
+export type FichaFtfPendiente = Prisma.FichaFtfPendienteModel
+/**
  * Model ImportacionFtfLote
  * 
  */

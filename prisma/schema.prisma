@@ -102,6 +102,7 @@ model Producto {
   fichaTecnicaB          FichaTecnicaB?
   fichaTecnicaC          FichaTecnicaC?
   fichaTecnicaFull       FichaTecnicaFull?
+  fichasFtfAsociadas     FichaFtfPendiente[]
   ubicaciones            Ubicacion[]
   creadoEn               DateTime                @default(now())
   actualizadoEn          DateTime                @updatedAt
@@ -144,6 +145,36 @@ enum EstadoImportacionFtf {
   IMPORTANDO
   COMPLETADA
   ERROR
+}
+
+enum EstadoFichaFtfPendiente {
+  PENDIENTE
+  ASOCIADA
+  DESCARTADA
+}
+
+model FichaFtfPendiente {
+  id                String                   @id @default(cuid())
+  sourceId          String                   @unique
+  claveOrigen       String?
+  marcaFuente       String
+  modeloFuente      String
+  diagonalFuente   Decimal?                 @db.Decimal(6, 3)
+  urlFuente         String
+  proveedor         String
+  secciones         Json
+  cantidadSecciones Int
+  estado            EstadoFichaFtfPendiente @default(PENDIENTE)
+  productoId        String?
+  producto          Producto?                @relation(fields: [productoId], references: [id], onDelete: SetNull)
+  diagnostico       Json?
+  asociadoEn        DateTime?
+  creadoEn          DateTime                 @default(now())
+  actualizadoEn     DateTime                 @updatedAt
+
+  @@index([estado, marcaFuente, modeloFuente])
+  @@index([claveOrigen])
+  @@index([productoId])
 }
 
 model ImportacionFtfLote {
@@ -334,7 +365,7 @@ model EspecificacionPantalla {
   linea                 Linea             @relation(fields: [lineaId], references: [id])
   marcaId               String
   marca                 Marca             @relation(fields: [marcaId], references: [id])
-  tecnologia            String
+  tecnologia            String?
   tipoFormaPantalla     TipoFormaPantalla
   tipoFormaOtro         String?
   diagonalMm            Decimal           @db.Decimal(8, 3)
@@ -342,14 +373,17 @@ model EspecificacionPantalla {
   anchoDisplayMm        Decimal           @db.Decimal(8, 3)
   altoDisplayMm         Decimal           @db.Decimal(8, 3)
   aspectRatio           String
-  resolucionAnchoPx     Int
-  resolucionAltoPx      Int
-  densidadPpi           Int
-  profundidadColor      String
-  areaDisplayPorcentaje Decimal           @db.Decimal(5, 2)
+  resolucionAnchoPx     Int?
+  resolucionAltoPx      Int?
+  densidadPpi           Int?
+  profundidadColor      String?
+  areaDisplayPorcentaje Decimal?          @db.Decimal(5, 2)
   cristalFrontal        String?
   refrescoHz            Int?
   fuenteImagen          String?
+  esParcial             Boolean           @default(false)
+  camposOmitidos        String[]           @default([])
+  metadatosCampos       Json?
   creadoEn              DateTime          @default(now())
   actualizadoEn         DateTime          @updatedAt
 

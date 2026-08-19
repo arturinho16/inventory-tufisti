@@ -771,10 +771,6 @@ export type DecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type ImportacionFtfRegistroCreateNestedOneWithoutIntentosDetalleInput = {
   create?: Prisma.XOR<Prisma.ImportacionFtfRegistroCreateWithoutIntentosDetalleInput, Prisma.ImportacionFtfRegistroUncheckedCreateWithoutIntentosDetalleInput>
   connectOrCreate?: Prisma.ImportacionFtfRegistroCreateOrConnectWithoutIntentosDetalleInput
